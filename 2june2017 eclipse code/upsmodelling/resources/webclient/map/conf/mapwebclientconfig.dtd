@@ -1,0 +1,19 @@
+<!-- $Id: mapwebclientconfig.dtd,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<!ELEMENT symbol-details (icon-config)*>
+
+<!ELEMENT icon-config EMPTY>
+<!ATTLIST icon-config
+    imageName CDATA #IMPLIED
+    status CDATA #IMPLIED
+  >
+
+<!ELEMENT map-view (icon-config)*>
+
+
+<!ELEMENT type-config (symbol-details|map-view)*>
+<!ATTLIST type-config
+    type CDATA #IMPLIED
+  >
+
+<!ELEMENT topo-web-config (type-config)*>

@@ -1,0 +1,667 @@
+<%-- $Id: discoveryConfiguration.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+
+<script language="javascript">
+function completeview()
+{
+   //location.href="/admin/CompleteAdminPanel.do";
+   location.href="/admin/CompleteAdminPanel.do?selectedTab=admin&viewId=admincomplete&firstChild=false&swipe=true&nodeClicked=admincomplete&selectedNode=admincomplete&displayName=Complete+View";
+}
+
+function toggleIcmp()
+{
+    if(document.DiscForm.icmpDiscovery.checked)
+    {
+        document.DiscForm.pingRetries.disabled=false;
+//        document.DiscForm.pingRetries.className="formStyleSmallselect";
+        document.DiscForm.pingTimeout.disabled=false;
+//        document.DiscForm.pingTimeout.className="formStyleSmallselect";
+    }
+    else
+    {
+        document.DiscForm.pingRetries.disabled=true;
+//        document.DiscForm.pingRetries.className="formStyleSmallselectDisabled";
+        document.DiscForm.pingTimeout.disabled=true;
+//        document.DiscForm.pingTimeout.className="formStyleSmallselectDisabled";
+    }
+}
+
+function initialparameters()
+{
+   toggleSnmpv3();
+   toggleIcmp();
+   if(document.DiscForm.snmpDiscovery.checked)
+    {
+        document.DiscForm.snmpRetries.disabled=false;
+//        document.DiscForm.snmpRetries.className="formStyleSmallselect";
+        document.DiscForm.snmpTimeout.disabled=false;
+//        document.DiscForm.snmpTimeout.className="formStyleSmallselect";
+        document.DiscForm.snmpPort.disabled=false;
+        document.DiscForm.snmpPort.className="formStyleSmall";
+        document.DiscForm.readCommunity.disabled=false;
+        document.DiscForm.readCommunity.className="formStyleSmall";
+        document.DiscForm.snmpv3Discovery.disabled=false;
+    }
+    else
+    {
+        document.DiscForm.snmpRetries.disabled=true;
+//        document.DiscForm.snmpRetries.className="formStyleSmallselectDisabled";
+        document.DiscForm.snmpTimeout.disabled=true;
+//        document.DiscForm.snmpTimeout.className="formStyleSmallselectDisabled";
+        document.DiscForm.snmpPort.disabled=true;
+        document.DiscForm.snmpPort.className="formStyleSmallDisabled";
+        document.DiscForm.readCommunity.disabled=true;
+        document.DiscForm.readCommunity.className="formStyleSmallDisabled";
+        document.DiscForm.snmpv3Discovery.disabled=true;
+    }
+
+
+}
+function toggleSnmpv3()
+{
+    if(document.DiscForm.snmpv3Discovery.type=="checkbox" && document.DiscForm.snmpv3Discovery.checked)
+    {
+        document.getElementById("user").className="";
+        document.getElementById("context").className="";
+        document.DiscForm.v3UserName.disabled=false;
+        document.DiscForm.v3UserName.className="formStyleSmall";
+        document.DiscForm.v3ContextName.disabled=false;
+        document.DiscForm.v3ContextName.className="formStyleSmall";
+    }
+    else
+    {
+        document.getElementById("user").className="hide";
+        document.getElementById("context").className="hide";
+        document.DiscForm.v3UserName.disabled=true;
+        document.DiscForm.v3UserName.className="formStyleSmallDisabled";
+        document.DiscForm.v3ContextName.disabled=true;
+        document.DiscForm.v3ContextName.className="formStyleSmallDisabled";
+   }
+}
+
+function toggleSnmp()
+{
+    if(document.DiscForm.snmpDiscovery.checked)
+    {
+        document.DiscForm.snmpRetries.disabled=false;
+//        document.DiscForm.snmpRetries.className="formStyleSmallselect";
+        document.DiscForm.snmpTimeout.disabled=false;
+//        document.DiscForm.snmpTimeout.className="formStyleSmallselect";
+        document.DiscForm.snmpPort.disabled=false;
+        document.DiscForm.snmpPort.className="formStyleSmall";
+        document.DiscForm.readCommunity.disabled=false;
+        document.DiscForm.readCommunity.className="formStyleSmall";
+        document.DiscForm.snmpv3Discovery.disabled=false;
+    }
+    else
+    {
+        alert('<fmt:message key="webclient.admin.discovery.snmpdiscovery.warningmessage"/>');
+        document.DiscForm.snmpRetries.disabled=true;
+//        document.DiscForm.snmpRetries.className="formStyleSmallselectDisabled";
+        document.DiscForm.snmpTimeout.disabled=true;
+//        document.DiscForm.snmpTimeout.className="formStyleSmallselectDisabled";
+        document.DiscForm.snmpPort.disabled=true;
+        document.DiscForm.snmpPort.className="formStyleSmallDisabled";
+        document.DiscForm.readCommunity.disabled=true;
+        document.DiscForm.readCommunity.className="formStyleSmallDisabled";
+        document.DiscForm.snmpv3Discovery.disabled=true;
+        document.DiscForm.snmpv3Discovery.checked=false;
+        toggleSnmpv3();
+    }
+}
+
+
+function confirmDisc()
+{
+    if(document.DiscForm.autoDiscovery.checked == false)
+    {
+        var con = confirm('<fmt:message key="webclient.admin.discovery.autodiscovery.warningmessage"/>');
+        if(con == true)
+        {
+            document.DiscForm.autoDiscovery.checked=false;
+        }
+        else
+        {
+            document.DiscForm.autoDiscovery.checked=true;
+        }
+    }
+        
+}
+
+function validatethisformandSubmit()
+{
+    var formName = window.location.href;
+        if(document.ReDiscForm.schedular[0].checked)
+        {
+            var reDisc = trimAll(document.ReDiscForm.reDiscInt.value);
+            if(reDisc == "")
+            {
+                alert('<fmt:message key="webclient.admin.discovery.rediscovery.warning"/>');
+                document.ReDiscForm.reDiscInt.focus();
+                return false;
+            }
+            document.ReDiscForm.reDiscInt.value = reDisc;
+
+            checkNum = parseInt(reDisc);
+            var redisctime  = reDisc;
+            var check=true;
+            var checkValue = reDisc.split(":");
+
+            for(var k=0;k<checkValue.length;k++)
+            {
+               if(checkValue.length>3||trimAll(checkValue[k])=="")
+               {
+                  alert('<fmt:message key="webclient.admin.discovery.rediscovery.improper.format"/>');
+                  document.ReDiscForm.reDiscInt.focus();
+                  return false;
+               }
+            }
+
+            for(var i=0;i<3;i++)
+            {
+               var ind = redisctime.indexOf(":");
+               var checktime = redisctime.substring(0,ind);
+               if(ind==-1)
+               {
+                  checktime = redisctime;
+                  if(i==0)
+                  {
+                    check=false;
+                  }
+               }
+               if((i>0)&&(parseInt(checktime)>60)&&(check))
+               {
+                  alert('<fmt:message key="webclient.admin.discovery.rediscovery.mmss.less"/>');
+                  document.ReDiscForm.reDiscInt.focus();
+		  return false;
+               }
+    
+               if(i==0&&checktime>240)
+               {
+                 alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                 document.ReDiscForm.reDiscInt.focus();
+                 return false;
+               }
+               if(parseInt(checktime)==240)
+               {
+                 var checkMax = reDisc.split(":");
+                 for(var j=1;j<checkMax.length;j++)
+                 {
+                    if(parseInt(checkMax[j])>0)
+                    {
+                       alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                       document.ReDiscForm.reDiscInt.focus();
+                       return false;
+                    }
+                 }
+               }
+               if(parseInt(checktime)==239)
+               {
+                 var checkMax = reDisc.split(":");
+                 for(var j=1;j<checkMax.length;j++)
+                 {
+                    if(j==1&&parseInt(checkMax[j])==60)
+                    {
+                       alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                       document.ReDiscForm.reDiscInt.focus();
+                       return false;
+                    }
+                 }
+               }
+
+
+               if(isNaN(checktime)||checktime<0||checktime.indexOf(".")!=-1)
+               {
+                  if(i==0)
+                  {
+                      alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.hours"/>');
+                      document.ReDiscForm.reDiscInt.focus();
+                      return false;
+                  }
+                  if(i==1)
+                  {
+                     alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.minutes"/>'); 
+                     document.ReDiscForm.reDiscInt.focus(); 
+                     return false;
+                  }
+                  if(i=2)
+                  {
+                     alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.seconds"/>');
+		     return false;
+                  }
+               }
+	       redisctime = redisctime.substring(ind+1,redisctime.length);
+               
+            }
+        
+        }
+        if(document.ReDiscForm.schedular[1].checked)
+        {
+           if(document.ReDiscForm.dateorday[0].checked)
+           {
+              if( document.ReDiscForm.days[1].selected && trimAll(document.ReDiscForm.daysOfWeek.value)=="")
+              {
+                 alert('<fmt:message key="webclient.admin.discovery.rediscovery.daybased.fromlist"/>');
+                 return false;  
+              }
+           }
+/*           if(!document.ReDiscForm.dateorday[0].checked&&!document.ReDiscForm.dateorday[1].checked)
+           {
+              alert('<fmt:message key="webclient.admin.discovery.rediscovery.userschedular"/>');
+              return false;
+           }*/
+           if(document.ReDiscForm.dateorday[1].checked)
+           {
+              if(document.ReDiscForm.dateBased[1].selected)
+              {
+                  var selDates = trimAll(document.ReDiscForm.daysOfMonth.value);
+                  if(selDates == "")
+                  {
+                      alert('<fmt:message key="webclient.admin.discovery.selecteddates.warning"/>');
+                      document.ReDiscForm.daysOfMonth.focus();
+                      return false;
+                  }
+                  document.ReDiscForm.daysOfMonth.value = selDates;
+                  var dates = selDates.split(",");
+                  for (k = 0; k<dates.length;k++)
+                  {
+                      selDate = parseInt(dates[k]);
+                      if(isNaN(selDate) || selDate!=dates[k])
+	               {
+	                  alert('<fmt:message key="webclient.admin.discovery.validation.invaliddate"/>');
+	                  document.ReDiscForm.daysOfMonth.focus();
+	                  return false;
+                       }
+                       if (selDate > 31 || selDate < 1)
+                       {
+                          alert('<fmt:message key="webclient.admin.discovery.selecteddates.range.warning"/>');
+                          document.ReDiscForm.daysOfMonth.focus();
+                          return false;
+                       }
+                    }
+                }
+            }
+        }
+        if(document.ReDiscForm.schedular[1].checked && document.ReDiscForm.hours[1].selected)
+        {
+            var selHours = trimAll(document.ReDiscForm.selectedHour.value);
+            if(selHours == "")
+            {
+                alert('<fmt:message key="webclient.admin.discovery.selectedhours.warning"/>');
+                document.ReDiscForm.selectedHour.focus();
+                return false;
+            }
+	        document.ReDiscForm.selectedHour.value = selHours;
+            var hours = selHours.split(",");
+            for (k = 0; k<hours.length;k++)
+            {
+                selHour = parseInt(hours[k]);
+	            if(isNaN(selHour) || selHour!=hours[k] )
+	            {
+		            alert('<fmt:message key="webclient.admin.discovery.validation.invalidhour"/>');
+		            document.ReDiscForm.selectedHour.focus();
+		            return false;
+	            }
+
+                if (selHour > 24 || selHour < 1)
+                {
+                    alert('<fmt:message key="webclient.admin.discovery.selectedhours.range"/>');
+                    document.ReDiscForm.selectedHour.focus();
+                    return false;
+                }
+            }
+        }
+    document.ReDiscForm.submit();
+}
+
+
+function validateandSubmit()
+{   
+    var formName = window.location.href;
+    var disc = trimAll(document.DiscForm.discInterval.value);
+    checkNum = parseInt(disc);
+    if(isNaN(checkNum) || checkNum!=disc ||disc=="")
+    {
+         alert('<fmt:message key="webclient.admin.discovery.validation.integer"/>');
+         document.DiscForm.discInterval.focus();
+         return false;
+    }
+    document.DiscForm.discInterval.value = disc;
+    var port = trimAll(document.DiscForm.snmpPort.value);
+    if(isNaN(parseInt(port))&&port!="")
+    {
+         alert('<fmt:message key="webclient.admin.discovery.snmpport.integer"/>');
+         document.DiscForm.snmpPort.focus();
+         return false;
+    }
+    document.DiscForm.snmpPort.value = port;
+
+    if(document.DiscForm.snmpDiscovery.checked)
+    {    
+        var num = trimAll(document.DiscForm.snmpRetries.value);
+        if(num != "")
+        {
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                 document.DiscForm.snmpRetries.focus();
+                return false;
+            }
+            document.DiscForm.snmpRetries.value = num;
+        }
+        num = trimAll(document.DiscForm.snmpTimeout.value);
+        if(num != "")
+        {        
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                document.DiscForm.snmpTimeout.focus();
+                return false;
+            }
+            document.DiscForm.snmpTimeout.value = num;
+        }
+    }
+    if(document.DiscForm.icmpDiscovery.checked)
+    {
+        var num = trimAll(document.DiscForm.pingTimeout.value);
+        if(num != "")
+        {         
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                document.DiscForm.pingTimeout.focus();
+                return false;
+            }   
+            document.DiscForm.pingTimeout.value = num;
+        }
+        var num = trimAll(document.DiscForm.pingRetries.value);
+        if(num != "")
+        {        
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                document.DiscForm.pingRetries.focus();
+                return false;
+            }   
+            document.DiscForm.pingRetries.value = num;
+        }
+    }         
+	var num = trimAll(document.DiscForm.nativePingTimeout.value);
+        if(num != "")
+        {
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                document.DiscForm.nativePingTimeout.focus();
+                return false;
+            }
+            document.DiscForm.nativePingTimeout.value = num;
+        }
+        var num = trimAll(document.DiscForm.nativePingRetries.value);
+        if(num != "")
+        {
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.common.search.validation.integer"/>');
+                document.DiscForm.nativePingRetries.focus();
+                return false;
+            }
+            document.DiscForm.nativePingRetries.value = num;
+        }
+ 
+/*    if (formName.indexOf("#sch") != -1 )
+    {
+        if(document.DiscForm.schedular[0].checked)
+        {
+            var reDisc = trimAll(document.DiscForm.reDiscInt.value);
+            if(reDisc == "")
+            {
+                alert('<fmt:message key="webclient.admin.discovery.rediscovery.warning"/>');
+                document.DiscForm.reDiscInt.focus();
+                return false;
+            }
+            document.DiscForm.reDiscInt.value = reDisc;
+
+            checkNum = parseInt(reDisc);
+            var redisctime  = reDisc;
+            var check=true;
+            var checkValue = reDisc.split(":");
+
+            for(var k=0;k<checkValue.length;k++)
+            {
+               if(checkValue.length>3||trimAll(checkValue[k])=="")
+               {
+                  alert('<fmt:message key="webclient.admin.discovery.rediscovery.improper.format"/>');
+                  document.DiscForm.reDiscInt.focus();
+                  return false;
+               }
+            }
+
+            for(var i=0;i<3;i++)
+            {
+               var ind = redisctime.indexOf(":");
+               var checktime = redisctime.substring(0,ind);
+               if(ind==-1)
+               {
+                  checktime = redisctime;
+                  if(i==0)
+                  {
+                    check=false;
+                  }
+               }
+               if((i>0)&&(parseInt(checktime)>60)&&(check))
+               {
+                  alert('<fmt:message key="webclient.admin.discovery.rediscovery.mmss.less"/>');
+                  document.DiscForm.reDiscInt.focus();
+		  return false;
+               }
+    
+               if(i==0&&checktime>240)
+               {
+                 alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                 document.DiscForm.reDiscInt.focus();
+                 return false;
+               }
+               if(parseInt(checktime)==240)
+               {
+                 var checkMax = reDisc.split(":");
+                 for(var j=1;j<checkMax.length;j++)
+                 {
+                    if(parseInt(checkMax[j])>0)
+                    {
+                       alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                       document.DiscForm.reDiscInt.focus();
+                       return false;
+                    }
+                 }
+               }
+               if(parseInt(checktime)==239)
+               {
+                 var checkMax = reDisc.split(":");
+                 for(var j=1;j<checkMax.length;j++)
+                 {
+                    if(j==1&&parseInt(checkMax[j])==60)
+                    {
+                       alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+                       document.DiscForm.reDiscInt.focus();
+                       return false;
+                    }
+                 }
+               }
+
+
+               if(isNaN(checktime)||checktime<0||checktime.indexOf(".")!=-1)
+               {
+                  if(i==0)
+                  {
+                      alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.hours"/>');
+                      document.DiscForm.reDiscInt.focus();
+                      return false;
+                  }
+                  if(i==1)
+                  {
+                     alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.minutes"/>'); 
+                     document.DiscForm.reDiscInt.focus(); 
+                     return false;
+                  }
+                  if(i=2)
+                  {
+                     alert('<fmt:message key="webclient.admin.discovery.rediscovery.incorrect.seconds"/>');
+		     return false;
+                  }
+               }
+	       redisctime = redisctime.substring(ind+1,redisctime.length);
+               
+            }
+/*            if(isNaN(checkNum) || reDisc!=checkNum )
+            {
+		        alert('<fmt:message key="webclient.admin.discovery.validation.invalidinterval"/>');
+		        document.DiscForm.reDiscInt.focus();
+                return false;
+            }
+            if (checkNum > 240 || checkNum < 1)
+            {
+               alert('<fmt:message key="webclient.admin.discovery.interval.range"/>');
+               document.DiscForm.daysOfMonth.focus();
+               return false;
+            }*/
+        
+ /*       }
+        if(document.DiscForm.schedular[1].checked)
+        {
+            if(document.DiscForm.dateorday[0].checked)
+            {
+                if(document.DiscForm.dateBased[1].checked)
+                {
+                    var selDates = trimAll(document.DiscForm.daysOfMonth.value);
+                    if(selDates == "")
+                    {
+                        alert('<fmt:message key="webclient.admin.discovery.selecteddates.warning"/>');
+                        document.DiscForm.daysOfMonth.focus();
+                        return false;
+                    }
+                    document.DiscForm.daysOfMonth.value = selDates;
+                    var dates = selDates.split(",");
+                    for (k = 0; k<dates.length;k++)
+                    {
+                        selDate = parseInt(dates[k]);
+                        if(isNaN(selDate) || selDate!=dates[k])
+		                {
+			                alert('<fmt:message key="webclient.admin.discovery.validation.invaliddate"/>');
+			                document.DiscForm.daysOfMonth.focus();
+			                return false;
+                        }
+
+                        if (selDate > 31 || selDate < 1)
+                        {
+                            alert('<fmt:message key="webclient.admin.discovery.selecteddates.range.warning"/>');
+                            document.DiscForm.daysOfMonth.focus();
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(document.DiscForm.schedular[1].checked && document.DiscForm.hours[1].checked)
+        {
+            var selHours = trimAll(document.DiscForm.selectedHour.value);
+            if(selHours == "")
+            {
+                alert('<fmt:message key="webclient.admin.discovery.selectedhours.warning"/>');
+                document.DiscForm.selectedHour.focus();
+                return false;
+            }
+	        document.DiscForm.selectedHour.value = selHours;
+            var hours = selHours.split(",");
+            for (k = 0; k<hours.length;k++)
+            {
+                selHour = parseInt(hours[k]);
+	            if(isNaN(selHour) || selHour!=hours[k] )
+	            {
+		            alert('<fmt:message key="webclient.admin.discovery.validation.invalidhour"/>');
+		            document.DiscForm.selectedHour.focus();
+		            return false;
+	            }
+
+                if (selHour > 24 || selHour < 1)
+                {
+                    alert('<fmt:message key="webclient.admin.discovery.selectedhours.range"/>');
+                    document.DiscForm.selectedHour.focus();
+                    return false;
+                }
+            }
+        }
+    }*/
+    document.DiscForm.toPerform.value="saveConf";
+    document.DiscForm.submit();
+}
+
+function modifyCriteria(criteria, name, value)
+{
+    document.CriteriaBasedDiscovery.modCriteria.value=criteria;
+    document.CriteriaBasedDiscovery.modName.value=name;
+    document.CriteriaBasedDiscovery.modValue.value=value;
+    document.CriteriaBasedDiscovery.action.value="modCriteria";
+    document.CriteriaBasedDiscovery.actionToPerform.value="modify";
+    document.CriteriaBasedDiscovery.submit();
+}
+
+function performOperation(act)
+{
+
+    if (trimAll(document.CriteriaBasedDiscovery.propValue.value)=="")
+    {
+        alert('<fmt:message key="webclient.admin.discovery.criteriabased.warning.message"/>');
+        document.CriteriaBasedDiscovery.propValue.focus();
+        return false;
+    }
+
+    if (document.CriteriaBasedDiscovery.propName.value == "ipAddress")
+    {
+        if (!isIpAddress(document.CriteriaBasedDiscovery.propValue.value))
+        {
+            alert('<fmt:message key="webclient.admin.discovery.criteriabased.ipaddress.errormessage"/>');
+            document.CriteriaBasedDiscovery.propValue.focus();
+            return false;
+        }
+    }
+    if (document.CriteriaBasedDiscovery.propName.value == "isSNMP")
+    {
+        var snmpValue = document.CriteriaBasedDiscovery.propValue.value;
+        if (!(snmpValue == "true" || snmpValue == "false"))
+        {
+            alert("SNMP value should be either true / false");
+            document.CriteriaBasedDiscovery.propValue.focus();
+            return false;
+        }
+        
+    }    
+
+    document.CriteriaBasedDiscovery.actionToPerform.value="seedFileOperations";
+    document.CriteriaBasedDiscovery.action.value=act;
+    document.CriteriaBasedDiscovery.submit();
+}
+function deleteCriteria(critValue,criteriaName)
+{
+    var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+    if(con != true)
+    {
+      return;
+    }
+    else
+    {
+     document.CriteriaBasedDiscovery.actionToPerform.value="seedFileOperations";
+     document.CriteriaBasedDiscovery.action.value="deleteCriteria";
+     document.CriteriaBasedDiscovery.modCriteria.value=critValue;
+     document.CriteriaBasedDiscovery.propName.value=criteriaName;
+     document.CriteriaBasedDiscovery.submit();
+    }
+}
+
+</script>

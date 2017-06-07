@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: admin-validation.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <formset>
+        <form name="PerfViewForm">
+             <field property="name" depends="requiredif">
+                 <arg0 key="webclient.performance.reports.managedobject.required" />
+                 <var>
+                 <var-name>field[0]</var-name>
+                 <var-value>rsubmit</var-value>
+                 </var>
+                  <var>
+                <var-name>fieldTest[0]</var-name>
+                  <var-value>NOTNULL</var-value>
+               </var>
+            </field>
+              <field property="period"
+                  depends="dateRequiredIf">
+                               <arg0 key="webclient.performance.reports.period.startdate.required"/>
+                                <var>
+                                <var-name>secondProperty</var-name>
+                                <var-value>startDate</var-value>
+                                </var>
+                                <var>
+                                <var-name>thirdProperty</var-name>
+                                <var-value>endDate</var-value>
+                                </var>
+              </field>
+              <field property="startDate"
+                  depends="validateDateOrder">
+                               <arg0 key="webclient.performance.reports.period.invaliddates.message"/>
+                                <var>
+                                <var-name>secondProperty</var-name>
+                                <var-value>endDate</var-value>
+                                </var>
+                                <var>
+                                <var-name>thirdProperty</var-name>
+                                <var-value>period</var-value>
+                                </var>
+                   </field>
+          </form>
+   </formset>
+</form-validation>

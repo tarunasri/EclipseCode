@@ -1,0 +1,10 @@
+<%-- $Id: printPage.jspf,v 1.2 2007/09/14 10:34:07 gnanasekar Exp $ --%>
+
+        <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+         
+            <td>&nbsp;</td>
+            <td align="right"><input type="button" name="Print" value="<fmt:message key='webclient.common.printview.button.print'/>" class="button" onClick="javascript:window.print()"> <input type="button" name="Close" value="<fmt:message key='webclient.common.printview.button.close'/>" class="button" onClick="javascript:window.close()"></td>
+
+          </tr>
+        </table>

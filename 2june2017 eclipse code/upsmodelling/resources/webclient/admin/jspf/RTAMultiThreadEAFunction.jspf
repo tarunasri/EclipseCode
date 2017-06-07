@@ -1,0 +1,312 @@
+<%-- $Id: RTAMultiThreadEAFunction.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+<script language="javascript">
+
+function GetXMLHttpRequest()
+{
+    if (window.XMLHttpRequest)
+    {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+        // code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return xmlhttp;
+}
+
+function getThreadDetails(type)
+{
+	showPage(type);
+	var url = "/admin/ViewThreadDetails.do?toPerform="+type;
+	var xmlhttp = GetXMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4)
+		{
+			if (window.DOMParser){
+                                parser=new DOMParser();
+                                resultxml=parser.parseFromString(xmlhttp.responseText,"text/xml");
+                        }
+                        else // Internet Explorer
+                        {
+                                resultxml=new ActiveXObject("Microsoft.XMLDOM");
+                                resultxml.async="false";
+				resultxml.loadXML(xmlhttp.responseText);
+                        }
+			displayResult(type);
+		}
+		else
+		{
+		}
+	}
+	xmlhttp.open("POST",url,true);
+	xmlhttp.send(null);
+}
+
+function showOrHideDiv(divId){
+	var divObject = document.getElementById(divId);
+	if(divObject.className == 'hide'){
+		divObject.className='';
+	}
+	else{
+		divObject.className='hide';
+	}
+}
+
+function showPage(divType){
+	switchLink('ConfigureMTAP');
+	switchLink('DynamicConfiguration');
+        switchLink('EventThreadDetails');
+        switchLink('AlertThreadDetails');
+        document.getElementById('StatusTable').className='hide';
+	document.getElementById(divType).className='';
+	document.getElementById("link"+divType).className='hide';
+	document.getElementById("nolink"+divType).className='';
+
+}
+
+function switchLink(divType){
+	document.getElementById(divType).className='hide';
+	document.getElementById("link"+divType).className='';
+	document.getElementById("nolink"+divType).className='hide';
+}
+
+function selectTab(selectedTab, deselectedTab){
+	document.getElementById(selectedTab).className='';
+	if(selectedTab == 'tab1'){
+		document.MTAPForm.ConfigPattern[0].checked='checked';
+	}
+	else if(selectedTab == 'tab2'){
+		document.MTAPForm.ConfigPattern[1].checked='checked';
+	}
+	document.getElementById("LeftCell"+selectedTab).className='selTabLeft1';
+	document.getElementById("Cell"+selectedTab).className='selTabCenter1';
+	document.getElementById("RightCell"+selectedTab).className='selTabRight1';
+
+	document.getElementById(deselectedTab).className='hide';
+	document.getElementById("LeftCell"+deselectedTab).className='norTabLeft1';
+	document.getElementById("Cell"+deselectedTab).className='norTabCenter1';
+	document.getElementById("RightCell"+deselectedTab).className='norTabRight1';
+}
+
+function validateForm()
+{
+	if(document.MTAPForm.toPerform.value=='dynamicConfiguration'){
+		return validateDynamicConfiguration();
+	}
+	else{
+		return validateXMLConfiguration();
+	}
+}
+
+function validateDynamicConfiguration()
+{
+	var form = document.MTAPForm;
+	if(form.DynamicPattern.value=='COUNT_BASED'){
+		var selectedCount = form.dynamicCount.options[form.dynamicCount.options.selectedIndex].value;
+		if(selectedCount == form.ExistingDynamicCount.value){
+			alert("<fmt:message key='webclient.admin.mtap.nochangemessage'/>");
+			return false;
+		}
+	}
+	else{
+		var txtList = getObj("DynamicCriteriaRow");
+		var tableObject = document.getElementById("DynamicValueTable");
+		var tableRows = tableObject.rows.length;
+		if(form.TotalRows[0].value == 0){
+			alert("<fmt:message key='webclient.admin.mtap.norowsmessage'/>");
+			return false;
+		}
+		else if(form.TotalRows[0].value == 1 && tableRows ==2){
+			if(txtList.value == ''){
+				alert("<fmt:message key='webclient.admin.mtap.emptyvaluemessage'/>");
+				return false;
+			}
+		}
+		else{
+			for(i=0; i<txtList.length; i++){
+				var val = document.getElementById("DynamicCriteriaRowId"+(i+1)).value;
+				if(val == '' && document.getElementById("DynamicRow"+(i+1)).style.display != 'none'){
+					alert("<fmt:message key='webclient.admin.mtap.emptyvaluemessage'/>");
+					document.getElementById("DynamicCriteriaRowId"+(i+1)).focus();
+					return false;
+				}
+				for(j=0; j<txtList.length; j++){
+					if(document.getElementById("DynamicRow"+(i+1)).style.display == 'none'){
+						continue;
+					}
+					if(i != j && val == document.getElementById("DynamicCriteriaRowId"+(j+1)).value){
+						alert("<fmt:message key='webclient.admin.mtap.existsmessage'/> " + val);
+						return false;
+					}
+				}
+
+			}
+		}
+	}
+	var confirmation = confirm("<fmt:message key='webclient.admin.mtap.confirmupdate'/>");
+	if ( confirmation == true){
+		showOrHideDiv('configpage');
+		showOrHideDiv('progresspage');
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function validateXMLConfiguration()
+{
+	var form = document.MTAPForm;
+	if(form.ConfigPattern[0].checked){
+		var selectedCount = form.selectedThreadCount.options[form.selectedThreadCount.options.selectedIndex].value;
+	}
+	else{
+		var txtList = getObj("txtCriteriaRow");
+		var tableObject = document.getElementById("ValueTable");
+		var tableRows = tableObject.rows.length;
+		if(form.TotalRows[1].value == 0 ){
+			alert("<fmt:message key='webclient.admin.mtap.norowsmessage'/>");
+			return false;
+		}
+		else if(form.TotalRows[1].value == 1 && tableRows ==2){
+			if(txtList.value == ''){
+				alert("<fmt:message key='webclient.admin.mtap.emptyvaluemessage'/>");
+				return false;
+			}
+		}
+		else{
+			for(i=0; i<txtList.length; i++){
+				var val = document.getElementById("txtCriteriaRowId"+(i+1)).value;
+				if(val == '' && document.getElementById("Row"+(i+1)).style.display != 'none'){
+					alert("<fmt:message key='webclient.admin.mtap.emptyvaluemessage'/>");
+					document.getElementById("txtCriteriaRowId"+(i+1)).focus();
+					return false;
+				}
+				for(j=0; j<txtList.length; j++){
+					if(document.getElementById("Row"+(i+1)).style.display == 'none'){
+						continue;
+					}
+					if(i != j && val == document.getElementById("txtCriteriaRowId"+(j+1)).value){
+						alert("<fmt:message key='webclient.admin.mtap.existsmessage'/> " + val);
+						return false;
+					}
+				}
+
+			}
+		}
+	}
+	return true;
+}
+
+function setSubmitAction(methodName)
+{
+	document.MTAPForm.toPerform.value=methodName;
+}
+
+function toggleDisplay(toIndex){
+	document.getElementById("txtCriteriaRowId"+toIndex).style.display='';
+	document.getElementById("valueRow"+toIndex).style.display='none';
+	document.getElementById("TDXML"+toIndex).innerHTML="<img align='absmiddle' src='/webclient/common/images/spacer.gif' border='0'/>";
+}
+
+function deleteRow(toDelete, delComponent){
+	var con = confirm("<fmt:message key='webclient.common.menulist.confirm.delete'/>");
+    	if ( con != true)
+    	{
+        	return;
+    	}
+	document.getElementById(delComponent+toDelete).style.display='none';
+	
+	var form = document.MTAPForm;
+	
+	if(delComponent == 'DynamicRow'){
+		document.getElementById("DynamicCriteriaRowId"+toDelete).value="";
+		form.TotalRows[0].value=parseInt(form.TotalRows[0].value)-1;
+	}
+	else{
+		document.getElementById("txtCriteriaRowId"+toDelete).value="";
+		form.TotalRows[1].value=parseInt(form.TotalRows[1].value)-1;
+	}
+}
+
+function deleteAllRows(tableName){
+	//Currently delete All provided only for xml config.
+	var form = document.MTAPForm;
+	var tableObject = document.getElementById(tableName);
+	var tableRows = tableObject.rows;
+	if(form.TotalRows[1].value == 0){
+		alert("<fmt:message key='webclient.admin.mtap.norowsmessage'/>");
+		return;
+	}
+	var con = confirm("<fmt:message key='webclient.admin.mtap.deleteallmessage'/>");
+    	if ( con != true)
+    	{
+        	return;
+    	}
+		for(var i=1; i < tableRows.length; i++){
+			document.getElementById("txtCriteriaRowId"+i).value="";
+			document.getElementById("Row"+i).style.display='none';
+		}
+	document.MTAPForm.TotalRows[1].value=0;
+}
+
+function modifyAllRows(tableName){
+	var tableObject = document.getElementById(tableName);
+	var tableRows = tableObject.rows;
+	var form = document.MTAPForm;
+	if(form.TotalRows[1].value == 0){
+		alert("<fmt:message key='webclient.admin.mtap.norowsmessage'/>");
+	}
+	for(var i=1; i < tableRows.length; i++){
+		toggleDisplay(i);
+	}
+}
+
+
+
+function parseContent(threadName){
+	var obj = threadName.split(",");
+	var toreturn = "";
+	for(var i=1; i <= obj.length; i++){
+		toreturn += obj[i-1] + ", ";
+		if(i % 3 == 0 && i != obj.length){
+			toreturn += "<br>";
+		}
+	}
+	//if(toreturn.charAt(toreturn.length-1) == ','){
+		toreturn = toreturn.substring(0,toreturn.length-2);
+	//}
+	//alert(toreturn);
+	return toreturn;
+}
+
+var cX = 0; var cY = 0; var rX = 0; var rY = 0;
+
+function AssignPosition(div,e) 
+{
+	cX = e.clientX; 
+	cY = e.clientY;
+	div.style.left = (cX-30) + "px";
+	div.style.top = (cY-20) + "px";
+}
+
+function HideContent(divName) 
+{
+	if(divName.length < 1) { 
+		return; 
+	}
+	document.getElementById(divName).style.display = "none";
+}
+function ShowContent(divName, contents,e) {
+	if(divName.length < 1) { 
+		return; 
+	}
+	var div = document.getElementById(divName);
+	AssignPosition(div,e);
+	div.style.display = "block";
+	div.innerHTML = contents;
+}
+
+</script>

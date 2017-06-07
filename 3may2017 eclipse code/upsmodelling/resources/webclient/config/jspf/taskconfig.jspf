@@ -1,0 +1,2357 @@
+<%--  $Id: taskconfig.jspf,v 1.3 2010/10/29 13:47:05 swaminathap Exp $ --%>
+<script language="javascript">
+var varStorage = new Array(0);
+function processDS(list)
+{
+    if(list=='')
+    {
+//        alert('<fmt:message key='webclient.config.task.executeform.datasource.noparam'/>');
+        return 'false';
+    }
+}
+
+function displayHelpMsg(protocol)
+{
+	var protoVal;
+	
+	if(protocol!=undefined && !isEmpty(protocol))
+	{
+		protoVal=protocol;
+	}
+	else
+	{
+	        protoVal = document.TaskForm.protocol.value;
+	}
+
+        var setInner = "";
+
+        switch(protoVal)
+        {
+                case 'snmp' :
+                        setInner += "<p><b><fmt:message key='webclient.config.task.form.protocol.snmp'/></b><fmt:message key='webclient.config.task.form.protocol.snmp.message'/>";
+                        break;
+                case 'telnet' :
+                        setInner += "<b><fmt:message key='webclient.config.task.form.protocol.telnet'/></b><fmt:message key='webclient.config.task.form.protocol.telnet.message'/>";
+                        break;
+                case 'tl1' :
+                        setInner += "<b><fmt:message key='webclient.config.task.form.protocol.tl1'/></b><fmt:message key='webclient.config.task.form.protocol.tl1.message'/>";
+                        break;
+                case 'ftp' :
+                        setInner += "<b><fmt:message key='webclient.config.task.form.protocol.ftp'/></b><fmt:message key='webclient.config.task.form.protocol.ftp.message'/>";
+                        break;
+                case 'tftp' :
+                        setInner += "<b><fmt:message key='webclient.config.task.form.protocol.tftp'/></b><fmt:message key='webclient.config.task.form.protocol.tftp.message'/>";
+                        break;
+                case 'ct' :
+                        setInner += "<b><fmt:message key='webclient.config.task.form.protocol.ct'/></b><fmt:message key='webclient.config.task.form.protocol.ct.message'/>";
+                        break;
+	}
+     showHelpDialog(setInner,'positionId',550);
+}
+
+var saveFileName="";
+function saveResult()
+{
+	var fileName;
+	if(document.TaskForm ==null)
+	{
+		fileName= document.ComboTaskForm.fileName.value
+	}
+	else
+	{	
+        	fileName = document.TaskForm.fileName.value;
+	}
+	if(isEmpty(fileName))
+	{
+		alert('<fmt:message key="webclient.config.taskform.result.savefile.invalid"/>');
+		return;
+	}
+        var url = "/config/TaskOperations.do?method=saveResult&fileName="+fileName+"&configResult="+resulttxt;
+        xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+                        //document.getElementById('buttomLine').innerHTML='<fmt:message key='webclient.config.task.result.saved'/>';
+			 var text=xmlhttp.responseText.split(":");
+                        var resp=text[0];
+			saveFileName=text[1];                         
+                        document.getElementById('buttomLine').innerHTML=resp;
+                        setTimeout(function(){
+                        document.getElementById('buttomLine').innerHTML=xmlhttp.responseText;
+                        document.getElementById('buttomLine').innerHTML="<tr height='20px'><td align='center' colspan='3' id='buttomLine'><fmt:message key='webclient.config.task.result.savemsg'/>&nbsp;&nbsp;<input type='text' size='30' name='fileName' value='"+fileName+"'/>&nbsp;<input type='button' class='button' name='saveFile' value='<fmt:message key='webclient.config.task.result.save'/>' onClick='javascript:saveResult()'/></td></tr>";
+			},3750);
+                }
+                else
+                {
+                        document.getElementById('buttomLine').innerHTML='<fmt:message key='webclient.config.task.result.saving'/>';
+                }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+function loadRBTable()
+{
+	varStorage=new Array(0);
+        var protocol = document.TaskForm.protocol.value;
+        var taskName = document.TaskForm.taskName.value;
+        var rbTask = '<c:out value='${TaskForm.map.rollbackTask}'/>';
+        var url = "/config/TaskAction.do?actionToPerform=getRBTask&protocol="+protocol+"&taskName="+taskName;
+        var xmlhttp=GetXMLHttpRequest();
+        var rbTable = "<table class='tableBdr2' style='width:100%;' cellspacing='0' cellpadding='2' border='0' align='left' id='rbTab'><tbody><tr class='generalTBHeader'><td id='rbList'><fmt:message key='webclient.config.task.form.rollback.list'/></td><td id='rbName' style='display:none;'><fmt:message key='webclient.config.task.form.rollback.name'/></td><td width='50%' id='rbVal' style='display:none;'><fmt:message key='webclient.config.task.form.rollback.value'/></td></tr>";
+
+        rbTable = rbTable+"<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td id='Current Configuration' class='vSeparator2' style='padding-left:5px;'><input type='checkbox' name='rollbackTask' value='Current Configuration' style='vertical-align:middle;margin:0px;padding:0px;' onclick=\"javascript:selectRbTask(this,'Current Configuration')\"";
+        if(rbTask == 'Current Configuration')
+        {
+                rbTable = rbTable+"checked='checked'";
+        }
+        rbTable = rbTable+" id='box_Current Configuration' /> <label class='boldTxt BrownTxt' for='box_Current Configuration'><fmt:message key='webclient.config.task.rollback.currentconfig'/></label></td><td class='hSeparator2' id='tName' style='display:none;'><fmt:message key='webclient.config.task.form.taskName'/></td><td class='hSeparator2 vSeparator2' id='rbtdetail1' style='display:none;'>&nbsp;</td></tr>";
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+                        var result = xmlhttp.responseText.split(",");
+                        for(var i=0;i<result.length;i++)
+                        {
+                                var tName = trimAll(result[i]);
+                                if(i%2==0)
+                                {
+					if(tName == '')
+					{
+					var idName = "empty"+i;
+                                       rbTable = rbTable+"<tr id='"+idName+"' style='display:none;' class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td id='"+tName+"' class='vSeparator2' style='padding-left:5px;'>";
+					addinInArray(idName);
+					}
+					else
+					{
+				      rbTable = rbTable+"<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td id='"+tName+"' class='vSeparator2' style='padding-left:5px;'>";
+					}
+                                }
+                                else
+                                {
+					if(tName == '')
+                                        {
+                                         var idName = "empty"+i;
+                                         rbTable = rbTable+"<tr id='"+idName+"' style='display:none;' class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td class='vSeparator2' style='padding-left:5px;'>";
+                                        addinInArray(idName);
+                                        }
+					else
+                                        {
+                                       rbTable = rbTable+"<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td id='"+tName+"' class='vSeparator2' style='padding-left:5px;'>";
+                                        }
+                                }
+                                if(tName != '')
+                                {
+                                        rbTable = rbTable+"<input type='checkbox' name='rollbackTask' value="+tName+" style='vertical-align:middle;margin:0px;padding:0px;' onclick=\"javascript:selectRbTask(this,'"+tName+"')\"";
+                                        if(tName == rbTask)
+                                        {
+                                                rbTable = rbTable+"checked='checked'";
+                                        }
+                                        rbTable = rbTable+" id='box_"+tName+"' /> <label for='box_"+tName+"'>"+tName+"</label>";
+                                }
+                                else
+                                {
+                                        rbTable=rbTable+"&nbsp";
+                                }
+                                if(i==0)
+                                {
+                                        rbTable = rbTable+"</td><td id='rbDesc' style='display:none;'><fmt:message key='webclient.config.task.form.desc'/> </td><td  class='vSeparator2' id='rbtdetail2' style='display:none;'>&nbsp;</td></tr>";
+                                }
+                                else if(i==1)
+                                {
+                                        rbTable = rbTable+"</td><td id='rbProto' style='display:none;'><fmt:message key='webclient.config.task.form.protocol'/> </td><td  class='vSeparator2' id='rbtdetail3' style='display:none;'>&nbsp;</td></tr>";
+                                }
+                                else if(i==2)
+                                {
+                                        rbTable = rbTable+"</td><td id='rbTemp' style='display:none;'><fmt:message key='webclient.config.task.form.rollback.isTemplate'/></td><td class='vSeparator2' id='rbtdetail4' style='display:none;'>&nbsp;</td></tr>";
+                                }
+                                else if(i==3)
+                                {
+                                        rbTable = rbTable+"</td><td id='rbCon' style='display:none;'><fmt:message key='webclient.config.task.form.rbconfig'/></td><td  class='vSeparator2' id='rbtdetail5' style='display:none;'>&nbsp;</td></tr>"
+                                }
+                                else if(i==4)
+                                {
+                                        rbTable = rbTable+"</td><td id='rbExtime' style='display:none;'><fmt:message key='webclient.config.task.form.lastExecTime'/></td><td  class='vSeparator2' id='rbtdetail6' style='display:none;'>&nbsp;</td></tr>"
+                                }
+                                else
+                                {
+                                        rbTable = rbTable+"</td><td id='rbtdetail7' style='display:none;'>&nbsp;</td><td  class='vSeparator2' id='rbtdetail8' style='display:none;' >&nbsp;</td></tr>";
+                                }
+                        }
+                        rbTable = rbTable+"</tbody></table>";
+                        document.getElementById('rbTable').style.display='block';
+			document.getElementById("toggleImg_rbTable").src='/webclient/common/images/toggleIcon1.gif';
+                        document.getElementById('rbTable').innerHTML=rbTable;
+                        loadRollbackTaskDetails(rbTask);
+                }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+function addinInArray(tName)
+{
+        if(varStorage.length == 0)
+        {
+                varStorage[0] = tName;
+        }
+        else
+        {
+                varStorage[(varStorage.length-1)+1] = tName;
+        }
+}
+function formDSConfig(selectedDS)
+{
+        var dspValue = document.TaskForm.dsp.value;
+        if(dspValue.indexOf(",") == -1)
+        {
+	    alert('<fmt:message key="webclient.config.task.config.ds.select"/>');
+            return;
+        }
+        var keyValues = dspValue.split(",");
+	var dsTable = "<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td valign='top' style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='27' class='boldTxt'>&nbsp;&nbsp;<fmt:message key='webclient.config.task.executeform.ds.title'/></td><td align='right' valign='top'><a href=\"javascript:closeDiv(configureDataSource)\"><img border='0' align='absmiddle' class='popClose1' src='/webclient/common/images/spacer.gif'/></a></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td valign='top' style='padding:10px;'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tr class='generalTBHeader'><td width='25%' nowrap='nowrap'><fmt:message key='webclient.config.task.executeform.datasource.key'/></td><td nowrap='nowrap'><fmt:message key='webclient.config.task.executeform.datasource.value'/></td></tr>";
+        for(var i=0;i<keyValues.length;i++)
+        {
+	    if(i%2==0)
+            {
+                    dsTable+="<tr class='generalEvenRow' heigth='20px'>";
+            }
+            else
+            {
+                    dsTable+="<tr class='generalOddRow' heigth='20px'>";
+            }
+            var row = keyValues[i].split("=");
+            dsTable = dsTable+"<td style='padding-right:6px;' nowrap='nowrap'>"+row[0]+"&nbsp;&nbsp;</td><td style='padding-right:6px;'><input type='text' class='formstyle' name="+row[0]+" value='"+row[1]+"'></td></tr>";
+        }
+	dsTable += "</table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></table><table style='margin-top:15px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><input type='button' onclick='updateDSP()' value='<fmt:message key='webclient.config.task.executeform.submitdsp'/>' class='button' name='Submit'/>&nbsp;&nbsp;<input type='button' value='<fmt:message key='webclient.config.task.executeform.cancel'/>' class='button' name='cancel' onclick='javascript:closeDiv(configureDataSource)'/></td></tr></table></td></tr></table></td></tr></table>";
+        var div = document.getElementById('configureDataSource');
+        var refTable = document.getElementById('refDSTable');
+        var position = getDivLocation(refTable);
+	clearOtherDiv('configureDataSource');
+        var element1Width = getElementWidthHeight(refDSTable);
+        div.style.left=parseInt((position[0]+(element1Width[0]/2))-(400/2))+'px';
+        div.style.width=400+'px';
+        div.style.top=parseInt(position[1])+'px';
+	div.style.display="";
+        div.innerHTML=dsTable;
+}
+
+function loadDataSources()
+{
+	var check = true;
+        var template = document.TaskForm.isTemplate.value;
+        if(template == 'false') return;
+        var taskName = document.TaskForm.taskName.value;
+        var url = "/config/DataSourceAction.do?actionToPerform=getAssociatedDS&taskName="+taskName;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+                        var result = xmlhttp.responseText;
+			document.getElementById('dsComp').style.display='';
+                        document.getElementById('dsTable').innerHTML=result;
+                }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+
+function showAllDataSources()
+{
+        var url = "/config/DataSourceAction.do?actionToPerform=getDataSourceList&taskName="+taskName;
+        var xmlhttp=GetXMLHttpRequest();
+        var dsTable = "<table width='100%' class='tableBdr2' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td ><fmt:message key='webclient.config.task.form.ds'/> : </td></tr><tr><td valign='top'><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody>";
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+                        var result = xmlhttp.responseText;
+                        if(result == "")
+                        {
+				dsTable += "<tr class='generalEvenRow'><td class='configParams'><center><fmt:message key='webclient.config.task.form.attr.table.message'/></center></td>";
+                        }
+                        else
+                        {
+                                var ds = result.split(",");
+                                for(var i=0; i<ds.length;i++)
+                                {
+                                        if(i%2==0)
+                                        {
+                                                dsTable = dsTable+"<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+                                        }
+                                        else
+                                        {
+                                                dsTable = dsTable+"<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+                                        }
+                                        dsTable = dsTable+"<td><input type='radio' name='dataSource' value="+ds[i]+" style='vertical-align:middle;margin:0px;padding:0px;' onclick = \"javascript:fetchDSDetails(this)\"/><a href=\"javascript:formDSConfig('"+ds[i]+"')\">&nbsp;"+ds[i]+"</a></td>";
+                                }
+                        }
+                        dsTable = dsTable+"</tr></tbody></table></td></tr></tbody></table>";
+			document.getElementById('dsTable').style.display='block';
+                        document.getElementById('dsTable').innerHTML=dsTable;
+                }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+function populateTableAttr(tableOID)
+{
+	if(document.TaskForm.protocol.value != 'snmp') return;
+	var labelMap = document.TaskForm.oidVsLabel.value;
+       // var table="<table class='tableBdr2' style='clear:both;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td style='padding:2px 5px 2px 3px;' height='22' class='tBHeaderStyle2 vSeparator1 boldTxt'><fmt:message key='webclient.config.task.form.tableattr.list'/></td><td style='padding:2px 5px 2px 5px;' class='tBHeaderStyle2 boldTxt' id='selectedTableOID'>&nbsp;</td></tr>";
+	if(labelMap.length==0)
+	{
+		var table=getNoDataTable('mibbrowser');
+		
+                document.getElementById('tableAttr').style.display='block';
+                document.getElementById('tableAttr').innerHTML=table;
+		return;
+	}
+
+	var table="<table class='tableBdr2' style='clear:both;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td style='padding:2px 5px 2px 3px;' height='22' class='generalTBHeader vSeparator1 boldTxt'><fmt:message key='webclient.config.task.form.tableattr.list'/></td><td style='padding:2px 5px 2px 5px;' class='generalTBHeader boldTxt' id='selectedTableOID'>&nbsp;</td></tr>";
+	var defaultSelection = tableOID;
+        var operation = '<c:out value="${operation}"/>';
+
+	table+="<td class='vSeparator1' nowrap width='20%' style='padding:5px 0px 2px 3px;' valign='top'><div style='width:100%;height:180px;'>";
+	var tableColumns = labelMap.split(";");
+	for(var i=0;i<tableColumns.length;i++)
+	{
+		var token = tableColumns[i].split(":");
+		var id = token[0];
+		if(defaultSelection == '')
+		{
+			defaultSelection = id;
+		}
+		var pos = labelMap.indexOf(id+"=");
+		var header = labelMap.substring(pos+id.length+1);
+		header = header.substring(0,header.indexOf(",",0));
+		if(header.indexOf("OID")==0)
+		{
+			header="";
+		}
+		else
+		{
+			header = "["+header+"]";
+		}
+                table+="<div style='clear:both' class='tabNav' id='"+id+"' >";
+		if(operation != 'execute')
+		{
+			table += "<a href=\"javascript:deleteTable('"+id+"')\"><img title='<fmt:message key='webclient.config.task.table.delete'/>' class='deleteIcon' border='0' src='/webclient/common/images/spacer.gif'/></a>&nbsp;";
+		}
+		table += "<a href=\"javascript:selectTable('"+id+"')\"> "+header+" "+id+"</a></div>";
+	}
+        table+="</td><td style='padding:10px;width:80%' valign='top'><div id='instanceTable' class='tableBdr2' style='width:650px;overflow:auto;height:200px'></div></td></tr>";
+	table +="</table>";
+	document.getElementById('tableAttr').style.display='block';
+        document.getElementById('tableAttr').innerHTML=table;
+        document.getElementById('selectedTableOID').innerHTML = "<fmt:message key='webclient.config.task.form.tableattr.tablerows'/>  : "+defaultSelection;
+        selectTable(defaultSelection);
+        var divid=document.getElementById("toggleImg_tableAttr");
+	if(divid!=null)
+	{
+		divid.src="/webclient/common/images/toggleIcon1.gif";	
+	}
+}
+
+function deleteTableRow(tableOID,index)
+{
+	if(confirm('<fmt:message key='webclient.config.task.delete.tableattr'/>') == false) return;
+	var rows = tob.getRowsForTable(tableOID);
+	rows[index] = null;
+	selectTable(tableOID);
+}
+
+function selectTable(oid)
+{
+	var oldOid=document.TaskForm.tableOID.value;
+	if(!isEmpty(oldOid) && document.getElementById(oldOid)!=undefined)
+	{
+		document.getElementById(oldOid).className='tabNav';
+	}
+	document.TaskForm.tableOID.value = oid;// this tableOID will be used when a add row for table operation is performed.
+	var labelMap = document.TaskForm.oidVsLabel.value;
+	var pos = labelMap.indexOf(oid);
+        var operation = '<c:out value="${operation}"/>';
+	var headers = labelMap.substring(pos+oid.length+1);
+        if(headers.indexOf(";") != -1)
+        {
+                headers = headers.substring(headers.indexOf(";"),0);
+        }
+ 	var table ="<table width='100%'  border='0' align='left'> <tr><td>"
+	table+="<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tr class='generalTBHeader'><td style='padding-right: 5px; width: 2%;'>&nbsp;</td><td style='padding-right: 5px; width: 2%;'>&nbsp;</td>";
+	var colName = headers.split(",");
+	for(var i=1;i<colName.length;i++)// since table header will also be part of this labelVsoid mapping
+	{
+		if(colName[i].indexOf("=")==-1) continue;
+		var column = colName[i].split("=");
+		var header = column[0];
+		var label = column[1];
+                if(label.indexOf("OID")==0)
+                {
+                        label=header;
+                }
+		table+="<td style='padding-right:4px;width:150px;'>"+label+"</td>";
+	}
+	table+="</tr>";
+	var rowLength=0;
+	var rows = tob.getRowsForTable(oid);
+        for(var index in rows)
+        {
+		if(rows[index] == null) continue;
+		if(rowLength%2==0)
+		{
+			table+="<tr class='generalEvenRow' heigth='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+		}
+		else
+		{
+			table+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+		}
+		rowLength++;
+		if(operation != 'execute')
+		{
+			table+="<td style='padding-right:5px;width:2%;'><a href=\"javascript:editTableRow('"+oid+"','"+index+"')\"><img align='absmiddle' title='<fmt:message key='webclient.config.task.tablerow.edit'/>' class='editIcon' src='/webclient/common/images/spacer.gif' border='0'/></a></td><td style='padding-right:5px;width:2%;'><a href=\"javascript:deleteTableRow('"+oid+"','"+index+"')\"><img align='absmiddle' class='deleteIcon' title='<fmt:message key='webclient.config.task.tablerow.delete'/>' src='/webclient/common/images/spacer.gif' border='0'/></a></td>";
+		}
+		else
+		{
+			table += "<td colspan='2'>&nbsp;</td>"
+		}
+		var colName = headers.split(",");
+		for(var i=1;i<colName.length;i++)
+                {
+			if(colName[i].indexOf("=") == -1) continue;
+	                var column = colName[i].split("=");
+        	        var header1 = column[0];
+			var value = rows[index][header1];
+			if(value == undefined || value=='')
+			{
+				value = "-";
+			}
+			table+="<td style='padding-right:4px;width:150px;'>"+value+"</td>";
+                }
+		table+="</tr>";
+        }
+	table+="</table></td></tr></table>";
+        document.getElementById('instanceTable').innerHTML=table;
+	var tables = tob.getTables();
+        for(var i in tables)
+        {
+		if(tables[i] != null)
+		{
+			document.getElementById(tables[i]).className='tabNav';
+		}
+	}
+	document.getElementById(oid).className='tabNavCurrent';
+}
+
+function deleteAllTables()
+{
+
+	var labelMap = document.TaskForm.oidVsLabel.value;
+	if(labelMap == null || isEmpty(labelMap))
+	{
+		alert('<fmt:message key='webclient.config.delete.nodata'/>');
+		return;
+	}
+	
+	if(confirm('<fmt:message key='webclient.config.task.delete.alltable'/>') == false) return;
+	tob = new DataObject();
+	document.TaskForm.oidVsLabel.value="";
+	populateTableAttr("");
+}
+
+function deleteTable(oid)
+{
+	if(confirm('<fmt:message key='webclient.config.task.delete.table'/>') == false) return;
+        tob.tableToRowList[oid] = null;
+        tob.tableArray[oid] = null;
+	var labelMap = document.TaskForm.oidVsLabel.value;
+	var tableColumns = labelMap.split(";");
+	var newMap = "";
+	for(var i=0; i<tableColumns.length;i++)
+	{
+		var token = tableColumns[i];
+		if(token.indexOf(oid+":") ==-1)
+		{
+			newMap += ";"+token;	
+		}
+	}
+	if(newMap.length>0) newMap = newMap.substring(1);
+	document.TaskForm.oidVsLabel.value = newMap;
+	populateTableAttr("");
+}
+
+function updateTableRow(tableOID, index)
+{
+        var rows = tob.getRowsForTable(tableOID);
+        var labelMap = document.TaskForm.oidVsLabel.value;
+	if(index != '-1')
+	{
+	        for(var name in rows[index])
+        	{
+	                var pos = labelMap.indexOf(name+"=");
+        	        var label = labelMap.substring(pos+name.length+1);
+                	label = label.substring(0,label.indexOf(",",0));
+			var value = eval("document.TaskForm."+label).value;
+                        if(document.TaskForm.isTemplate.value == 'true')
+                        {
+                                var placeholder = eval("document.TaskForm.placeholder_"+label);
+                                if(placeholder.value != 'None')
+                                {
+                                        rows[index][name]  = "$"+placeholder.value+"$"+value;
+                                        continue;
+                                }
+                        }
+			else
+			{
+				if(isEmpty(value))
+				{
+					alert('<fmt:message key="webclient.config.taskForm.tableRow.value.empty"/>');
+					return false;
+
+				}
+			}
+        	        rows[index][name] = value;
+	        }
+	}
+	else
+	{
+	        var pos = labelMap.indexOf(tableOID);
+        	var oidVsLabel = labelMap.substring(pos+tableOID.length+1);
+	        if(oidVsLabel.indexOf(";") != -1)
+        	{
+                	oidVsLabel = oidVsLabel.substring(oidVsLabel.indexOf(";"),0);
+	        }
+		var count = 0;
+		var headers = oidVsLabel.split(",");
+		for(var i=1;i<headers.length;i++)
+		{
+			if(headers[i].indexOf('=') == -1) continue;
+			count++;// this check will avoid any empty row returned from split function	
+		}
+	        var attrs = new Array(count);
+        	for(var i=0;i<attrs.length;i++)
+	        {	
+        	        attrs[i] = new Array(2);
+	        }
+		var index = -1;
+		for(var i=1;i<headers.length;i++)
+		{
+			if(headers[i].indexOf('=') == -1) continue;
+        	        var token = headers[i].split("=");
+                	var oid = token[0];
+	                var label = token[1];
+			var value = eval("document.TaskForm."+label).value;
+			attrs[++index][0] = oid;
+			if(document.TaskForm.isTemplate.value == 'true')
+			{
+				var placeholder = eval("document.TaskForm.placeholder_"+label);
+                        	if(placeholder.value != 'None')
+                                {
+                                	attrs[index][1] = "$"+placeholder.value+"$"+value;
+                                        continue;
+                                }      
+			}
+			else
+			{
+				if(isEmpty(value))
+				{
+					alert('<fmt:message key="webclient.config.taskForm.tableRow.value.empty"/>');
+					return false;
+							
+				}
+			}
+			attrs[index][1] = value;
+		}
+		tob.addRowsForTable(tableOID,attrs);
+	}
+        selectTable(tableOID);
+	document.getElementById('attrFormTable').style.display='none';
+}
+
+function showDetails(protocol,selectedtask)
+{
+var textVal="<table class='tableBdr2' width='100%' cellspacing='0' cellpadding='3' border='0' align='left' height='100%'><tr><td class='generalTBHeader' colspan='2'><fmt:message key='webclient.config.ctask.subtask.details'/></td></tr>"
+	<c:forEach var="protocolBasedList" items="${taskList}" varStatus="status">
+	    var protocolKey = '<c:out value="${protocolBasedList.key}"/>';
+	    if(protocol == protocolKey)
+	    {
+		<c:forEach var="taskList" items="${protocolBasedList.value}" varStatus="status">
+		    var subtask = '<c:out value='${taskList[0]}'/>'
+
+		    if(subtask == selectedtask)
+		    {
+			    textVal+="<tr class='generalOddRow'><td class='hSeparator2' width='25%' style='padding-left:5px;'><fmt:message key='webclient.config.task.form.taskName'/></td><td width='30%' class='hSeparator2' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[0]}'/></td></tr>";
+			    textVal+="<tr class='generalEvenRow'><td style='padding-left:5px;' width='25%'><fmt:message key='webclient.config.task.form.desc'/></td><td width='30%' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[1]}'/></td></tr>";
+			    textVal+="<tr class='generalOddRow'><td style='padding-left:5px;' width='25%'><fmt:message key='webclient.config.task.form.protocol'/></td><td width='30%' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[2]}'/></td></tr>";
+			    textVal+="<tr class='generalEvenRow'><td style='padding-left:5px;' width='25%'><fmt:message key='webclient.config.task.form.rollback.isTemplate'/></td><td width='30%' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[3]}'/></td></tr>";	
+			    textVal+="<tr class='generalOddRow'><td style='padding-left:5px;' width='25%'><fmt:message key='webclient.config.task.form.rbconfig'/></td><td width='30%' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[4]}'/></td></tr>";	
+			    textVal+="<tr class='generalEvenRow'><td style='padding-left:5px;' width='25%'><fmt:message key='webclient.config.task.form.lastExecTime'/></td><td width='30%' style='padding-left:5px;'>:&nbsp;<c:out value='${taskList[5]}'/></td></tr>";	
+		    }
+		</c:forEach>
+	    }
+            </c:forEach>
+textVal+="</table>";
+	document.getElementById('defSubTaskDetails').style.display='none';
+	document.getElementById('subTaskDetails').style.display='';
+	document.getElementById('subTaskDetails').innerHTML=textVal;
+}
+
+
+function hideDetails()
+{
+	document.getElementById('defSubTaskDetails').style.display='';
+	document.getElementById('subTaskDetails').style.display='none';
+}
+
+
+function showDeviceList(selectedtask)
+{
+	var noDevice = true;
+	var dlmap = document.ComboTaskForm.subtaskVsseldl.value;
+	var seldlmap = dlmap.split(";");
+	var dlTable = "<table class='tableBdr2' width='100%' cellspacing='0' border='0' align='left'><tr><td class='generalTBHeader'>Device List : "+selectedtask+"</td></tr>";
+	<c:forEach var="subtaskVsDl" items="${subTaskVsDList}" varStatus="status">
+	var subtask = '<c:out value="${subtaskVsDl.key}"/>'
+	
+	var counter = -1;
+	if(subtask == selectedtask)
+	{
+		noDevice = false;
+		<c:forEach var="dl" items="${subtaskVsDl.value}" varStatus="status">
+			var dlist = '<c:out value="${dl}"/>';
+			if(++counter%2==0)
+			{
+				dlTable += "<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td class='hSeparator2' width='25%' style='padding-left:5px;'>";
+			}
+			else
+			{
+				dlTable += "<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-left:5px;' width='25%'>";
+			}
+			dlTable += "<input type='checkbox' name='subTaskDL' value='"+selectedtask+","+dlist+"' onclick='selectDL(this)'";
+			for(var j=0;j<seldlmap.length;j++)
+			{
+				var seltaskvsdl = seldlmap[j].split(",");
+				if(selectedtask == seltaskvsdl[0] && seltaskvsdl[1] == dlist)
+				{
+					dlTable += "checked='checked'";	
+				}
+			}
+			dlTable += ">"+dlist+"</td></tr>";
+		</c:forEach>
+	}
+	</c:forEach>
+
+	if(noDevice)
+        {
+                 dlTable += "<tr><td valign='middle' align='center' class='configParams' style='padding-left:10px;height:100px;'><center><fmt:message key='webclient.config.task.form.dl.choose.message.help'/><br><a href=\"/config/DeviceListAction.do?actionToPerform=getDeviceLists\"><fmt:message key='webclient.config.task.configure.addcombinedtask.addDivice'/></a></center></td></tr>";
+        }
+	dlTable += "</table>"; 
+	document.getElementById('subTaskVsDL').style.display='block';
+	document.getElementById('subTaskVsDL').innerHTML=dlTable;
+}
+
+function loadCTForm()
+{
+	var operation = '<c:out value="${operation}"/>';
+	if(operation != 'execute')
+	{
+        	<c:forEach var="seltask" items="${selectedSubTasks}" varStatus="status">
+			document.getElementById('<c:out value='${seltask}'/>').checked = true;
+		</c:forEach>
+	}
+}
+
+function saveComboTask()
+{
+	document.ComboTaskForm.taskName.value = trimAll(document.ComboTaskForm.taskName.value);
+        var taskName = document.ComboTaskForm.taskName.value;
+        if(taskName == '')
+        {
+                alert('<fmt:message key="webclient.config.ctask.notaskname"/>');
+		document.ComboTaskForm.taskName.focus();
+                return false;
+        }
+	if(isSpecialSymbol(taskName))
+	{
+		alert('<fmt:message key="webclient.config.alert.taskName.specialSymbols"/>');
+		document.ComboTaskForm.taskName.focus();
+                return false;
+	}
+
+        var elements = document.getElementsByName("subtasks");
+        var selectedTasks =  "";
+        for(var i=0; i<elements.length;i++)
+        {
+                if(elements[i].checked == true)
+                {
+                        selectedTasks +=","+elements[i].value;
+                }
+        }
+        if(selectedTasks.length>0)
+        {
+                selectedTasks = selectedTasks.substring(1);
+        }
+        else
+        {
+		alert('<fmt:message key="webclient.config.ctask.nosubtask"/>');
+                return false;
+        }
+
+        var desc = document.ComboTaskForm.description.value;
+        var overwrite = document.ComboTaskForm.overwrite.value;
+        var xmlhttp=GetXMLHttpRequest();
+        var url = "/config/TaskAction.do?actionToPerform=saveCombinedTask&taskName="+taskName+"&description="+desc+"&overwrite="+overwrite+"&subTasks="+selectedTasks;
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4)
+            {
+                var result = xmlhttp.responseText;
+                var index = result.indexOf(":");
+                if(index!=-1)// this indicates success. usually error is thrown as exception message string. so ':' will be there for sure...
+                {
+                        result = result.substring(index+1);
+			alert(result);
+                }
+		else
+		{
+			document.ComboTaskForm.overwrite.value = 'true';
+			alert(result);
+			document.ComboTaskForm.submit();
+		}
+		
+            }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+
+function displayResult(type)
+{
+        var errIndex = resulttxt.indexOf("Error ");
+        if(errIndex==0)
+        {
+                var message = resulttxt.substring(6);
+                alert('<fmt:message key='webclient.config.task.error.execute'/>'+message);
+                document.getElementById('ExecutionResult').style.display="none";
+                return;
+        }
+	if(document.TaskForm!=null)
+	{
+		clearOtherDiv('ExecutionResult');
+	}
+	var taskName;
+	if(document.TaskForm!=null)
+	{
+		taskName= document.TaskForm.taskName.value;
+	}
+	else
+	{
+		taskName=document.ComboTaskForm.taskName.value;
+	}
+	var table = "<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td valign='top' style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='27'>&nbsp;&nbsp;<span class='boldTxt'><fmt:message key='webclient.config.task.execute.result.title'/></span>&nbsp;"+taskName+"</td><td align='right' valign='top'><a href='javascript:closeDiv(ExecutionResult)'><img src='/webclient/common/images/spacer.gif' class='popClose1' align='absmiddle' border='0' title='<fmt:message key='webclient.config.task.executeform.cancel'/>'/></a></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'>";
+
+    if(type == 'table')
+    {
+	table += "<tr><td style='padding:10px;' colspan='2'><fmt:message key='webclient.config.task.result.viewtype'/>&nbsp;&nbsp;<input type='radio' id='tabular' name='viewType' value='table' onClick='javascript:displayResult(this.value)'/><label for='tabular'><fmt:message key='webclient.config.task.result.txt'/></label>&nbsp;&nbsp;<input type='radio' id='xml' name='viewType' value='xml' onClick='javascript:displayResult(this.value)'/>&nbsp;<label for='xml'><fmt:message key='webclient.config.task.result.xml'/></label>&nbsp;&nbsp;</td><td align='center'><span class='blueLink'><img align='absmiddle' class='successIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<fmt:message key='webclient.config.task.result.success'/></span> <span class='blueLink' style='margin-left:10px;'><img align='absmiddle' class='failureIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<fmt:message key='webclient.config.task.result.failure'/></span></td></tr>";
+	table+="<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><div style='height:150px;overflow:auto;'><table width='100%' cellspacing='0' border='0'>";
+
+        var configResult =  resultxml.getElementsByTagName('ConfigResult')[0];
+	if(configResult!=null || configResult != undefined)
+	{
+		taskName = configResult.getAttribute("taskName");
+	}
+        var deviceTags = configResult.getElementsByTagName("DeviceResult");
+        table = table+"<tr class='tableHeaders'><td><fmt:message key='webclient.config.task.execute.result.header.device'/></td><td><fmt:message key='webclient.config.task.execute.result.header.id'/></td><td><fmt:message key='webclient.config.task.execute.result.header.result'/></td></tr>";
+        for(var i=0;i<deviceTags.length;i++)
+        {
+            var deviceResult = deviceTags[i];
+            var attrTags = deviceResult.getElementsByTagName("AttributeResult");
+            for(var j=0;j<attrTags.length;j++)
+            {
+                var attrResult = attrTags[j];
+                if(j%2==0)
+                {
+                        table+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+                else
+                {
+                        table+="<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+                table=table+"<td style='padding-right:15px;' nowrap='nowrap'>"+deviceResult.getAttribute("deviceName")+"</td>";
+		var identifier = attrResult.getAttribute("identifier");
+		if(identifier == '')
+		{
+		    identifier = '-';
+		}
+                table = table + "<td style='padding-right:15px;'>"+identifier+"</td>";
+                var result = attrResult.getAttribute("errorStatus");
+                if(result == 0)
+                {
+                    table = table + "<td align='left' style='padding-right:6px;'><img class='successIcon' src='/webclient/common/images/spacer.gif'></td></tr>";
+                }
+                else
+                {
+                    table = table + "<td align='left' style='padding-right:6px;'><img class='failureIcon' src='/webclient/common/images/spacer.gif'></td></tr>";
+                }
+           }
+        }
+    }
+    else
+    {
+	table += "<tr><td style='padding:10px;' colspan='2'><fmt:message key='webclient.config.task.result.viewtype'/>&nbsp;&nbsp;<input type='radio' id='tabular' name='viewType' value='table' onClick='javascript:displayResult(this.value)'/><label for='tabular'><fmt:message key='webclient.config.task.result.txt'/></label>&nbsp;&nbsp;<input type='radio' id='xml' name='viewType' value='xml' onClick='javascript:displayResult(this.value)'/>&nbsp;<label for='xml'><fmt:message key='webclient.config.task.result.xml'/></label></td></tr>";
+
+	table+="<table width='100%' cellspacing='0' cellpadding='0' border='0'><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><table width='100%' cellspacing='0' border='0'>";
+
+        var height = resulttxt.split(">").length-1;
+        table += "<tr><td colspan='1' width='100%' height='"+height+"'><textarea readonly='readonly' rows='8' style='width:100%;overflow:none' name='xmlView'>"+resulttxt+"</textarea></td></tr>";
+    }
+var showname=saveFileName;
+
+if(showname=="")
+{
+	if(document.TaskForm!=null)
+	{
+showname="<c:out value='${TaskForm.map.taskName}_result.txt'/>";
+	}
+	else
+	{
+		showname=taskName+"_result.txt";
+	}
+}
+    table = table + "</table></div></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr height='20px'><td style='padding-top:10px;' align='center' colspan='3' width='100%' id='buttomLine'><fmt:message key='webclient.config.task.result.savemsg'/>&nbsp;&nbsp;<input type='text' size='30' name='fileName' value='"+showname+"'/>&nbsp;<input type='button' class='button' name='saveFile' value='<fmt:message key='webclient.config.task.result.save'/>' onClick='javascript:saveResult()'/></td></tr></table></td></tr></table></td></tr></table>";
+
+    var div = document.getElementById('ExecutionResult');
+    var refTable = document.getElementById('refTable1');
+    var position = getDivLocation(refTable);
+
+    var element1Width = getElementWidthHeight(refTable);
+    div.style.left=parseInt((position[0]+(element1Width[0]/2))-(670/2))+'px';
+    div.style.width=670+'px';
+    div.style.top=(parseInt(position[1]) - 300)+'px';
+    div.style.display="";
+    div.innerHTML=table;
+    
+    var radio = document.getElementsByName('viewType');
+    for(var i=0; i<radio.length;i++)
+    {
+        if(type == 'table' && radio[i].value == 'table')
+        {
+            radio[i].checked='checked';
+        }
+        else if(type == 'xml' && radio[i].value == 'xml')
+        {
+            radio[i].checked='checked';
+        }
+    }
+}
+
+function executeTask(form)
+{
+    var url = "/config/TaskOperations.do?method=executeTask&taskName="+form.taskName.value;
+        var dl = "";
+        len = form.elements.length;
+        for(var i = 0 ; i < len ; i++)
+        {
+            formElement = form.elements[i];
+            if (formElement.type == "checkbox" && formElement.name == "rowSelectionDl" && formElement.checked == true)
+            {
+                dl = dl + "," + formElement.value;
+            }
+        }
+        if(dl.length>1)
+        {
+            dl = dl.substring(1);
+        }
+        var deviceattr = trimAll(form.deviceattr.value);
+        if(deviceattr.length>1)
+        {
+            deviceattr = deviceattr.substring(1);
+        }
+        if(dl.length==0 && deviceattr.length==0)
+        {
+            alert("<fmt:message key='webclient.config.audit.executetask.nodevice'/>");
+            return false;
+        }
+	if(deviceattr.length==1)
+	{
+		if(deviceattr == ';')
+		{
+			alert("<fmt:message key='webclient.config.audit.executetask.nodevice'/>");
+			return false;
+
+		}
+	}
+        url = url+"&deviceList="+dl+"&deviceattr="+deviceattr;
+        if(form.isTemplate.value == 'true')
+        {
+            var ds = '';
+            var dsps = document.getElementsByName('dataSource');
+            for(var i=0;i<dsps.length;i++)
+            {
+                if(dsps[i].checked)
+                {
+                        ds = dsps[i].value;
+                }
+            }
+            if(ds == '')
+            {
+                alert('<fmt:message key="webclient.config.task.execute.template.selectds"/>');
+                return;
+            }
+            url = url+"&configuredDSP="+form.dsp.value+"&selectedDS="+ds;
+        }
+    	var xmlhttp = GetXMLHttpRequest();
+    	xmlhttp.onreadystatechange=function(){
+        if (xmlhttp.readyState==4)
+        {
+            resulttxt = xmlhttp.responseText;
+            resultxml = xmlhttp.responseXML;
+            displayResult('table');
+        }
+        else
+        {
+	    
+	    var refTable = document.getElementById('refTable1');
+	    var position = getDivLocation(refTable);
+	    clearOtherDiv('ExecutionResult');
+	    var element1Width = getElementWidthHeight(refTable);
+	    var div = document.getElementById('ExecutionResult');
+	    div.style.left=parseInt((position[0]+(element1Width[0]/2))-(670/2))+'px';
+	    div.style.width=670+'px';
+	    div.style.top=(parseInt(position[1]) - 300)+'px';
+            div.style.display="block";
+            div.innerHTML="<table cellspacing='0' cellpadding='0' border='0' align='center' class='tableBdr3 whiteBg'><tr><td style='padding:7px;' width='10' nowrap><img src='/webclient/common/images/LoadingTC.gif' align='absmiddle'>&nbsp;&nbsp;</td><td style='padding:7px;' nowrap><fmt:message key='webclient.config.task.exe.msg'/><br/><fmt:message key='webclient.config.task.exe.msg2'/></td></tr></table>";
+        }
+    }
+    xmlhttp.open("POST",url,true);
+    xmlhttp.send(null);
+}
+
+function constructDeviceListTable(protocol)
+{
+    var divElement = document.getElementById('deviceLists');
+    var dltable = "<table class='tableBdr2' width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tbody><tr class='generalTBHeader'><td width='10%' nowarp='nowrap'>&nbsp;&nbsp;<fmt:message key='webclient.config.dl.dlNames'/></td><td width='85%' class='hSeparator1'>&nbsp;&nbsp;<fmt:message key='webclient.config.dl.devices'/></td></tr><tr><td valign='top'><table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'>";
+    var url = "/config/TaskAction.do?actionToPerform=getDeviceLists&protocol="+protocol;
+    var xmlhttp=GetXMLHttpRequest();
+    xmlhttp.onreadystatechange=function()
+    {
+	if(xmlhttp.readyState == 4)
+	{
+	    var response = trimAll(xmlhttp.responseText);
+	    document.dlForm.dlNames.value = response;
+	    if(response == '')
+	    {
+		divElement.style.display='none';
+		document.dlForm.deviceList.value = '';
+		document.dlForm.device.value='';
+                document.dlForm.deviceattr.value = '';
+		return;
+	    }
+	    var dlist = response.split(",");
+	    var count=0;
+    	    var defaultSelection ="";
+	    for(var i=0; i<dlist.length; i++)
+	    {
+		if(dlist[i]=='') continue;
+		addingDlArray(dlist[i],protocol);
+		if(defaultSelection == "")
+		{
+		    defaultSelection = dlist[i];
+		}
+		dltable += "<tr height='25px' onmouseout=\"this.className='tabNav2'\" onmouseover=\"this.className='tabNavHover2'\"><td class='vSeparator2' id='"+dlist[i]+"' style='padding-left:5px;'>&nbsp;<a href=\"javascript:openNewWindow('/config/TaskAction.do?actionToPerform=openAssociateDLForm&protocol="+protocol+"&dlName="+dlist[i]+"','','scrollbars=no,width=550,height=200,screenX=300,screenY=200')\"><img align='absmiddle' class='editIcon' src='/webclient/common/images/spacer.gif' border='0'/></a>&nbsp;<a href=\"javascript:deleteDL('"+dlist[i]+"')\"><img class='deleteIcon' border='0' src='/webclient/common/images/spacer.gif'/></a>&nbsp;&nbsp;&nbsp;<a href=\"javascript:loadDevices('"+dlist[i]+"')\">"+dlist[i]+"</td></tr>";
+		++count;
+	    }
+	    while(count<6)
+	    {
+	        dltable += "<tr height='25px'><td class='vSeparator2'>&nbsp;</td></tr>";
+		++count;
+	    }
+	    dltable += "</table><td valign='top'><table width='100%'><div style='height:"+(count*25)+"px;overflow:auto;' id='searchResult'/></table></td></tr>";
+            dltable += "</tbody></table>";
+            divElement.innerHTML=dltable;
+            divElement.style.display="block";
+	    loadDevices(defaultSelection);
+	}
+    }
+    xmlhttp.open("POST",url,true);
+    xmlhttp.send(null);
+}
+
+function updateDL()
+{
+	var dlName = document.dlForm.deviceList.value;
+	if(dlName == '')
+	{
+		alert('<fmt:message key='webclient.config.dl.selectany'/>');
+		return;
+	}
+	var deviceattr = document.dlForm.deviceattr.value;
+        var url = "/config/TaskAction.do?actionToPerform=updateDeviceList&dlName="+dlName+"&protocol="+document.dlForm.protocol.value+"&deviceattr="+deviceattr;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4)
+            {
+                var result = xmlhttp.responseText;
+                alert(result);
+		document.dlForm.newdlName.value= "";
+		constructDeviceListTable(document.dlForm.protocol.value);
+            }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+function deleteDL(dlName)
+{
+	if(dlName == document.dlForm.newdlName.value)
+	{
+	    constructDeviceListTable(document.dlForm.protocol.value);
+	    return;
+	}
+	if(confirm('<fmt:message key='webclient.config.task.delete.dl'/>') == false) return;
+        var url = "/config/TaskAction.do?actionToPerform=deleteDeviceList&dlName="+dlName;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4)
+            {
+                var result = xmlhttp.responseText;
+		alert(result);
+		constructDeviceListTable(document.dlForm.protocol.value);
+            }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+
+}
+
+function loadDeviceDetails(protocol,device)
+{
+
+    var table = "<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr> <td valign='top' style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='27' >&nbsp;&nbsp;<span class='boldTxt'><fmt:message key='webclient.config.task.executeform.deviceconfig'/></span>&nbsp;:&nbsp;"+device+"</td><td align='right' valign='top'><a href=\"javascript:closeDiv(generaldc)\"><img align='absmiddle' class='popClose1' border='0' src='/webclient/common/images/spacer.gif'/></a></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td valign='top' style='padding:10px;'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tbody><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td nowrap='nowrap' width='30%'><fmt:message key='webclient.config.task.dev.attr'/></td></td><td nowrap='nowrap' width='30%'><fmt:message key='webclient.config.task.dev.value'/></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.retires'/></td><td><input type='text' name='retries' value='3'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.timeout'/></td><td><input type='text' name='timeout' value='5000'></td></tr>";
+	if(protocol == 'ftp' || protocol == 'tftp')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='21'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.userName'/></td><td><input type='text' name='username' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.ftppassword'/></td><td><input type='text' name='password' value=''></td></tr>";
+	}
+	else if(protocol == 'tl1')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='9099'></td></tr>";
+	}
+	else if(protocol == 'telnet')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='23'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.loginName'/></td><td><input type='text' name='loginName' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.telnetpassword'/></td><td><input type='text' name='password' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.loginprompt'/></td><td><input type='text' name='loginprompt' value='login'></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.passwordprompt'/></td><td><input type='text' name='passwordprompt' value='Password'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.shellprompt'/></td><td><input type='text' name='shellprompt' value='$'></td></tr>";
+	}
+	else if(protocol == 'snmp')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='161'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.community'/></td><td><input type='text' name='community' value='public'></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.version'/></td><td><input type='text' name='version' value='v1'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.userName'/></td><td><input type='text' name='userName' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextName'/></td><td><input type='text' name='contextName' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextID'/></td><td><input type='text' name='contextID' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.maxRepetitions'/></td><td><input type='text' name='maxRepetitions' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.nonRepeaters'/></td><td><input type='text' name='nonRepeaters' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authProtocol'/></td><td><input type='text' name='authProtocol' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authPassword'/></td><td><input type='text' name='authPassword' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.privPassword'/></td><td><input type='text' name='privPassword' value=''></td></tr>";
+	}
+	table += "</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table><table style='margin-top:15px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><input type='button'  value=\"<fmt:message key='webclient.config.task.executeform.devconf.submit'/>\" class='button' onClick='submitDC(this.form)'/>&nbsp;<input type='button'  value=\"<fmt:message key='webclient.config.task.executeform.devconf.cancel'/>\" class='button' onClick='javascript:closeDiv(generaldc)'/></td></tr></table></td></tr></table></td></tr>";
+	var div = document.getElementById('generaldc');          
+	var refTable = document.getElementById('searchResult');
+
+        var position = getDivLocation(refTable);
+	clearOtherDiv('generaldc');
+        var element1Width = getElementWidthHeight(refTable);
+        div.style.left=parseInt((position[0]+(element1Width[0]/2))-(600/2))+'px';
+        div.style.width=400+'px';
+        div.style.top=(parseInt(position[1])-60)+'px';	
+	div.style.display="";
+	div.innerHTML = table;
+
+
+}
+
+function loadDeviceDetailsForDS()
+{
+
+    var table = "<table width='100%' border='0' rules='none' cellspacing='0'><tr class='tableHeaders'><td><fmt:message key='webclient.config.task.executeform.deviceconfig'/>&nbsp;</td><td id='device'></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.retires'/></td><td><input type='text' name='retries' value='3'></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.timeout'/></td><td><input type='text' name='timeout' value='5000'></td></tr>";
+    table += "<tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='161'></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.community'/></td><td><input type='text' name='community' value='public'></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.version'/></td><td><input type='text' name='version' value='v1'></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.snmpuserName'/></td><td><input type='text' name='userName' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextName'/></td><td><input type='text' name='contextName' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextID'/></td><td><input type='text' name='contextID' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.maxRepetitions'/></td><td><input type='text' name='maxRepetitions' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.nonRepeaters'/></td><td><input type='text' name='nonRepeaters' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authProtocol'/></td><td><input type='text' name='authProtocol' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authPassword'/></td><td><input type='text' name='authPassword' value=''></td></tr><tr><td><fmt:message key='webclient.config.task.executeform.deviceconfig.privPassword'/></td><td><input type='text' name='privPassword' value=''></td></tr></table>";
+    document.getElementById('generaldc').style.display="block";
+    document.getElementById('generaldc').innerHTML = table;
+}
+
+function addNewDl()
+{
+	var addTable = "<table class='popBdr1 popupGBg1' width='30%' border='0' cellspacing='0' cellpadding='0'><tr><td nowrap='nowrap'><fmt:message key='webclient.config.adddl.name'/>&nbsp;&nbsp;<input type='text' name='newdl' value=''>&nbsp;&nbsp;<input type='button' class='button' value=\"<fmt:message key='webclient.config.dl.add'/>\" onClick=\"javascript:addDL()\">&nbsp;<input type='button' class='button' value=\"<fmt:message key='webclient.config.adddl.cancel'/>\" onClick=\"javascript:closeDiv(newDL)\"></td></tr></table>";
+	document.getElementById('newDL').innerHTML=addTable;
+	document.getElementById('newDL').style.display="block";
+	document.dlForm.newdl.focus();
+}
+
+function addDL()
+{
+	var name = document.dlForm.newdl.value;
+	if(name == '')
+	{
+		alert('<fmt:message key='webclient.config.adddl.name.message'/>');
+	}
+	else
+	{
+	document.dlForm.newdlName.value = name;
+	var dlNames = document.dlForm.dlNames.value;
+	if(dlNames.length>0)
+	{
+		dlNames += ",";
+	}
+	dlNames += name;
+	document.dlForm.deviceattr.value='';
+	constructDLTable(dlNames,name);
+	closeDiv(newDL);
+	}
+}
+
+function constructDLTable(dlNames,selectDL)
+{
+	var dltable = "<table class='tableBdr2' width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td width='10%' nowarp='nowrap'>&nbsp;&nbsp;<fmt:message key='webclient.config.dl.dlNames'/></td><td width='85%' class='hSeparator1'>&nbsp;&nbsp;<fmt:message key='webclient.config.dl.devices'/></td></tr><tr><td><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'>";
+	var dlist = dlNames.split(",");
+	var count = 0;
+	var protocol = document.dlForm.protocol.value;
+        for(var i=0; i<dlist.length; i++)
+        {
+            if(dlist[i]=='') continue;
+            if(selectDL == "")
+            {
+                selectDL = dlist[i];
+            }
+            dltable += "<tr onmouseout=\"this.className='tabNav2'\" onmouseover=\"this.className='tabNavHover2'\"><td class='vSeparator2' id='"+dlist[i]+"' style='padding-left:5px;'>&nbsp;<a href=\"javascript:openNewWindow('/config/TaskAction.do?actionToPerform=openAssociateDLForm&protocol="+protocol+"&dlName="+dlist[i]+"','','scrollbars=no,width=750,height=300,screenX=300,screenY=200')\"><img align='absmiddle' class='editIcon' src='/webclient/common/images/spacer.gif' border='0'/></a>&nbsp;<a href=\"javascript:deleteDL('"+dlist[i]+"')\"><img class='deleteIcon' border='0' src='/webclient/common/images/spacer.gif'/></a>&nbsp;&nbsp;&nbsp;<a href=\"javascript:loadDevices('"+dlist[i]+"')\">"+dlist[i]+"</td></tr>";
+            ++count;
+        }
+        if(dlNames !=  "")
+        {
+            while(count<6)
+            {
+                dltable += "<tr><td class='vSeparator2'>&nbsp;</td></tr>";
+                ++count;
+            }
+        }
+        dltable += "</table><td valign='top'><div id='searchResult' style=\"heigth:100px;overflow:auto;\"/></td></tr>";
+        dltable += "</tbody></table>";
+        var divElement = document.getElementById('deviceLists');
+        divElement.innerHTML=dltable;
+        divElement.style.display="";
+        document.getElementById(selectDL).className='tabNavCurrent2';
+        var previousSelection = gettingDlArrayVal(protocol);
+        if(previousSelection != null)
+        {
+            document.getElementById(previousSelection).className='vSeparator2';
+        }
+	document.dlForm.deviceList.value = selectDL;
+}
+
+function addDevice()
+{
+	var devName = document.dlForm.newDevice.value;
+	if(devName == '')
+	{
+	    alert('<fmt:message key='webclient.config.dl.newdev.empty'/>');
+	    return;
+	}
+	var deviceattr = document.dlForm.deviceattr.value;
+	var deviceList = document.dlForm.deviceList.value;
+	if(deviceList == '')
+	{
+		alert('<fmt:message key='webclient.config.dl.selectany'/>');
+		return;
+	}
+	if(deviceattr!='')
+	{
+		deviceattr += ";"
+	}
+	deviceattr += "host="+devName+",";
+	document.dlForm.newDevice.value="";
+	document.dlForm.deviceattr.value = deviceattr;
+	constructDevicesTable();
+}
+
+function loadDSConfigPage(protocol)
+{
+    if(document.dsForm.operation.value=='edit')
+    {
+	loadDSInputTables();
+    }
+    else
+    {
+        //constructTaskLists(protocol);
+    }
+    showNEInputTableTitle();
+    //loadNEInputTable();
+    loadInvInputTable();
+    loadUserInputTable();
+}
+
+function loadDSInputTables()
+{
+	loadNEInputTable();
+	loadInvInputTable();
+	loadUserInputTable();
+}
+
+function loadNEInputTable()
+{
+
+    var neInput = document.dsForm.neInput.value;
+    var neInputTable = document.getElementById('neInputTable');
+    var uiTable;
+    if(neInput != '') 
+    {
+    	uiTable = "<table width='100%' class='tableBdr2' cellspacing='0' cellpadding='2' border='0' align='left'><tr class='generalTBHeader'><td width='3'>&nbsp;</td><td width='3'>&nbsp;</td><td align='left'><fmt:message key='webclient.config.ds.ph'/></td><td><fmt:message key='webclient.config.ds.ne'/></td><td><fmt:message key='webclient.config.ds.defval'/></td></tr>"
+	var row = neInput.split(";");
+	for(var i=0;i<row.length;i++)
+    	{
+            if(i%2==0)
+            {
+                uiTable += "<tr class='generalEvenRow' heigth='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+            }
+            else
+            {
+                uiTable += "<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+            }
+	    var token = row[i].split(":");
+	    var id = token[0];
+	    var attr = token[1];
+	    var devattr = token[2];
+	    var ne = token[3];
+	    var value =  token[4];
+            uiTable += "<td style='padding-right:5px;'><a href=\"javascript:editInput('neInput','"+id+"')\"><img border='0' align='absmiddle' class='editIcon' src='/webclient/common/images/spacer.gif'/></td><td style='padding-right:5px;'></a><a href=\"javascript:deleteInput('neInput','"+id+"')\"><img align='absmiddle' border='0' class='deleteIcon' src='/webclient/common/images/spacer.gif'/></a></td><td>"+id+"</td><td>"+ne+"</td><td>"+value+"</td></tr>";
+        }
+	if(row.length > 6)
+	{
+		document.getElementById('neInputTable').style.height='140px';
+	}
+    }
+    else
+    {
+	uiTable = getNoData("neInput");
+    }
+       neInputTable.style.display='block';
+       neInputTable.innerHTML=uiTable+"</table>";
+}
+
+function loadInvInputTable()
+{
+    var invInput = document.dsForm.invInput.value;
+    var invInputTable = document.getElementById('invInputTable');
+    if(invInput != '')
+    {
+        var uiTable = "<table width='100%' class='tableBdr2' cellspacing='0' cellpadding='2' border='0' align='left'><tr class='generalTBHeader'><td width='3'>&nbsp;</td><td width='3'>&nbsp;</td><td align='left'><fmt:message key='webclient.config.ds.ph'/></td><td><fmt:message key='webclient.config.ds.mo'/></td><td><fmt:message key='webclient.config.ds.prop'/></td><td><fmt:message key='webclient.config.ds.defval'/></td></tr>";
+        var row = invInput.split(";");
+        for(var i=0;i<row.length;i++)
+        {
+            if(i%2==0)
+            {
+                uiTable += "<tr class='generalEvenRow' heigth='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+            }
+            else
+            {
+                uiTable += "<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+            }
+            var attr = row[i].split(",");
+            var id = attr[0];
+	    var mo = attr[1];
+	    var prop = attr[2];
+            var value = attr[3];
+
+            uiTable += "<td style='padding-right:5px;'><a href=\"javascript:editInput('invInput','"+id+"')\"><img border='0' align='absmiddle' class='editIcon' src='/webclient/common/images/spacer.gif'/></td><td style='padding-right:5px;'></a><a href=\"javascript:deleteInput('invInput','"+id+"')\"><img align='absmiddle' border='0' class='deleteIcon' src='/webclient/common/images/spacer.gif'/></a></td><td>"+id+"</td><td>"+mo+"</td><td>"+prop+"</td><td>"+value+"</td></tr>";
+        }
+	if(row.length > 6)
+        {
+                document.getElementById('invInputTable').style.height='140px';
+        }
+    }
+    else
+    {
+	uiTable = getNoData("invInput");
+    }
+	invInputTable.style.display='block';
+        invInputTable.innerHTML=uiTable+"</table>";
+}
+
+function loadUserInputTable()
+{
+	var userInput = document.dsForm.userInput.value;
+        var userInputTable = document.getElementById('userInputTable');
+	if(userInput != '')
+	{
+		var uiTable = "<table width='100%' class='tableBdr2' cellspacing='0' cellpadding='2' border='0' align='left'><tr class='generalTBHeader'><td width='3'>&nbsp;</td><td width='3'>&nbsp;</td><td align='left'><fmt:message key='webclient.config.ds.ph'/></td><td><fmt:message key='webclient.config.ds.val'/></td></tr>";
+		var row = userInput.split(";");
+		for(var i=0;i<row.length;i++)
+		{
+			if(i%2==0)
+			{
+				uiTable += "<tr class='generalEvenRow' heigth='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+			}
+			else
+			{
+				uiTable += "<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+			}
+			var index = row[i].indexOf(",");
+			var id = row[i].substring(0,index);
+			var value = row[i].substring(index+1);
+			uiTable += "<td style='padding-right:5px;'><a href=\"javascript:editInput('userInput','"+id+"')\"><img border='0' align='absmiddle' class='editIcon' src='/webclient/common/images/spacer.gif'/></td><td style='padding-right:5px;'></a><a href=\"javascript:deleteInput('userInput','"+id+"')\"><img align='absmiddle' border='0' class='deleteIcon' src='/webclient/common/images/spacer.gif'/></a></td><td>"+id+"</td><td>"+value+"</td></tr>";
+		}
+		if(row.length > 6)
+                {
+                    document.getElementById('userInputTable').style.height='140px';
+                }
+	}
+	else
+	{
+		uiTable = getNoData("userInput");
+	}
+		userInputTable.style.display='block';
+                userInputTable.innerHTML=uiTable+"</table>";
+}
+function getNoData(inptVal)
+{
+
+       var table = "<table width='100%' cellspacing='0' class='tableBdr2' cellpadding='2' border='0' align='center'>";
+   var innerTable="<table width='100%' cellspacing='0'  cellpadding='0' border='0'><tr><td class='configParams'><fmt:message key='webclient.config.task.form.attr.table.message'/>&nbsp;&nbsp;<a href=\"javascript:editInput('"+inptVal+"','')\"><fmt:message key='webclient.config.task.form.tableattr.addRow'/></a></td></tr></table>";
+    table += "<tr><td style='padding:7px;'>"+innerTable+"</td></tr>";
+   return table;
+}
+function editInput(type,id)
+{
+    var inputTable = "";
+    if(type == 'userInput')
+    {
+	var value = "";
+	if(id!="")
+	{
+	    var userInput = document.dsForm.userInput.value;
+	    var row = userInput.split(";");
+	    for(var i=0;i<row.length;i++)
+	    {
+                var index = row[i].indexOf(",");
+                var rowId = row[i].substring(0,index);
+		if(rowId == id)
+		{
+                    value = row[i].substring(index+1);
+		}
+	    }
+	}
+	inputTable = "<table border='0' rules='none' cellspacing='0'><tr class='tableHeaders' nowrap='nowrap'><td><fmt:message key='webclient.config.ds.ui.config'/></td><td align='right'><a href='javascript:closeDiv(editInputTable)'><img src='/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/CloseButton.gif' border='0' title='<fmt:message key='webclient.config.task.executeform.cancel'/>'/></a>&nbsp;</td></tr><tr><td><fmt:message key='webclient.config.ds.ph'/></td><td><input type='text'";
+	if(id != '') inputTable+= "readonly='readonly'";
+	inputTable +=" name='id' value='"+id+"'></td></tr><tr><td><fmt:message key='webclient.config.ds.val'/></td><td><input type='text' name='value' value='"+value+"'></td></tr><tr><td colspan='2' align='center'><input name='submit' type='button' value='<fmt:message key='webclient.config.ds.input.submit'/>' class='button' onclick=\"updateInput('userInput','"+id+"')\"/>&nbsp;&nbsp;<input name='cancel' type='button' value='<fmt:message key='webclient.config.ds.input.cancel'/>' class='button' onclick=\"closeDiv(editInputTable)\"/></td></tr></table>";
+        var div = document.getElementById('editInputTable');
+        div.innerHTML = inputTable;
+	setPosToDiv('tableId','editInputTable',300);
+        div.style.display= '';
+        if(id == '')
+        {
+                document.dsForm.id.focus();
+        }
+    }
+    else if(type == 'invInput')
+    {
+        var mo = "";
+        var prop = "";
+        var defval = "";
+	if(id != "")
+	{
+            var invInput = document.dsForm.invInput.value;
+            var row = invInput.split(";");
+            for(var i=0;i<row.length;i++)
+            {
+                var attr = row[i].split(",");
+                var rowid = attr[0];
+                if(id == rowid)
+                {
+                    mo = attr[1];
+            	    prop = attr[2];
+            	    defval = attr[3];
+		}
+	    }
+	}
+        inputTable = "<table border='0' cellspacing='0'><tr><td colspan='2'><table width='100%' border='0'><tr class='tableHeaders' nowrap='norwap'><td nowrap='nowrap' width='75%'><fmt:message key='webclient.config.ds.ii.config'/></td><td width='35%' align='right'><a href='javascript:closeDiv(editInputTable)'><img src='/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/CloseButton.gif' border='0' title='<fmt:message key='webclient.config.task.executeform.cancel'/>'/></a>&nbsp;</td></tr></table></tr></tr><tr><td width='15%' nowrap='nowrap'><fmt:message key='webclient.config.ds.ph'/></td><td><input type='text'";
+	if(id != '') inputTable+= "readonly='readonly'";
+	inputTable +=" name='id' value='"+id+"'></td></tr><tr><td width='15%' nowrap='nowrap'><fmt:message key='webclient.config.ds.prop'/></td><td width='15%' nowrap='nowrap'><input type='text' name='moprop' value='"+prop+"'></td></tr><tr><td width='15%'><fmt:message key='webclient.config.ds.defval'/></td><td><input type='text' name='defval' value='"+defval+"'></td></tr>";
+
+	inputTable +="<tr><td colspan='2'><table cellspacing='0' border='0'><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td><table style='margin-top:10px;clear:both' width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr height='10px' class='greyboxStyle1'><td align='left'><fmt:message key='webclient.config.ds.dev.add'/>&nbsp;:&nbsp;<input type='text' value='' name='adddev'>&nbsp;&nbsp;<a href=\"javascript:addDeviceForDS('invInput')\"><img align='absmiddle' class='addIcon' src='/webclient/common/images/spacer.gif' border='0'/></a>&nbsp;&nbsp;<a href=\"javascript:openSearch('invSearch')\"><img align='absmiddle' class='searchIcon' border='0' src='/webclient/common/images/spacer.gif'/><span class='blueLink'><fmt:message key='webclient.config.dsform.search'/></span></a></td></tr><tr><td colspan='2'><img height='3' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td valign='top'><table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr class='tableHeaders'><td><fmt:message key='webclient.config.ds.dl'/></td></tr></table></td></tr>"
+
+inputTable+="<tr><td valign='top'><div id='searchResultForDS' style='height:25px;overflow:auto;'><div id='generaldc' style='height:50px; overflow:auto;'></td></tr>";
+
+	inputTable += "</table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='5' width='5' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></table></td></tr><tr><td colspan='2' align='center'><input name='submit' type='button' value='<fmt:message key='webclient.config.ds.input.submit'/>' class='button' onclick=\"updateInput('invInput','"+id+"')\"/>&nbsp;&nbsp;<input name='cancel' type='button' value='<fmt:message key='webclient.config.ds.input.cancel'/>' class='button' onclick=\"closeDiv(editInputTable)\"/></td></tr></table>";
+        var div = document.getElementById('editInputTable');
+        div.innerHTML = inputTable;
+        div.style.display= '';
+	setPosToDiv('tableId','editInputTable',400);
+
+        if(id == '')
+        {
+                document.dsForm.id.focus();
+        }
+	if(mo == '') return;
+	var dlTable = "";
+	dlTable = "<table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr><td><input name='selectedDevice'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' checked='checked' value='"+mo+"'> <label for='"+mo+"'>"+mo+"</label></a></td></tr></table>";
+	
+	var div = document.getElementById('searchResultForDS');
+	div.innerHTML = dlTable;
+    }
+    else if(type == 'neInput')
+    {
+        var moName = "";
+        var defval = "";
+        if(id != "")
+        {
+            var neInput = document.dsForm.neInput.value;
+            var row = neInput.split(";");
+            for(var i=0;i<row.length;i++)
+            {
+                var attr = row[i].split(":");
+                var rowid = attr[0];
+                if(id == rowid)
+                {
+                    moName = attr[3];
+                    defval = attr[4];
+                }
+            }
+        }
+        inputTable = "<table border='0' cellspacing='0'><tr><td width='100%' colspan='2'><table border='0' width='100%'><tr class='tableHeaders' nowrap='nowrap'><td width=70%><fmt:message key='webclient.config.ds.ni.config'/></td><td width='30%'align='right'><a href='javascript:closeDiv(editInputTable)'><img src='/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/CloseButton.gif' border='0' title='<fmt:message key='webclient.config.task.executeform.cancel'/>'/></a>&nbsp;</td></tr></table></td></tr><tr><td width='15%' nowrap='nowrap'><fmt:message key='webclient.config.ds.ph'/></td><td><input type='text'";
+	if(id != '') inputTable+= "readonly='readonly'";
+	inputTable += " name='id' value='"+id+"'></td></tr><tr><td width='15%' nowrap='nowrap'><fmt:message key='webclient.config.ds.defval'/></td><td><input type='text' name='defval' value='"+defval+"'></td></tr>";
+
+inputTable +="<tr><td colspan='2'><table cellspacing='0' border='0'><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td><table style='margin-top:10px;clear:both' width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr height='10px' class='greyboxStyle1'><td align='left'>&nbsp;&nbsp;<fmt:message key='webclient.config.ds.dev.add'/>&nbsp;:&nbsp;<input type='text' value='' name='adddev'>&nbsp;&nbsp;<a href=\"javascript:addDeviceForDS('neInput')\"><img align='absmiddle' class='addIcon' src='/webclient/common/images/spacer.gif' border='0'/></a>&nbsp;&nbsp;<a href=\"javascript:openSearch('neSearch')\"><img align='absmiddle' class='searchIcon' border='0' src='/webclient/common/images/spacer.gif'/><span class='blueLink'><fmt:message key='webclient.config.dsform.search'/></span></a></td></tr><tr><td colspan='2'><img height='3' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td valign='top'><table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr class='tableHeaders'><td><fmt:message key='webclient.config.ds.dl'/></td></tr></table></td></tr>";
+
+inputTable+="<tr><td valign='top'><div id='searchResultForDS' style='height:25px;overflow:auto;'></div><div id='generaldc' style='height:100px;overflow:auto;'>&nbsp;</div></td></tr>";
+
+        inputTable += "</table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='5' width='5' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></table></td></tr><tr><td colspan='2' align='center'><input name='submit' type='button' value='<fmt:message key='webclient.config.ds.input.submit'/>' class='button' onclick=\"updateInput('neInput','"+id+"')\"/>&nbsp;&nbsp;<input name='cancel' type='button' value='<fmt:message key='webclient.config.ds.input.cancel'/>' class='button' onclick=\"closeDiv(editInputTable)\"/></td></tr></table>";
+        var div = document.getElementById('editInputTable');
+        div.innerHTML = inputTable;
+        div.style.display= '';
+        div.innerHTML = inputTable;
+	setPosToDiv('tableId','editInputTable',300);
+
+        if(id == '')
+        {
+                document.dsForm.id.focus();
+        }
+        if(moName == '') return;
+        var dlTable = "";
+        dlTable = "<table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr><td><input name='selectedDevice' type='radio' onclick= \"javascript:configDeviceForDS(document.dsForm,'"+moName+"')\" style='vertical-align:middle;margin:0px;padding:0px;' value='"+moName+"'><a href=\"javascript:configDeviceForDS(document.dsForm,'"+moName+"')\"> <label>"+moName+"</label></a></td></tr></table>";
+
+        var div = document.getElementById('searchResultForDS');
+        div.innerHTML = dlTable;
+    }
+}
+
+function addDeviceForDS(type)
+{
+	var moName = document.dsForm.adddev.value;
+	var dlTable = "";
+	if(isEmpty(moName))
+	{
+		alert('<fmt:message key="webclient.config.ds.empty.device"/>');
+		return;
+	}
+	if(type == 'neInput')
+	{
+        	dlTable += "<table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr><td><input name='selectedDevice'  type='radio' onclick= \"javascript:configDeviceForDS(document.dsForm,'"+moName+"')\" style='vertical-align:middle;margin:0px;padding:0px;' value='"+moName+"'><a href=\"javascript:configDeviceForDS(document.dsForm,'"+moName+"')\"> <label>"+moName+"</label></a>";
+	}
+	else
+	{
+		dlTable += "<table width='100%' cellspacing='0' cellpadding='0' border='0' align='left'><tr><td><input name='selectedDevice'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' checked='true' value='"+moName+"'>"+moName;
+	}
+	dlTable += "</td></tr></table>";
+	var div = document.getElementById('searchResultForDS');
+	div.innerHTML = dlTable;
+}
+
+function updateInput(type,id)
+{
+    if(type == 'userInput')
+    {
+	var userInput = document.dsForm.userInput.value;
+	var value = document.dsForm.value.value;
+	if(id == '')
+	{
+		id = document.dsForm.id.value;
+		if(id == '')
+		{
+			alert('<fmt:message key='webclient.config.ds.empty.ph'/>');
+			return;
+		}
+		if(userInput.length>0) userInput += ";";
+		userInput += id+","+value;
+	}
+	else
+	{
+            var row = userInput.split(";");
+	    var updatedInput = "";
+            for(var i=0;i<row.length;i++)
+            {
+                var index = row[i].indexOf(",");
+                var rowId = row[i].substring(0,index);
+                if(rowId == id)
+                {
+		    updatedInput += ";"+id+","+value;
+                }
+		else
+		{
+		    updatedInput += ";"+row[i];
+		}
+            }
+	    userInput = updatedInput.substring(1);
+	}
+	document.dsForm.userInput.value = userInput;
+	document.getElementById('editInputTable').style.display='none';
+	loadUserInputTable();
+    }
+    else if(type == 'invInput')
+    {
+        var invInput = document.dsForm.invInput.value;
+	var mo = "";
+	var elements = document.getElementsByName('selectedDevice');
+	for(var i=0;i<elements.length;i++)
+	{
+		if(elements[i].checked)
+		{
+			mo = elements[i].value;
+		}
+	}
+	var prop = document.dsForm.moprop.value;
+	var defval = document.dsForm.defval.value;
+        if(id == '')
+        {
+                id = document.dsForm.id.value;
+                if(id == '')
+                {
+                        alert('<fmt:message key='webclient.config.ds.empty.ph'/>');
+                        return;
+                }
+		if(isEmpty(prop))
+		{
+			alert('<fmt:message key="webclient.config.ds.empty.moprop"/>');
+			return;
+		}
+		if(isEmpty(mo))
+		{
+			alert('<fmt:message key="webclient.config.ds.empty.device"/>');
+			return;
+		}
+                if(invInput.length>0) invInput += ";";
+                invInput += id+","+mo+","+prop+","+defval;
+        }
+        else
+        {
+		if(isEmpty(prop))
+		{
+			alert('<fmt:message key="webclient.config.ds.empty.moprop"/>');
+			return;
+		}
+
+            var row = invInput.split(";");
+            var updatedInput = "";
+            for(var i=0;i<row.length;i++)
+            {
+                var index = row[i].indexOf(",");
+                var rowId = row[i].substring(0,index);
+                if(rowId == id)
+                {
+                    updatedInput += ";"+id+","+mo+","+prop+","+defval;
+                }
+                else
+                {
+                    updatedInput += ";"+row[i];
+                }
+            }
+            invInput = updatedInput.substring(1);
+        }
+        document.dsForm.invInput.value = invInput;
+        document.getElementById('editInputTable').style.display='none';
+        loadInvInputTable();
+    }
+    else if(type == 'neInput')
+    {
+	var elements = document.getElementsByName('selectedDevice');
+	var mo='';
+	var deviceadded=false;
+	for(var i=0;i<elements.length;i++)
+	{
+		if(elements[i].checked)
+		{
+			mo = elements[i].value;
+		}
+		deviceadded=true;
+	}
+
+	id = document.dsForm.id.value;
+	if(id == '')
+	{
+		alert('<fmt:message key='webclient.config.ds.empty.ph'/>');
+		return;
+	}
+	if(!deviceadded)
+	{
+		alert('<fmt:message key="webclient.config.ds.empty.device"/>');
+		return;
+	}
+	if(isEmpty(mo))
+	{
+		alert('<fmt:message key="webclient.config.ds.device.notconfigured"/>');
+		return;
+	}
+
+
+	updateDeviceDetails();
+        document.getElementById('editInputTable').style.display='none';
+        loadNEInputTable();
+    }
+}
+
+function loadDSList()
+{
+	var dsList = "<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td><fmt:message key='webclient.config.ds.dslist'/></td></tr><tr><td><img align='absmiddle' height='2' src='/webclient/common/images/spacer.gif'/></td></tr>";
+	var url = "/config/DataSourceAction.do?actionToPerform=getAllDataSource";
+	var xmlhttp=GetXMLHttpRequest();
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4)
+		{
+			var result = xmlhttp.responseText.split(",");
+			for(var i=0;i<result.length;i++)
+			{
+				var dsName = result[i];
+				var sepStr;
+				if(dsName.length > 16)
+				{
+					var obj = new String(dsName);
+					sepStr = obj.substring(0,15)+"..";
+//					alert(sepStr);
+				}
+				else
+				{
+					sepStr = dsName;
+				}
+				dsList += "<tr><td>&nbsp;<a href=\"javascript:deleteDS('"+dsName+"')\"><img border='0' align='absmiddle' class='deleteIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<a href='/config/DataSourceAction.do?actionToPerform=getDataSource&dsName="+dsName+"'title='"+dsName+"'>"+sepStr+"</a></td></tr>"
+			}
+			dsList += "</tbody></table>"
+			document.getElementById('dsList').innerHTML=dsList;
+		}
+	}
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+function deleteDS(dsName)
+{
+	if(confirm('<fmt:message key='webclient.config.task.ds.delete'/>') == false) return;
+
+	var url = "/config/DataSourceAction.do?actionToPerform=deleteDataSource&dsName="+dsName;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+			var result = xmlhttp.responseText;
+			alert(result);
+			loadDataSources();
+		}
+	}
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);	
+}
+
+function validateDS()
+{
+	if(isEmpty(document.dsForm.dsName.value))
+	{
+		alert('<fmt:message key="webclient.config.newDS.dsName.empty"/>');
+		return false;
+	}
+	if(isSpecialSymbol(document.dsForm.dsName.value))
+	{
+		alert('<fmt:message key='webclient.config.alert.dsName.specialSymbols'/>');
+		document.dsForm.dsName.focus();
+		return false;
+	}
+	else if(isEmpty(document.dsForm.invInput.value) && isEmpty(document.dsForm.userInput.value) && isEmpty(document.dsForm.neInput.value))
+	{
+		alert('<fmt:message key="webclient.config.newDS.invalidInput"/>');
+		return false;
+	}
+
+	return true;
+}
+
+function updateDS(dsName)
+{
+	if(!validateDS())
+	{
+		return false;	
+	}
+	var neInput = document.dsForm.neInput.value;
+	var invInput = document.dsForm.invInput.value;
+	var userInput = document.dsForm.userInput.value;
+	var desc = document.dsForm.description.value;
+	var associatedTasks = "";
+	var taskElement = document.dsForm.tasks;
+	var dsName = document.dsForm.dsName.value;
+	associatedTasks = document.dsForm.tasks.value;
+	var url = "/config/DataSourceAction.do?actionToPerform=updateDataSource&dsName="+dsName+"&neInput="+neInput+"&invInput="+invInput+"&userInput="+userInput+"&desc="+desc+"&associatedTasks="+associatedTasks;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+                if (xmlhttp.readyState==4)
+                {
+                        var result = xmlhttp.responseText;
+                        alert(result);
+			history.back();
+                }
+        }
+        xmlhttp.open("POST",encodeURI(url),true);
+        xmlhttp.send(null);	
+}
+
+function deleteInput(type,id)
+{
+    if(confirm('<fmt:message key='webclient.config.ds.delete.ip'/>') == false) return;
+    if(type == 'neInput')
+    {
+        var neInput = document.dsForm.neInput.value;
+        var row = neInput.split(";");
+	var updatedInput = "";
+	for(var i=0;i<row.length;i++)
+	{
+            var attr = row[i].split(":");
+	    var rowId = attr[0];
+            if(rowId != id)
+            {
+	        updatedInput += ";"+row[i];
+	    }
+	}
+	if(updatedInput.length>0)
+	{
+		updatedInput = updatedInput.substring(1);
+	}
+	document.dsForm.neInput.value = updatedInput;
+	loadNEInputTable()
+    }
+    else if(type == 'invInput')
+    {
+        var invInput = document.dsForm.invInput.value;
+	var row = invInput.split(";");
+	var updatedInput = "";
+        for(var i=0;i<row.length;i++)
+        {
+            var attr = row[i].split(",");
+            var rowId = attr[0];
+            if(rowId != id)
+            {
+                updatedInput += ";"+row[i];
+            }
+        }
+        if(updatedInput.length>0)
+        {
+                updatedInput = updatedInput.substring(1);
+        }
+        document.dsForm.invInput.value = updatedInput;
+	loadInvInputTable();
+	
+    }
+    else if(type == 'userInput')
+    {
+        var userInput = document.dsForm.userInput.value;
+        var row = userInput.split(";");
+        var updatedInput = "";
+        for(var i=0;i<row.length;i++)
+        {
+            var attr = row[i].split(",");
+            var rowId = attr[0];
+            if(rowId != id)
+            {
+                updatedInput += ";"+row[i];
+            }
+        }
+        if(updatedInput.length>0)
+        {
+                updatedInput = updatedInput.substring(1);
+        }
+        document.dsForm.userInput.value = updatedInput;
+	loadUserInputTable();
+    }
+}
+
+function deleteAllInputs(type)
+{
+    switch (type)
+    {
+        case 'neInput':
+            if(isEmpty(document.dsForm.neInput.value))
+            {
+                alert('<fmt:message key='webclient.config.delete.nodata'/>');
+                return;
+            }
+            if(confirm('<fmt:message key='webclient.config.ds.delete.all'/>') == false) return;
+            document.dsForm.neInput.value = "";
+            loadNEInputTable();
+            break;
+
+        case 'invInput':
+            if(isEmpty(document.dsForm.invInput.value))
+            {
+                alert('<fmt:message key='webclient.config.delete.nodata'/>');
+                return;
+            }
+            if(confirm('<fmt:message key='webclient.config.ds.delete.all'/>') == false) return;
+            document.dsForm.invInput.value = "";
+            loadInvInputTable();
+
+            break;
+               
+        case 'userInput':
+            if(isEmpty(document.dsForm.userInput.value))
+            {
+                alert('<fmt:message key='webclient.config.delete.nodata'/>');
+                return;
+            }
+            if(confirm('<fmt:message key='webclient.config.ds.delete.all'/>') == false) return;
+            document.dsForm.userInput.value = "";
+            loadUserInputTable();
+            break;
+       
+       
+    }
+
+}
+
+
+function constructTaskLists(protocol)
+{
+    var url = "/config/TaskAction.do?actionToPerform=getTaskList&protocol="+protocol;
+    var xmlhttp=GetXMLHttpRequest();
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4)
+        {
+            var result = xmlhttp.responseText;
+	    if(result != '')
+	    {
+		var taskTable = "<select class='formStyle' name='tasks' size='7' style='height:auto;'>"
+		var task = result.split(",");
+		for(var i=0;i<task.length;i++)
+		{
+		    taskTable += "<option value='"+task[i]+"'>"+task[i]+"</option>";
+		}
+		taskTable += "</select>";
+		document.getElementById('taskTable').innerHTML=taskTable;
+	    }
+         }
+    }
+    xmlhttp.open("POST",url,true);
+    xmlhttp.send(null);
+}
+
+function formDeviceListForDS(inputType,text)
+{
+    text = trimAll(text);
+    var div = document.getElementById('searchResultForDS');
+    if(text.indexOf("webclient.config.audit.executetask.search.nomatching")!=-1)
+    {
+	div.style.display="block";
+        div.style.height="50";
+        div.innerHTML="<table width='100%'> <tr><td align='center'><fmt:message key='webclient.config.audit.executetask.search.nomatching'/></td></tr></table>";
+    }
+    else
+    {
+        var devices = text.split(",");
+        var table="<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody>";
+        for(var i = 0;i<devices.length;i++)
+
+        {
+	 if(devices[i]=='')
+{
+continue;
+}
+                if(i%2==0)
+                {
+                        table = table+"<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+                else
+                {
+                        table = table+"<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+	    if(inputType == 'neSearch')
+	    {
+                table = table + "<td style='padding-left:5px;'><input name='selectedDevice'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' onclick= \"javascript:configDeviceForDS(document.dsForm,'"+devices[i]+"')\" value="+devices[i]+"><a href=\"javascript:configDeviceForDS(document.dsForm,'"+devices[i]+"')\"><label>"+ devices[i]+"</label></a>";
+	    }
+	    else if(inputType == 'invSearch')
+	    {
+		table += "<td style='padding-left:5px;'><input name='selectedDevice'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' checked='true' value="+devices[i]+">"+devices[i];
+	    }
+	    else 
+	    {
+		table += "<td style='padding-left:5px;'><input name='selectedDevice'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' value="+devices[i]+">"+devices[i];
+	    }
+	    table += "</td></tr>";
+        }
+        table = table+"</table>";
+        div.style.display="block";
+        div.style.height="50";
+        div.innerHTML=table;
+    }
+}
+
+function configDeviceForDS(form,deviceName)
+{
+    var neInput = form.neInput.value;
+    var id = form.id.value;
+    var token = neInput.split(";");
+    var devattr = "";
+   for(var i=0;i<token.length;i++)
+    {
+	var row = token[i].split(":");
+	var rowid = row[0];
+	if(rowid == id)
+	{
+	    devattr = row[2];
+	}
+    }
+    var host = "host="+deviceName+",";
+    var elements = document.getElementsByName('selectedDevice');
+    for(var i=0;i<elements.length;i++)
+    {
+        var formElement = elements[i];
+        if (formElement.checked)
+        {
+            loadDeviceDetailsForDS();
+            var attr = devattr.split(",");
+            for(k=0;k<attr.length;k++)
+            {
+                var param = attr[k];
+		if(param == '') continue;
+                var key = trimAll(param.substring(0,param.indexOf("=")));
+                var value = trimAll(param.substring(param.indexOf("=")+1));
+                if(key!='host')
+                {
+                    form.elements[key].value = value;
+                }
+            }
+            form.device.value=deviceName;
+            document.getElementById('device').innerHTML=deviceName;
+	    break;
+        }
+    }
+}
+
+function updateDeviceDetails()
+{
+    var form = document.dsForm;
+    var id = form.id.value;
+    var neInput = form.neInput.value;
+    var attr = "";
+    var newneInput = "";
+    var attribute = "attr";
+	var defval="";
+	if(document.dsForm.defval==undefined)
+	{
+		return;
+	}
+    var devName = "";
+    var token = neInput.split(";");
+    for(var i=0;i<token.length;i++)
+    {
+        if(token == '')continue;
+	var row = token[i].split(":");
+	var rowid = row[0];
+	if(rowid != id)
+	{
+	    newneInput += ";"+token[i];	
+	}
+	else
+	{
+	    attribute = row[1];
+	    
+	}
+    }
+    var temp = '';
+    if((temp = trimAll(form.device.value))!='')
+    {
+        attr = "host="+temp+",";
+	devName = temp;
+    }
+    if((temp = trimAll(form.port.value))!='')
+    {
+        attr = attr+"port="+temp+",";
+    }
+    if((temp = trimAll(form.retries.value))!='')
+    {
+        attr = attr+"retries="+temp+",";
+    }
+    if((temp = trimAll(form.timeout.value))!='')
+    {
+        attr = attr+"timeout="+temp+",";
+    }
+    if((temp = trimAll(form.community.value))!='')
+    {
+        attr = attr+"community="+temp+",";
+    }
+    if((temp = trimAll(form.version.value))!='')
+    {
+        attr = attr+"version="+temp+",";
+    }
+    if((temp = trimAll(form.userName.value))!='')
+    {
+        attr = attr+"userName="+temp+",";
+    }
+    if((temp = trimAll(form.contextName.value))!='')
+    {
+        attr = attr+"contextName="+temp+",";
+    }
+    if((temp = trimAll(form.contextID.value))!='')
+    {
+        attr = attr+"contextID="+temp+",";
+    }
+    if((temp = trimAll(form.maxRepetitions.value))!='')
+    {
+        attr = attr+"maxRepetitions="+temp+",";
+    }
+    if((temp = trimAll(form.nonRepeaters.value))!='')
+    {
+        attr = attr+"nonRepeaters="+temp+",";
+    }
+    if((temp = trimAll(form.authProtocol.value))!='')
+    {
+        attr = attr+"authProtocol="+temp+",";
+    }
+    if((temp = trimAll(form.authPassword.value))!='')
+    {
+        attr = attr+"authPassword="+temp+",";
+    }
+    if((temp = trimAll(form.privPassword.value))!='')
+    {
+        attr = attr+"privPassword="+temp+",";
+    }
+    if(newneInput.length>0) newneInput = newneInput.substring(1)+";";
+    newneInput += id+":"+attribute+":"+attr.substring(0,attr.length-1)+":"+devName+":"+defval;
+    form.neInput.value = newneInput;
+    document.getElementById('generaldc').style.display="none";
+}
+
+function showTableAttrTitle()
+{
+    var div = document.getElementById('tableAttrTitle');
+    if(document.TaskForm.protocol.value == 'snmp')
+    {
+	var tableContent = "<table style='clear:both;margin-bottom:6px;margin-top:10px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr class='rowSeparator'><td><a href=\"javascript:toggleTable(tableAttr)\"><img id='toggleImg_tableAttr' align='absmiddle' border='0' src='/webclient/common/images/toggleIcon2.gif'/></a><span class='boldTxt'><fmt:message key='webclient.config.task.form.tableattr.title'/> :</span>";
+
+	var operation = '<c:out value="${operation}"/>';
+	if(operation != 'execute')
+	{
+	    tableContent += "&nbsp;&nbsp;<a href=\"javascript:openMIBBrowser(true)\"><img align='absmiddle' border='0' class='addIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<span class='blueLink'><fmt:message key='webclient.config.task.form.tableattr.addTable'/></span></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"javascript:deleteAllTables()\"><img align='absmiddle' border='0' class='deleteIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<span class='blueLink'><fmt:message key='webclient.config.task.form.tableattr.deleteallTable'/></span></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=\"javascript:addTableRow()\"><img align='absmiddle' border='0' class='addIcon' src='/webclient/common/images/spacer.gif'/>&nbsp;<span class='blueLink'><fmt:message key='webclient.config.task.form.tableattr.addrow'/></span></a>";
+	}
+	tableContent += "</td></tr></table>";	
+	div.style.display="block";
+	div.innerHTML=tableContent;
+    }
+    else
+    {
+	div.style.display="none";
+    }
+}
+function validateTaskForm()
+{
+	document.TaskForm.taskName.value=trimAll(document.TaskForm.taskName.value);
+	document.TaskForm.description.value=trimAll(document.TaskForm.description.value);
+    if(isEmpty(document.TaskForm.taskName.value))
+    {
+	alert('<fmt:message key='webclient.config.task.taskName.empty'/>');
+	document.TaskForm.taskName.value="";
+        document.TaskForm.taskName.focus();
+	return 'false';
+    }
+    if(isSpecialSymbol(document.TaskForm.taskName.value))
+    {
+	    alert('<fmt:message key='webclient.config.alert.taskName.specialSymbols'/>');
+	    document.TaskForm.taskName.focus();
+	    return 'false';
+    }
+
+
+
+    var attrsize = dob.getTables().length;
+    if(document.TaskForm.protocol.value == 'snmp')
+    {
+	var tables = tob.getTables();
+	if(attrsize == 0 && tables.length ==0) 
+	{
+	    alert('<fmt:message key='webclient.config.task.attr.empty'/>');
+	    return 'false';
+	}
+        for(var i in tables)
+        {
+            var tableOID = tables[i];
+            var rows = tob.getRowsForTable(tableOID);
+	    if(rows == null || rows.length == 0)
+	    {
+                alert('<fmt:message key='webclient.config.task.table.empty'/>'+tableOID);
+                return 'false';	
+	    }
+	}
+    }
+    else if(attrsize == 0)
+    {
+	alert('<fmt:message key='webclient.config.task.attr.empty'/>');
+	return 'false';
+    }
+}
+
+function validateExecuteCT(form)
+{
+    var map = form.subtaskVsseldl.value;
+    <c:forEach var="protocolBasedList" items="${subtaskList}" varStatus="status">
+	<c:forEach var="subtask" items="${protocolBasedList.value}" varStatus="status">
+	    var subTask = '<c:out value="${subtask}"/>';
+	    if(map.indexOf(";"+subTask+",") == -1) 
+	    {
+		alert('<fmt:message key='webclient.config.ctask.save.nodl'/>'+subTask);
+		return false;
+	    }
+        </c:forEach>
+    </c:forEach>
+}
+
+function showNEInputTableTitle()
+{
+      
+
+	var div =  document.getElementById('neInputTableTitle');
+	var setNoData =  document.getElementById('neInputTable');
+	if(document.dsForm.protocol.value == 'snmp')
+	{
+		var table = "<table border='0' width='100%'><tr class='rowSeparator'><td><a href=\"javascript:toggleTable(neInputTable)\"><img id='toggleImg_neInputTable' align='absmiddle' border='0' src='/webclient/common/images/toggleIcon1.gif'/></a>&nbsp;<span class='boldTxt'><fmt:message key='webclient.config.ds.form.neInput'/> :</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='blueLink'><img align='absmiddle' class='addIcon' src='/webclient/common/images/spacer.gif'/> <a href=\"javascript:editInput('neInput','')\"><fmt:message key='webclient.config.ds.form.add'/></a>&nbsp;&nbsp; | &nbsp;&nbsp;<img align='absmiddle' class='deleteIcon' src='/webclient/common/images/spacer.gif'/> <a href=\"javascript:deleteAllInputs('neInput')\"><fmt:message key='webclient.config.ds.form.delall'/></a></span></td></tr></table>";
+		div.style.display='block';
+		div.innerHTML=table;
+		loadNEInputTable();
+	}
+	else
+	{
+	        div.style.display='none';
+                setNoData.style.display = 'none';
+	}
+}
+
+function showConfigDSLink()
+{
+    var div = document.getElementById('configDSLink');
+    var link;
+/*
+    if(document.TaskForm.isTemplate.value == 'true')
+    {	
+	link = "<a href='/config/ConfigDataSource.do?'><img border='0' align='absmiddle' class='addIcon' src='/webclient/common/images/spacer.gif'/> <fmt:message key='webclient.config.task.configds.link'/></a>&nbsp;&nbsp; | &nbsp;&nbsp;<a href=\"javascript:openNewWindow('/config/ConfigureDeviceList.do?')\"><img align='absmiddle' class='addIcon' border='0' src='/webclient/common/images/spacer.gif'/> <fmt:message key='webclient.config.task.configdl.link'/></a>";
+    }
+    else
+    {
+	link = "<img align='absmiddle' class='addIcon' src='/webclient/common/images/spacer.gif'/> <a href=\"javascript:openNewWindow('/config/ConfigureDeviceList.do?')\"><fmt:message key='webclient.config.task.configdl.link'/></a>";
+    }
+    div.innerHTML = link;
+*/
+}
+
+function showAlertToSelectDevice()
+{
+	alert('<fmt:message key='webclient.config.task.config.dev.select'/>');
+}
+function showEmptyDL()
+{
+    //var dlTable = "<table width='100%' height='100%' cellspacing='0' cellpadding='3' border='0'><tbody><tr valign='middle'><td class='configParams'><center><fmt:message key='webclient.config.task.form.attr.table.message'/></center></td></tr></tbody></table>";
+    //document.getElementById('dlTable').innerHTML=dlTable;
+    
+   
+    document.getElementById('dlTableSize').style.display='none';
+    document.getElementById("searchResultSize").style.display='';
+    document.getElementById("searchResultHeader").style.display='';
+    
+    document.getElementById("searchResultSize").width="100%";
+    
+    	   
+}
+function showCompleteDeviceList()
+{
+  
+	document.getElementById("searchResultSize").style.display='none';
+	document.getElementById("dlTableHeader").style.display='';
+	document.getElementById("dlTable").style.display='';
+      
+	document.getElementById("dlTableSize").style.display='';	
+	document.getElementById("dlTableSize").width='100%';
+	
+}
+
+function formEmptyDeviceTable()
+{
+	var table = "<table width='100%' height='100%' cellspacing='0' cellpadding='3' border='0'><tbody><tr valign='middle'><td><table width='100%' height='100%' cellspacing='0' cellpadding='3' border='0'><tbody><tr valign='middle'><td class='configParams'><center><fmt:message key='webclient.config.task.form.attr.table.message'/><a href=\"javascript:openSearch('configSearch')\" class='bluelink'>&nbsp;&nbsp;<fmt:message key='webclient.config.task.executeform.moredevices'/></a></center></td></tr></table></td></tr></tbody></table>";
+    //   document.getElementById('searchResult').style.display="block";
+       document.getElementById('searchResult').innerHTML=table;
+	document.getElementById('searchResultSize').style.display="none";
+	document.getElementById("dlTableSize").width="100%";
+}
+
+
+
+
+function showDevices(text,searchType)
+{
+
+
+	text = trimAll(text);
+	if(isEmpty(text))	
+	{
+		return;
+	}
+
+	if(text.indexOf("webclient.config.audit.executetask.search.nomatching")!=-1)
+	{
+		formEmptyDeviceTable();
+	}
+	else
+	{
+		var formName = searchType=='configSearch'?"TaskForm":"dlForm";
+var form=document.forms[formName];
+var protocol=form.protocol.value;
+		document.forms[formName].deviceattr.value="";
+		var devices = text.split(",");
+	
+                      var table=formTableBasedOnProtocol(protocol,devices,formName,'generaldc','searchResult');
+
+             }
+
+ 
+
+		var dlHeader=document.getElementById("dlTableHeader");
+		var searchHeader=document.getElementById("searchResultHeader");
+         
+		if(dlHeader!=null && searchHeader!=null)
+		{
+			searchHeader.style.display='none';
+			document.getElementById('searchResultSize').style.display='';
+			document.getElementById('searchResultSize').style.display='';
+			if(document.getElementById("dlTableSize").width=='100%')
+			{
+				if(document.getElementById("dlTableSize").style.display!='none')
+				{
+					document.getElementById("dlTableSize").width='50%';
+					document.getElementById("searchResultSize").width='50%';
+				}
+				else
+				{
+					document.getElementById("searchResultSize").width='100%';
+				}
+				document.getElementById('searchResult').innerHTML=table;
+			}
+			else
+			{
+				document.getElementById("searchResultSize").width='100%';
+				document.getElementById('searchResult').innerHTML=table;
+
+			}
+			var deviceTableDiv=document.getElementById('deviceTables');
+			var imgId = 'toggleImg_'+deviceTableDiv.id;
+			if(deviceTableDiv.style.display == 'none')
+			{
+				deviceTableDiv.style.display = 'block';
+				document.getElementById(imgId).src="/webclient/common/images/toggleIcon1.gif";
+			}
+
+
+		}
+
+		else
+		{
+			
+			document.getElementById('searchResult').innerHTML=table;
+		}
+	}
+function formTableBasedOnProtocol(protocol,devices,formName,popupDiv,refDiv)
+{
+
+document.forms[formName].deviceattr.value="";
+var attrs=";";
+var table="<table id='DevicesTable' width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody>";
+		table=table+"<tr class='generalTBHeader'><td></td><td></td><td width='30%'><fmt:message key='webclient.config.task.executeform.deviceconfig.devicename'/></td> <td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><fmt:message key='webclient.config.task.executeform.deviceconfig.retires'/></td><td><fmt:message key='webclient.config.task.executeform.deviceconfig.timeout'/></td></tr>";
+        var port='161';
+	if(protocol=='snmp')
+	{
+
+          port="161";
+	}
+	else if(protocol == 'ftp' || protocol == 'tftp')
+	{
+
+          port="21";
+	}
+
+	else if(protocol == 'tl1')	
+	{
+
+          port="9099";
+	}
+
+	else if(protocol == 'telnet')
+	{
+
+          port="23";
+	}
+	for(var i = 0;i<devices.length;i++)
+
+		{
+			if(devices[i]=='')
+			{
+				continue;
+			}
+			if(i%2==0)
+			{
+				table = table+"<tr id='"+i+"' class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+			}
+			else
+			{
+				table = table+"<tr  id='"+i+"' class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+			}
+
+
+attrs=attrs+"host="+devices[i]+",port="+port+",retries=3,timeout=5000,community=public,version=v1;";
+
+			table = table + "<td  style='padding-right: 5px; width: 10px;'><a href=\"javascript:showDeviceAttribs('"+formName+"','"+devices[i]+"','"+popupDiv+"','"+refDiv+"',450)\"><img class='editIcon' border='0' align='absmiddle' src='/webclient/common/images/spacer.gif' title='<fmt:message key="webclient.config.taskForm.devices.edit"/>'/></a></td><td style='padding-right: 6px;'><a href=\"javascript:deleteDeviceRow('DevicesTable',"+i+",'"+formName+"','"+devices[i]+"');\"><img class='deleteIcon' border='0' align='absmiddle' title='<fmt:message key="webclient.config.taskForm.devices.delete"/>' src='/webclient/common/images/spacer.gif'/></a></td><td width='30%' style='padding-left:5px;'><input name='rowSelectionDevices'  type='hidden' style='vertical-align:middle;margin:0px;padding:0px;' value="+devices[i]+" onclick = 'javascript:ToggleDl(this,this.form,event)'> "+devices[i]+"</td><td><div id='"+devices[i]+"Port' align='left'>"+port+"</div></td><td><div id='"+devices[i]+"Retries' align='left'>3</div></td><td ><div id='"+devices[i]+"Timeout' align='left'>5000 </div></td> </tr>";
+
+		}
+	
+
+	
+	table = table+"</tbody></table>";
+document.forms[formName].deviceattr.value=attrs;
+
+
+	return table;
+}
+function deleteDeviceRow(tableID,index,formName,deviceName)
+{
+	if(confirm('<fmt:message key='webclient.config.task.delete.device'/>') == false) return;
+
+	var table = document.getElementById(tableID);
+	var rowvar= document.getElementById(index);
+	index=rowvar.rowIndex;
+	table.deleteRow(index);
+	var deleteName=";host="+deviceName;
+	var form = document.forms[formName];    	
+	var deviceattr = form.deviceattr.value;
+	var firIndex=deviceattr.indexOf(deleteName);
+	var firSection=deviceattr.substring(0,firIndex); 
+
+	var secIndex=deviceattr.indexOf(";",firIndex+1);
+	var secSection="";
+	if(secIndex!=-1)
+	{
+		secSection=deviceattr.substring(secIndex);
+	}
+
+
+	form.deviceattr.value=firSection+secSection;
+}
+
+
+
+</script>

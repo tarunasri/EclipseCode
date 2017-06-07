@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><DISCOVERY_FILTERS>
+<!--
+   This file lists Java classes to be run as discovery filters
+   The classes must implement com.adventnet.nms.topodb.FoundFilter
+   Please see the example in the examples dir
+
+   Example Syntax:
+
+   <FILTER className="filterClassName1" />
+   <FILTER className="filterClassName2" />
+
+-->
+<FILTER className="test.SwitchDiscoveryFilter"/>
+<FILTER className="test.PrinterDiscoveryFilter"/>
+<FILTER className="com.dgca.discovery.MyDiscoveryFilter"/>
+
+
+<FILTER className="com.dgca.discovery.MyDiscoveryFilter"/>
+</DISCOVERY_FILTERS>

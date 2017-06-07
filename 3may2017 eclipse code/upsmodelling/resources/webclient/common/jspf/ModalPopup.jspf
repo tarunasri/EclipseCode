@@ -1,0 +1,88 @@
+<%-- $Id: ModalPopup.jspf,v 1.1 2007/09/14 10:33:39 gnanasekar Exp $ --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<script>
+Dialog={};
+Dialog.init = function()
+{
+    this.mask = document.createElement('div');
+    this.mask.style.position='absolute';
+    this.mask.style.backgroundColor='#7C7A9A';
+    this.mask.style.left='0px';
+    this.mask.style.top ='0px';
+    var db = document.body;
+    this.mask.style.width= screen.availWidth-24;
+    this.mask.style.height=screen.availHeight;
+    this.mask.style.opacity=0.3;	
+    this.mask.style.filter = "alpha(opacity=" + 3*10 + ")";
+    this.mask.id='alertMask';
+    this.mask.style.zIndex=990;
+    this.mask.style.display="none";
+    db.insertBefore(this.mask,db.firstChild);
+};
+
+$ = function(id) 
+{
+    return document.getElementById(id);
+}
+
+Dialog.show = function(url,title,width,height) 
+{
+    var pop = $('ModalPopup');
+    var ifr = $('popupIFrame');    
+    var db = document.body;
+    ifr.src = url; 
+    ifr.width = width;    
+    ifr.height = height;
+    document.getElementById('titleDiv').innerHTML=title;
+    pop.style.display = '';
+    pop.style.left=parseInt((db.clientWidth/2) - (pop.clientWidth/2))+'px';
+    pop.style.top=parseInt((db.clientHeight/2) - (pop.clientHeight/2))+'px';
+    this.mask.style.display = '';
+};
+
+Dialog.hide = function(x) 
+{
+    var pop = $(x);
+    pop.style.display = 'none';
+    var ifr = $('popupIFrame');  
+    ifr.src = '';    
+    this.mask.style.display = 'none';        
+};
+
+function hidediv(tab1,tab2,tab3)
+{
+    document.getElementById(tab1).style.display = "";
+    document.getElementById(tab2).style.display = "none";
+    document.getElementById(tab3).style.display = "none";
+}
+function closePopupDialog()
+{
+        alert("yes");
+    Dialog.hide('ModalPopup');
+}
+</script>
+<div id="ModalPopup" style="width:430px; position:absolute; display:none; z-index:991">
+  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="popuptl"><img src="/webclient/common/images/spacer_new.gif" height="13px" width="13px"></td>
+      <td  class="popuptmain"></td>
+      <td class="popuptr"></td>
+    </tr>
+    <tr>
+      <td class="popuplmain"></td>
+      <td valign="top" bgcolor="#FFFFFF" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="boldTxt" align="center"><div id="titleDiv"></div></td>
+            <td width="10" ><img style="cursor:pointer;" onClick="Dialog.hide('ModalPopup')" src="/webclient/common/images/close-popup.gif" ></td>
+          </tr>
+        </table>
+        <div style="padding:7px;"><iframe id="popupIFrame" FRAMEBORDER=0 scrolling="no"></iframe></div></td>
+      <td class="popuprmain"></td>
+    </tr>
+    <tr>
+      <td class="popupbl"></td>
+      <td align="right" class="popupbmain"></td>
+      <td class="popupbr"><img src="/webclient/common/images/spacer_new.gif" height="13px" width="13px"></td>
+    </tr>
+  </table>
+</div>

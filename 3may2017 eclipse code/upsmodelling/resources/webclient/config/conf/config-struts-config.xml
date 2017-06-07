@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id: config-struts-config.xml,v 1.2 2010/10/29 13:47:04 swaminathap Exp $ -->
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+
+
+<form-beans>
+
+    <form-bean name="TaskForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="taskName" type="java.lang.String"/>
+      <form-property name="protocol" type="java.lang.String" initial="snmp"/>
+      <form-property name="description" type="java.lang.String"/>
+      <form-property name="overwrite" type="boolean" initial="false"/>
+      <form-property name="isTemplate" type="boolean" initial="false"/>
+      <form-property name="rollbackTask" type="java.lang.String"/>
+      <form-property name="attrXML" type="java.lang.String"/>
+      <form-property name="tableXML" type="java.lang.String"/>
+      <form-property name="tableOIDs" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="searchForm" type="com.adventnet.nms.webclient.components.advancedsearch.SearchForm">
+      <form-property name="selectedKeys" type="java.lang.String[]"/>
+      <form-property name="selectedConditions" type="java.lang.String[]"/>
+      <form-property name="criteriaValues" type="java.lang.String[]"/>
+      <form-property name="logicalCondition" type="java.lang.String" initial="1"/>
+      <form-property name="rows" type="java.lang.String" initial="1"/>
+      <form-property name="cvName" type="java.lang.String"/>
+      <form-property name="actionToPerform" type="java.lang.String" initial="search"/>
+    </form-bean>
+</form-beans>
+
+<global-exceptions>
+
+    <exception handler="com.adventnet.nms.webclient.common.DefaultExceptionHandler" type = "java.lang.Exception" key = "" />
+
+</global-exceptions>
+
+
+<global-forwards>
+    <forward name="messagePage" path="message" contextRelative="true"/>
+    <forward name="errorPage" path="error" contextRelative="true"/>
+    <forward name="updated" path = "/webclient/common/jsp/updated.jsp" contextRelative = "true"/>
+</global-forwards>
+
+<action-mappings>
+    <action path="/AuditView"
+	    type="com.adventnet.nms.webclient.config.audit.AuditViewAction"
+            scope="request">
+	    <forward name="viewAudit" path="AuditViewPage" contextRelative = "true"/>
+    </action>
+
+    <action path="/AuditViewOperation"
+            type="com.adventnet.nms.webclient.config.audit.AuditCVAction"
+            parameter="action"
+            scope="request">
+	    <forward name="showColumns" path="/webclient/common/jsp/ShowColumns.jsp" contextRelative = "true"/>
+	    <forward name="cvForm" path="auditCVPage" contextRelative="true"/>
+            <forward name="cvStatus" path="/webclient/config/jsp/cvStatus.jsp" contextRelative="true"/>
+    </action>
+
+    <action path="/AttributeAuditAction"
+            type="com.adventnet.nms.webclient.config.audit.AttributeAuditAction"
+	    scope="request">
+	    <forward name="auditView" path="/webclient/config/jsp/attributeAudit.jsp" contextRelative="true"/>
+    </action>
+
+    <action name="searchForm" 
+	    path="/AdvancedAuditSearch"
+            type="com.adventnet.nms.webclient.config.audit.AuditSearchAction"
+            scope="request"
+            parameter="method" validate="false">
+	    <forward name="searchView" path="auditSearchDef" contextRelative="true"/>
+    </action>
+
+    <action name="searchForm"
+            path="/AuditCVOperation"
+            type="com.adventnet.nms.webclient.config.audit.AuditSearchAction"
+            scope="request"
+            parameter="method" validate="false">
+            <forward name="searchView" path="auditCVDef" contextRelative="true"/>
+            <forward name="cvOperation" path="auditCVDef" contextRelative="true"/>
+            <forward name="cvStatus" path="/webclient/config/jsp/cvStatus.jsp" contextRelative="true"/>
+    </action>
+
+    <action path="/TaskList"
+            type="com.adventnet.nms.webclient.config.task.TaskListAction"
+            scope="request">
+            <forward name="taskView" path="TaskViewPage" contextRelative="true"/>
+    </action>
+
+    <action path="/AddTask" type="org.apache.struts.actions.ForwardAction"
+	    scope="request" parameter="taskFormPage" name="TaskForm" validate="false"/>
+
+    <action path="/TaskAction"
+            type="com.adventnet.nms.webclient.config.task.TaskAction"
+	    scope="request"
+	    name="TaskForm"
+	    validate="false"
+	    parameter="actionToPerform">
+	    <forward name="taskForm" path="taskFormPage" contextRelative="true"/>
+	    <forward name="combinedTaskForm" path="createTaskPage" contextRelative="true"/>
+	    <forward name="dlForm" path="dlPage" contextRelative="true"/>
+	    <forward name="associationForm" path="/webclient/config/jsp/assignTask.jsp" contextRelative="true"/>
+	    <forward name="redirect" path="/webclient/config/jsp/redirectPage.jsp" contextRelative="true"/>
+    </action>
+
+
+    <action path="/DataSourceAction" type="com.adventnet.nms.webclient.config.task.DataSourceAction" scope="request" name="TaskForm" validate="false" parameter="actionToPerform">
+	    <forward name="getDataSource" path="/webclient/config/jsp/dataSourcePage.jsp" contextRelative="true"/>
+	    <forward name="dsForm" path="dsPage" contextRelative="true"/>
+    </action>
+
+    <action path="/DeviceListAction"
+            type="com.adventnet.nms.webclient.config.task.DeviceListAction"
+	    scope="request"
+	    validate="false"
+	    parameter="actionToPerform">
+	    <forward name="dlForm" path="dlPage" contextRelative="true"/>
+	    <forward name="editDeviceList" path="addDeviceListPage" contextRelative="true"/>
+	    <forward name="redirect" path="/webclient/config/jsp/redirectPage.jsp" contextRelative="true"/>
+    </action>
+
+    
+    <action path="/TaskOperations"
+            type="com.adventnet.nms.webclient.config.task.TaskOperationsAction"
+            scope="request"
+            parameter="method">
+	    <forward name="taskList" path="/config/TaskList.do" contextRelative="true"/>
+    </action>
+
+    <action path="/ConfigDeviceList"
+            type="org.apache.struts.actions.ForwardAction"
+            scope="request"
+	    parameter="dlPage"/>
+
+    <action path="/ConfigDataSource"
+            type="org.apache.struts.actions.ForwardAction"
+            scope="request"
+            parameter="dsPage"/>
+
+    <action path="/ConfigureDeviceList"
+            type="org.apache.struts.actions.ForwardAction"
+            scope="request"
+	    parameter="/webclient/config/jsp/configureDeviceList.jsp"/>
+
+    <action path="/AddDeviceList"
+            type="org.apache.struts.actions.ForwardAction"
+            scope="request"
+	    parameter="addDeviceListPage"/>
+
+
+    <action path="/ConfigureDataSource"
+            type="org.apache.struts.actions.ForwardAction"
+            scope="request"
+	    parameter="/webclient/config/jsp/configureDataSource.jsp"/>
+
+</action-mappings>
+
+<controller inputForward="true" />
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/webclient/config/conf/config-tiles-defn.xml" />
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

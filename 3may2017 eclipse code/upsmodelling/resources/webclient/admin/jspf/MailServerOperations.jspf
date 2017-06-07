@@ -1,0 +1,353 @@
+<%-- $Id: MailServerOperations.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+
+<script>
+
+var modifyMail;
+
+function addAccount()
+{
+	
+    resetFields();
+	showAccountDiv();
+	modifyMail = false;
+}
+
+function showAccountDiv()
+{
+	//document.getElementById('popUpPosition').className="hide";
+	document.getElementById('addAccountDiv').style.display="";
+}
+
+function hideAccountDiv()
+{
+	//document.getElementById('popUpPosition').className="";
+    document.getElementById('addAccountDiv').style.display="none";
+}
+
+function setDisplayProps()
+{
+	    <c:choose>
+            <c:when test="${!empty failure}">
+				document.getElementById('errorTab').className="";
+				<c:choose>
+					<c:when test="${modifyMail eq 'true' }">
+						document.MailServerForm.accountname.className="formStylereadOnly";
+						document.MailServerForm.accountname.readOnly = true;
+						document.getElementById("modifyTitle").className="boldTxt";
+						document.getElementById("addTitle").className="hide";
+						modifyMail = true;
+	    			</c:when>
+        			<c:otherwise>
+        				document.MailServerForm.accountname.className="formStyle";
+        				document.MailServerForm.accountname.readOnly = false;
+        				document.getElementById("modifyTitle").className="hide";
+        				document.getElementById("addTitle").className="boldTxt";
+        				modifyMail = false;
+        			</c:otherwise>
+				</c:choose>
+				pageOnLoad();
+				showAccountDiv();
+	    	</c:when>
+        	<c:when test="${!empty success}">
+				document.getElementById('errorTab').className="";
+				<c:choose>
+				<c:when test="${modifyMail eq 'true' }">
+					document.MailServerForm.accountname.className="formStylereadOnly";
+					document.MailServerForm.accountname.readOnly = true;
+					document.getElementById("modifyTitle").className="boldTxt";
+					document.getElementById("addTitle").className="hide";
+					modifyMail = true;
+    			</c:when>
+    			<c:otherwise>
+    				document.MailServerForm.accountname.className="formStyle";
+    				document.MailServerForm.accountname.readOnly = false;
+    				document.getElementById("modifyTitle").className="hide";
+    				document.getElementById("addTitle").className="boldTxt";
+    				modifyMail = false;
+    			</c:otherwise>
+			</c:choose>
+				pageOnLoad();
+            	showAccountDiv();
+	    	</c:when>
+        	<c:otherwise>
+				hideAccountDiv();
+        	</c:otherwise>
+        </c:choose>
+
+}
+
+function resetFields()
+{
+    var size = document.MailServerForm.elements.length;
+    for(i = 0;i<size;i++)
+    {
+		var type = document.MailServerForm.elements[i].type;
+		if(type == 'radio' || type == 'checkbox')
+		{
+			if(document.MailServerForm.elements[i].name == 'smtp')
+            {
+               document.MailServerForm.elements[i].checked = true;
+            }
+            else
+            {
+               document.MailServerForm.elements[i].checked = false;
+            }
+		}
+		else if(type == 'text' || type == "password")
+    	{
+    		document.MailServerForm.elements[i].value = '';
+    	}	
+	}
+    document.MailServerForm.serverport.value="25";
+	document.MailServerForm.accountname.className="formStyle";
+	document.MailServerForm.accountname.readOnly = false;
+    enDisFields();
+    document.getElementById('errorTab').className="hide";
+    document.getElementById("modifyTitle").className="hide";
+	document.getElementById("addTitle").className="boldTxt";
+}
+
+function editAccount(name,props)
+{
+	resetFields();
+	props =	props.substring(1,props.length -1);
+	var array = props.split(",");
+	var size = array.length;
+	var innerArray;
+	var key;
+	var value;
+	for(i =0;i<size;i++)
+	{
+		innerArray = array[i].split("=");
+		key = trimAll(innerArray[0]);
+		value = trimAll(innerArray[1]);
+		if(key == "FROM_ADDRESS")
+		{
+			document.MailServerForm.fromaddress.value=value;			
+		}
+		else if(key == "TO_ADDRESS")
+		{
+			document.MailServerForm.toaddress.value=value;
+		}
+		else if(key == "SMTP_SERVER")
+                {
+			document.MailServerForm.servername.value=value;
+                }
+		else if(key == "PORT")
+                {
+			document.MailServerForm.serverport.value=value;
+                }
+		else if(key == "SMTP_SSL")
+                {
+			if(value == "false")
+			{
+				document.MailServerForm.smtp.checked = true;
+				document.MailServerForm.smtpssl.checked = false;
+			}
+			else
+			{
+				document.MailServerForm.smtp.checked = false;
+                                document.MailServerForm.smtpssl.checked = true;
+			}
+                }
+		else if(key == "USER_NAME")
+                {
+			document.MailServerForm.username.value=value;
+                }
+		else if(key == "PASSWORD")
+                {
+			document.MailServerForm.userpassword.value=value;
+                }
+		else if(key == "AUTH")
+                {
+			if(value == "false")
+                        {
+                                document.MailServerForm.requiresauth.checked = false;
+                        }
+                        else
+                        {
+                                document.MailServerForm.requiresauth.checked = true;
+                        }
+                }
+
+	}
+	document.MailServerForm.accountname.className="formStylereadOnly";
+	document.MailServerForm.accountname.readOnly = true;
+	document.MailServerForm.accountname.value=name;	
+	document.getElementById("modifyTitle").className="boldTxt";
+	document.getElementById("addTitle").className="hide";
+	enDisFields();
+	showAccountDiv();
+	modifyMail = true;
+}
+
+function validatethisformAndUpdate()
+{
+	var accountname=trimAll(document.MailServerForm.accountname.value);
+
+        if(isEmpty(accountname))
+        {
+                alert('<fmt:message key="webclient.admin.mailserver.invalid.accountname"/>');
+                document.MailServerForm.accountname.focus();
+                return false;
+        }
+
+    if(modifyMail == false)
+    {
+    	var names = '<c:out value="${accountNames}"/>';
+    	names =	names.substring(1,names.length -1);
+    	var nameList = names.split(",");
+		var size = nameList.length;
+		while(size--)
+    	{
+	    	if(trimAll(nameList[size]) == accountname)
+			{
+			 	alert('<fmt:message key="webclient.admin.mailserver.exists.accountname"/>');
+             	document.MailServerForm.accountname.focus();
+             	return false;
+			}
+    	}
+    }
+    
+	var servername=trimAll(document.MailServerForm.servername.value);
+
+	if(isEmpty(servername))
+	{
+		alert('<fmt:message key="webclient.admin.mailserver.invalid.servername"/>');
+		document.MailServerForm.servername.focus();
+		return false;
+	}
+	var serverport=trimAll(document.MailServerForm.serverport.value);
+	if(serverport==0|| isEmpty(serverport) || !isPositiveInteger(serverport))
+	{
+		alert('<fmt:message key="webclient.admin.mailserver.invalid.serverport"/>');
+		document.MailServerForm.serverport.focus();
+		return false;
+	}
+	if(document.MailServerForm.requiresauth.checked==true)
+	{
+		var username=trimAll(document.MailServerForm.username.value);
+		var userpassword=trimAll(document.MailServerForm.userpassword.value);
+		if(isEmpty(username) || username==null)	
+		{
+			alert('<fmt:message key="webclient.admin.mailserver.invalid.username"/>');
+			document.MailServerForm.username.focus();
+			return false;
+		}
+		if(isEmpty(userpassword) || userpassword==null)	
+		{
+			alert('<fmt:message key="webclient.admin.mailserver.invalid.password"/>');
+			document.MailServerForm.userpassword.focus();
+			return false;
+		}	
+
+	}
+	var fromaddress=trimAll(document.MailServerForm.fromaddress.value);
+	if(isEmpty(fromaddress) || !isEmailId(fromaddress))
+	{	
+		alert('<fmt:message key="webclient.admin.mailserver.invalid.fromemailid"/>'+fromaddress);
+		document.MailServerForm.fromaddress.focus();
+		return false;	
+
+	}
+	var toaddress=trimAll(document.MailServerForm.toaddress.value);
+	var strr = toaddress.split(",");
+	var leng = strr.length;	
+	var entity = '';
+	for (var k=0; k < leng; k++)
+	{
+		entity = trimAll(strr[k]);
+		if(!isEmailId(entity))
+		{
+			alert('<fmt:message key="webclient.admin.mailserver.invalid.toemailid"/>'+entity);
+			document.MailServerForm.toaddress.focus();
+			return false;		
+		}
+
+	}
+	return true;
+}
+
+function enDisFields()
+{
+	if ( document.MailServerForm.requiresauth.checked == false)
+	{
+                document.MailServerForm.username.value='';
+                document.MailServerForm.userpassword.value = '';
+		document.MailServerForm.username.readOnly = true;
+		document.MailServerForm.username.className="formStylereadOnly";
+		document.MailServerForm.userpassword.readOnly = true;
+		document.MailServerForm.userpassword.className="formStylereadOnly";
+	}
+	else
+	{
+		document.MailServerForm.username.readOnly = false;
+		document.MailServerForm.username.className="formStyle";
+		document.MailServerForm.userpassword.readOnly = false;
+		document.MailServerForm.userpassword.className="formStyle";
+	}
+}
+
+function pageOnLoad()
+{
+	var username=trimAll(document.MailServerForm.username.value);
+	if(isEmpty(username))
+	{
+		document.MailServerForm.requiresauth.checked=false;
+	}
+	else
+	{	
+		document.MailServerForm.requiresauth.checked=true;
+	}
+	enDisFields();
+
+}
+function invert(frm,type)
+{
+	var serverport=trimAll(document.MailServerForm.serverport.value);
+	if(type=='smtp')
+	{
+		if(serverport !=25)
+		{
+			document.MailServerForm.serverport.value=25;
+		}
+		frm.smtpssl.checked=false;
+
+	}
+	else
+	{
+		if(serverport !=465)
+		{
+			document.MailServerForm.serverport.value=465;
+		}
+		frm.smtp.checked=false;
+	}
+}
+
+
+function testmail(returnPage)
+{
+    document.MailServerForm.action="/admin/MailServerSettingsadmin.do?method=testMail&modify="+modifyMail+"&returnPageVal="+returnPage;
+    return validatethisformAndUpdate();
+}
+
+function updateAccount(returnPage)
+{
+    document.MailServerForm.action="/admin/MailServerSettingsadmin.do?method=update&modify="+modifyMail+"&returnPageVal="+returnPage;
+    return validatethisformAndUpdate();
+}
+
+function deleteAccount(accountName,returnPage)
+{    
+    var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+    if(con != true)
+    {
+      return;
+    }
+    else
+    {
+	location.href="/admin/MailServerSettingsadmin.do?method=deleteAccount&accountname="+accountName+"&returnPageVal="+returnPage;
+    }
+}
+
+</script>

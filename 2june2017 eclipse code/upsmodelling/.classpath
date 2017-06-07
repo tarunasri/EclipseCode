@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="SERVER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="resources/classes/hbnlib"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/NmsServerClasses.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetOPExtn.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSUMClient.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetUpdateManagerInstaller.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSUMServer.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/Mail.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/activation.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSAS.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSnmpDistributedAPI.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetNPrevalent.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/bsh-1.2b3.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/ManagementServer.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/ManagementClient.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/apache/tomcat/common/lib/servlet-api.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/apache/tomcat/bin/bootstrap.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/JimiProClasses.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/jfreechart.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/jcommon.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/ftp.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetUI.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/apache/tomcat/common/lib/jsp-api.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/log4j.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/apache/tomcat/bin/tomcat-juli.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/apache/tomcat/bin/commons-logging-api.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/json.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/ant-antlr-1.6.5.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/antlr-2.7.6.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/asm.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/asm-attrs.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/c3p0-0.9.1.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/cglib-2.1.3.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/commons-collections-2.1.1.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/commons-logging-1.0.4.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/dom4j-1.6.1.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/ehcache-1.2.3.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/hbnlib/hibernate3.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/p6spy.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/jta.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSnmp.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/SNMPDebugger.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/NmsClientClasses.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetAboutDialog.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/jnlp.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetCCLLibrary.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetProBeans.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetSnmpV3USM.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/ClientExamples.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetUtils.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/ApiUtils.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/classes/AdventNetDMPModels.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/NetMonitor/build/PerformanceGraphs.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/NetMonitor/build/RuntimeConfigFrame.jar"/>
+	<classpathentry exported="true" kind="var" path="NMS_HOME_upsmodelling/NetMonitor/build/AuthMain.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetCLI.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetCLIClient.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetJta.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetTftp.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetTL1.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/AdventNetTL1Tools.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/debugger.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/j2ssh-common.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/j2ssh-core.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentraltest/infracentral/classes/jgroups-all.jar"/>
+	<classpathentry kind="lib" path="/root/Desktop/UMS/infracentral/NetMonitor/build/ConfigPanel.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

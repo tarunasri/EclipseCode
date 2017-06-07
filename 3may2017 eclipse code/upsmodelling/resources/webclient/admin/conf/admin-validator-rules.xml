@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: admin-validator-rules.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <global>
+
+      <validator name="requiredif"
+                 classname="org.apache.struts.validator.FieldChecks"
+                 method="validateRequiredIf"
+                 methodParams="java.lang.Object,
+                               org.apache.commons.validator.ValidatorAction,
+                               org.apache.commons.validator.Field,
+                               org.apache.struts.action.ActionErrors,
+                               org.apache.commons.validator.Validator,
+                               javax.servlet.http.HttpServletRequest"
+                 msg="webclient.performance.reports.required">
+         <javascript><![CDATA[
+
+	function validateRequiredIf(form) {
+	        if(trim(form.rsubmit.value) != "")
+        	 {
+			if (trim(form.elements[0].value) == "")
+			{
+				alert(noagentmsg);
+				form.elements[0].focus();
+				return false;
+			}
+		}
+		return true;
+	  }
+
+            // Trim whitespace from left and right sides of s.
+            function trim(s) {
+                return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+            }
+
+            ]]>
+         </javascript>
+      </validator>
+     <validator name="dateRequiredIf"
+            classname="com.adventnet.nms.webclient.common.CustomValidationRules"
+               method="dateRequiredIf"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="webclient.performance.reports.daterequired.message">
+
+        <javascript><![CDATA[
+            function dateRequiredIf(form) {
+		var period = trim(form.period.value);
+		var startDate = trim(form.startDate.value);
+		var endDate = trim(form.endDate.value);
+		if (period == "custom")
+		{	
+			if (startDate == "")
+			{
+			   alert(startDateMessage);
+			   return false;
+			}
+			if (endDate == "")
+			{
+			   alert(endDateMessage);
+			   return false;
+			}
+		}
+		return true;
+	    }
+
+            // Trim whitespace from left and right sides of s.
+            function trim(s) {
+                return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+            }
+            ]]>
+         </javascript>
+      </validator>
+    <validator name="validateDateOrder"
+            classname="com.adventnet.nms.webclient.common.CustomValidationRules"
+               method="validateDateOrder"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="webclient.performance.reports.improperdates.message">
+        <javascript><![CDATA[
+            function validateDateOrder(form) {
+                var period = trim(form.period.value);
+                var startDate = new Date(trim(form.startDate.value));
+                var endDate = new Date(trim(form.endDate.value));
+                if (period == "custom")
+                {
+                        if (startDate == "")
+                        {
+                           alert(startDateMessage);
+                           return false;
+                        }
+                        if (endDate == "")
+                        {
+                           alert(endDateMessage);
+                           return false;
+                        }
+                        var startTime = startDate.getTime();
+                        var endTime = endDate.getTime();
+                        if (startTime > endTime)
+                        {
+                           alert(invalidDateMessage);
+                           return false;
+                        }
+                }
+                return true;
+            }
+
+            // Trim whitespace from left and right sides of s.
+            function trim(s) {
+                return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+            }
+            ]]>
+         </javascript>
+      </validator>
+   </global>
+</form-validation>

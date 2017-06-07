@@ -1,0 +1,227 @@
+<!--$Id: ModalPopup.jspf,v 1.3 2010/10/29 13:46:55 swaminathap Exp $-->
+<script>
+function stopTabKeyNavigation(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        if (evt.keyCode == 9){return false;}
+}
+function startTabKeyNavigation(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        if (evt.keyCode == 9){return true;}
+}
+Dialog={};
+Dialog.init = function(){
+    this.mask = document.createElement('div');
+    this.mask.style.position='absolute';
+    this.mask.style.backgroundColor='#7C7A9A';
+    this.mask.style.left='0px';
+    this.mask.style.top ='0px';
+    var db = document.body;
+	//alert(outerHeight);
+/* fix for setting the width and height for the whole page upon masking */
+    this.mask.style.width= getWidth();
+    this.mask.style.height=getHeight();
+	// alert(screen.availHeight);
+    this.mask.style.opacity=0.3;	
+    this.mask.style.filter = "alpha(opacity=" + 3*10 + ")";
+    this.mask.id='alertMask';
+    this.mask.style.zIndex=990;
+    this.mask.style.display="none";
+    db.insertBefore(this.mask,db.firstChild);
+};
+$ = function(id) {
+return document.getElementById(id);
+}
+
+Dialog.show = function(x) {
+//alert(x);
+var pop = $(x);
+    var db = document.body;
+	pop.style.display = '';
+    pop.style.left=parseInt((db.clientWidth/2) - (pop.clientWidth/2))+'px';
+    pop.style.top=parseInt((db.clientHeight/2) - (pop.clientHeight/2))+'px';
+	this.mask.style.display = '';
+document.onkeydown = stopTabKeyNavigation;
+};
+Dialog.hide = function(x) {
+var pop = $(x);
+pop.style.display = 'none';
+this.mask.style.display = 'none';
+document.onkeydown = startTabKeyNavigation;
+};
+
+function hidediv(tab1,tab2,tab3)
+{
+    document.getElementById(tab1).style.display = "";
+    document.getElementById(tab2).style.display = "none";
+	document.getElementById(tab3).style.display = "none";
+}
+
+function getHeight() {
+        var myHeight = "100%";
+        if (document.body.scrollHeight && navigator.appVersion.indexOf("Win") != -1) {
+                // body.scrollHeight gets the correct value on WIN IE6, but non on MAC
+                myHeight = document.body.scrollHeight;
+        }
+        else if(window.innerHeight && window.scrollMaxY) //Firefox
+	{
+		myHeight = window.innerHeight + window.scrollMaxY;
+	} 
+	else if (document.documentElement.scrollHeight) {
+                myHeight = parseInt(document.documentElement.scrollHeight);
+        }
+        else if (document.documentElement.offsetHeight) {
+                myHeight = parseInt(document.documentElement.offsetHeight);
+        }
+        return myHeight;
+}
+
+function getWidth() {
+        var myWidth = "100%";
+        if (document.body.scrollWidth && navigator.appVersion.indexOf("Win") != -1) {
+                // body.scrollWidth gets the correct value on WIN IE6, but non on MAC
+                myWidth = document.body.scrollWidth;
+        }
+        else  if( window.innerHeight && window.scrollMaxY ) // Firefox
+	{
+		 myWidth = window.innerWidth + window.scrollMaxX;
+	}
+	else if (document.documentElement.scrollWidth) {
+                myWidth = parseInt(document.documentElement.scrollWidth);
+        }
+        else if (document.documentElement.offsetWidth) {
+                myWidth = parseInt(document.documentElement.offsetWidth);
+        }
+        return myWidth;
+}
+
+
+var webp = "";
+var popH = "";
+var popW = "";
+var popHeadr = "";
+var loadMsg = "";
+
+function showPopUp(url,header,w,h,drag,popStatus,loadMsg, scrollOption)
+{
+document.getElementById('popmeup').style.display ='block';
+var htmlcontent="<div id=\"popupOverlay\"></div><table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" id=\"adiv\"><tr><td colspan=\"2\" rowspan=\"2\" align=\"center\" valign=\"top\"><table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"tableOne\" id=\"tableOneStyle\"><tr><td align=\"left\" valign=\"middle\" class=\"tableHeader\" id=\"tableHeaderStyle\" ><div id=\"floatTitle\">Map Views</div> <div id=\"floatButons\"><a href=\"javascript:shutPopUp()\"><img src=\"/webclient/common/images/mapClose1Button.gif\" border=\"0\" align=\"absmiddle\" /></a></div><div id=\"popable\" style=\"float:right;\"><a href=\"javascript:pushPopUp()\"><img src=\"/webclient/common/images/mapPopupButton.gif\" border=\"0\"/></a></div> <div style=\"clear:both;\"></div></td></tr><tr><td align=\"left\" valign=\"middle\" bgcolor=\"#FFFFFF\"><iframe class=\"ifr\" align=\"top\" frameborder=\"0\"  marginwidth=\"0px\" marginheight=\"0px\" width=\"100%\" height=\"100%\" name=\"ifr\" id=\"ifr\"></iframe><div id=\"floatContent\" style=\"height:100%; overflow-y: auto;\"></div></td></tr></table></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightTopFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"></td></tr><tr><td width=\"200\" align=\"left\" valign=\"top\" class=\"sideFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"  /></td></tr><tr><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"leftBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td><td width=\"100%\" height=\"11\" align=\"left\" valign=\"top\" class=\"botFill\"></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td></tr></table>";
+var htmlcontentNoframe = "<div id=\"popupOverlay\"></div><table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" id=\"adiv\"><tr><td colspan=\"2\" rowspan=\"2\" align=\"center\" valign=\"top\"><table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"tableOne\" id=\"tableOneStyle\"><tr><td align=\"left\" valign=\"middle\" class=\"tableHeader\" id=\"tableHeaderStyle\" ><div id=\"floatTitle\">Map Views</div> <div id=\"floatButons\"><a href=\"javascript:shutPopUp()\"><img src=\"/webclient/common/images/mapClose1Button.gif\" border=\"0\" align=\"absmiddle\" /></a></div><div id=\"popable\" style=\"float:right;\"><a href=\"javascript:pushPopUp()\"><img src=\"/webclient/common/images/mapPopupButton.gif\" border=\"0\"/></a></div> <div style=\"clear:both;\"></div></td></tr><tr><td align=\"left\" valign=\"middle\" bgcolor=\"#FFFFFF\"><iframe scrolling=\"no\" class=\"ifr\" align=\"top\" frameborder=\"0\"  marginwidth=\"0px\" marginheight=\"0px\" width=\"100%\" height=\"100%\" name=\"ifr\" id=\"ifr\" style=\"height:100%;width:100%;overflow-y:no;\"></iframe><div id=\"floatContent\" style=\"height:100%; overflow-y: auto;\"></div></td></tr></table></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightTopFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"></td></tr><tr><td width=\"200\" align=\"left\" valign=\"top\" class=\"sideFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"  /></td></tr><tr><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"leftBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td><td width=\"100%\" height=\"11\" align=\"left\" valign=\"top\" class=\"botFill\"></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td></tr></table>";
+
+var htmlcontentNoframeFireFox = "<div id=\"popupOverlay\"></div><table width=\"100%\" height=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" id=\"adiv\"><tr><td colspan=\"2\" rowspan=\"2\" align=\"center\" valign=\"top\"><table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"tableOne\" id=\"tableOneStyle\"><tr><td align=\"left\" valign=\"middle\" class=\"tableHeader\" id=\"tableHeaderStyle\" ><div id=\"floatTitle\">Map Views</div> <div id=\"floatButons\"><a href=\"javascript:shutPopUp()\"><img src=\"/webclient/common/images/mapClose1Button.gif\" border=\"0\" align=\"absmiddle\" /></a></div><div id=\"popable\" style=\"float:right;\"><a href=\"javascript:pushPopUp()\"><img src=\"/webclient/common/images/mapPopupButton.gif\" border=\"0\"/></a></div> <div style=\"clear:both;\"></div></td></tr><tr><td align=\"left\" valign=\"middle\" bgcolor=\"#FFFFFF\"><iframe scrolling=\"no\" class=\"ifr\" align=\"top\" frameborder=\"0\"  marginwidth=\"0px\" marginheight=\"0px\" width=\"100%\" height=\"100%\" name=\"ifr\" id=\"ifr\" ></iframe><div id=\"floatContent\" style=\"height:100%; overflow-y: auto;\"></div></td></tr></table></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightTopFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"></td></tr><tr><td width=\"200\" align=\"left\" valign=\"top\" class=\"sideFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\"  /></td></tr><tr><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"leftBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td><td width=\"100%\" height=\"11\" align=\"left\" valign=\"top\" class=\"botFill\"></td><td width=\"10\" height=\"11\" align=\"left\" valign=\"top\" class=\"rightBotFill\"><img src=\"/webclient/common/images/spacer.gif\" width=\"10\" height=\"11\" /></td></tr></table>";
+	if(scrollOption !='no' && scrollOption != undefined) {
+        document.getElementById('ajaxloader').innerHTML= (htmlcontent);
+    }
+    else 
+    {
+    if(browser == 'Explorer')
+        document.getElementById('popmeup').innerHTML= (htmlcontentNoframe);
+     else
+        document.getElementById('popmeup').innerHTML= (htmlcontentNoframeFireFox);
+    }
+
+	//document.getElementById('popupOverlay').style.height= document.body.scrollHeight;
+	document.getElementById('popupOverlay').style.width= document.body.scrollWidth;
+	//document.getElementById('popupOverlay').style.height= document.body.offsetHeight+111+'px';
+	document.getElementById('popupOverlay').style.width= document.body.offsetWidth+'px';
+        //document.getElementById('popupOverlay').style.top = '-111px';
+	var posLeft = (document.body.offsetWidth-w)/2;
+	document.getElementById('adiv').style.left= posLeft+'px';
+	
+	document.getElementById('adiv').style.width = w+'px';
+	document.getElementById('adiv').style.height = h+'px';
+	
+	var shp = getScrollingPosition();
+	document.getElementById('popupOverlay').style.display = 'block';
+	document.getElementById('adiv').style.display = 'block';
+	document.getElementById('floatTitle').innerHTML = header;
+	document.getElementById('adiv').style.top = shp[1]+'px';
+
+
+
+	if(drag) Drag.init(document.getElementById("adiv"));
+	if(popStatus)
+	{	
+		document.getElementById('popable').style.display = 'block';
+		webp = url;
+		popH = h;
+		popW = w;
+		popHeader = header;
+	}
+	else document.getElementById('popable').style.display = 'none';
+	
+  /*  if(scrollOption !='' && scrollOption != undefined) {
+        document.getElementById('ifr').scrolling = scrollOption;
+    }
+    else {
+        document.getElementById('ifr').scrolling = 'no';
+    }*/
+    
+	document.getElementById('ifr').src = url;
+	document.getElementById('ifr').width = (w)+'px';
+	document.getElementById('ifr').height = (h)+'px';
+}	
+function ifrInit(){
+	 document.getElementById('popmeup').style.height = '1px';
+}
+function shutPopUp()
+{
+	document.getElementById('ifr').src = '/webclient/devices/html/blank.html';
+	document.getElementById('popupOverlay').style.display = 'none';
+	document.getElementById('adiv').style.display = 'none';
+	document.getElementById('popmeup').style.display = 'none';
+}
+
+function pushPopUp()
+{
+	document.getElementById('popupOverlay').style.display = 'none';
+	document.getElementById('adiv').style.display = 'none';
+	popWindow = window.open(webp,popHeader,"height=h,width=w");
+	popWindow.focus( );
+}
+
+function getScrollingPosition()
+{
+    var position = [0, 0];
+    if (typeof window.pageYOffset != 'undefined') position = [window.pageXOffset,window.pageYOffset];
+
+    else if (typeof document.documentElement.scrollTop!= 'undefined' && document.documentElement.scrollTop > 0) 
+	    position = [document.documentElement.scrollLeft,document.documentElement.scrollTop];
+	
+    else if (typeof document.body.scrollTop != 'undefined')	position = [document.body.scrollLeft,document.body.scrollTop];
+
+    return position;
+
+}
+</script>
+
+
+<div id="popmeup" style="display:none;height:1px;"></div>
+
+<!--div id="popupOverlay"></div>
+	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" id="adiv">
+	  <tr>
+		<td colspan="2" rowspan="2" align="center" valign="top">
+		<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" class="tableOne" id="tableOneStyle">
+
+          <tr>
+            <td align="left" valign="middle" class="tableHeader" id="tableHeaderStyle" ><div id="floatTitle">Map Views</div> <div id="floatButons"><a href="javascript:shutPopUp()"><img src="/webclient/common/images/mapClose1Button.gif" border="0" align="absmiddle" /></a></div> 
+            <div id="popable" style="float:right;"><a href="javascript:pushPopUp()"><img src="/webclient/common/images/mapPopupButton.gif" border="0"/></a></div> <div style="clear:both;"></div></td>
+          </tr>
+          <tr>
+            <td align="left" valign="middle" bgcolor="#FFFFFF">
+			<iframe class="ifr" scrolling="no" align="top" frameborder="0"  marginwidth="0px" marginheight="0px" width="100%" height="100%" name="ifr" id="ifr" style="height:100%;width:100%;overflow-y:no;"></iframe>
+			<div id="floatContent" style="height:100%; overflow-y: auto;">	</div>			
+			</td>
+          </tr>
+        </table></td>
+		<td width="10" height="11" align="left" valign="top" class="rightTopFill"><img src="/webclient/common/images/spacer.gif" width="10" height="11"></td>
+	  </tr>
+	  <tr>
+	    <td width="200" align="left" valign="top" class="sideFill"><img src="/webclient/common/images/spacer.gif" width="10" height="11"  /></td>
+      </tr>
+	  <tr>
+		<td width="10" height="11" align="left" valign="top" class="leftBotFill"><img src="/webclient/common/images/spacer.gif" width="10" height="11" /></td>
+		<td width="100%" height="11" align="left" valign="top" class="botFill"></td>
+		<td width="10" height="11" align="left" valign="top" class="rightBotFill"><img src="/webclient/common/images/spacer.gif" width="10" height="11" /></td>
+	  </tr>
+</table-->

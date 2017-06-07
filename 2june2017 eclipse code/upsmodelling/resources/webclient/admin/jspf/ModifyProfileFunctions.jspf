@@ -1,0 +1,363 @@
+
+<%--  $Id: ModifyProfileFunctions.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+
+<script language="javascript">
+
+//Function to validate the pass-word field
+function ValidatePassword()
+{
+    //if(document.ModifyProfileForm.ispasschange.checked)
+    //{
+        
+	var isAdmin = '<c:out value='${isAdmin}'/>';	
+	if(isAdmin!=null && isAdmin == "true")
+	{
+		pass1 = "";
+	}
+	else
+	{	
+		pass1 = trimAll(document.ModifyProfileForm.currentpassword.value);	
+	}
+        var pass2 = trimAll(document.ModifyProfileForm.newPassword.value);
+        var pass3 = trimAll(document.ModifyProfileForm.retypepassword.value);
+
+	if(pass1 == "" && pass2 == "" && pass3 == "")
+        {
+            return true;
+        }
+
+        if(pass1 == "" && isAdmin == 'false')
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.currentpassword.empty'/>");
+            document.ModifyProfileForm.currentpassword.focus();
+            return false;
+        }
+
+        if(pass2 == "")
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.newpassword.empty'/>");
+            document.ModifyProfileForm.newPassword.focus();
+            return false;
+        }
+        if(pass3 == "")
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.retypepassword.empty'/>");
+            document.ModifyProfileForm.retypepassword.focus();
+            return false;
+        }
+
+        if(pass2 != pass3)
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.newpassword.check'/>");
+            return false;
+        }
+      
+	if(pass1!="" && ispecialCharValidity(pass1, false))
+        {   
+            alert("<fmt:message key='webclient.admin.adduser.validation.password.notchar'/>");
+            document.ModifyProfileForm.currentpassword.focus();
+            return false; 
+        }
+
+        if(pass1!="" && specialCharValidity(pass1, true))
+        {
+             alert("<fmt:message key='webclient.admin.adduser.validation.password.invalid'/>");
+             document.ModifyProfileForm.currentpassword.focus();
+             return false;
+        }
+       
+        if(specialCharValidity(pass2, false))
+        {   
+            alert("<fmt:message key='webclient.admin.adduser.validation.password.notchar'/>");
+            document.ModifyProfileForm.newPassword.focus();
+            return false;    
+            
+        }
+        if(specialCharValidity(pass2, true))
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.password.invalid'/>");
+            document.ModifyProfileForm.newPassword.focus();
+            return false;
+        }
+    
+        document.ModifyProfileForm.currentpassword.value = pass1;
+        document.ModifyProfileForm.newPassword.value = pass2;
+        document.ModifyProfileForm.retypepassword.value = pass3;
+    //}
+    return true;
+}
+
+function specialCharValidity(pass, complete)
+{
+    if(complete)    
+    {
+        for(var i=0;i<pass.length;i++)
+        {
+            var charcode = pass.charCodeAt(i);
+            if(!(charcode >= 33 && charcode <= 126))
+	    {
+                return true;
+            }
+        }  
+    }
+    else 
+    {
+        var charcode = pass.charCodeAt(0);
+        if(charcode <48 || (charcode>58 && charcode<65) || (charcode>90 && charcode<97) || charcode>122)
+        {
+            return true;   
+        } 
+    } 
+    return false;  
+
+
+}
+
+
+//Function to validate password expiry field
+function ValidatePasswordExpiry()
+{
+    //if(document.ModifyProfileForm.ispasswordexpiry.checked)
+    //{
+        if(trimAll(document.ModifyProfileForm.passwordExpiryTime.value) == "")
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.passwordexpiry.empty'/>");
+            document.ModifyProfileForm.passwordExpiryTime.focus();
+            return false;
+        }
+        var passexpval = document.ModifyProfileForm.passwordExpiryTime.value;
+        if(isNaN(passexpval))
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.passwordexpiry.isnan'/>")
+            document.ModifyProfileForm.passwordExpiryTime.focus();
+            return false;
+        }
+        if((String(passexpval)).indexOf(".") > -1)       
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.passwordexpiry.int'/>")
+            document.ModifyProfileForm.passwordExpiryTime.focus();
+            return false;
+        }
+        if(!isPositiveInteger(passexpval))
+        {
+            alert("<fmt:message key='webclient.admin.validation.passwordexpiry.positivevalue'/>");
+            document.ModifyProfileForm.passwordExpiryTime.focus();
+            return false;
+        }
+
+    //}
+    return true;
+}
+
+//Function to validate account expiry field
+function ValidateAccountExpiry()
+{
+    //if(document.ModifyProfileForm.isaccountexpiry.checked)
+    //{
+        if(trimAll(document.ModifyProfileForm.accountExpiryTime.value) == "")
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.accountexpiry.empty'/>");
+            document.ModifyProfileForm.accountExpiryTime.focus();
+            return false;
+        }
+        var accexpval = document.ModifyProfileForm.accountExpiryTime.value;
+        if(isNaN(accexpval))
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.accountexpiry.isnan'/>");
+            document.ModifyProfileForm.accountExpiryTime.focus();
+            return false;
+        }
+        if((String(accexpval)).indexOf(".") > -1)       
+        {
+            alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.accountexpiry.integer'/>");
+            document.ModifyProfileForm.accountExpiryTime.focus();
+            return false;
+        }
+        if(!isPositiveInteger(accexpval))
+        {
+            alert("<fmt:message key='webclient.admin.validation.accountexpiry.positivevalue'/>");
+            document.ModifyProfileForm.accountExpiryTime.focus();
+            return false;
+        }
+    //}
+    return true;
+}
+
+//Function to validate the form before submit
+function Validate()
+{
+    if(!ValidatePassword())
+    {
+        return false;
+    }
+
+    if(!ValidatePasswordExpiry())
+    {
+        return false;
+    }
+
+    if(!ValidateAccountExpiry())
+    {
+        return false;
+    }
+        
+    //verifyTokens();
+    return true;
+}
+
+
+function validateAssignGroup()
+{
+    verifyTokens();
+    return true;   
+}
+
+function removeScope()
+{
+
+    var currentSize = document.ModifyProfileForm.availableGroups.options.length;
+    var selectSize =  document.ModifyProfileForm.existingGroups.options.length;
+            
+    for(var j=0; j<selectSize; j++)
+    {
+        if(document.ModifyProfileForm.existingGroups.options[j].selected == false)
+        {
+            allSelected = false;
+            break;
+        }
+    }    
+
+        var selectionModel = new Array();
+
+        for(var i=0; i<selectSize; i++)
+        {
+            selectionModel[i] = 0;
+            if(document.ModifyProfileForm.existingGroups.options[i] != null)
+            {
+                if(document.ModifyProfileForm.existingGroups.options[i].selected == true)
+                {
+                    selectionModel[i] = 1;
+                }
+            }
+        }
+
+        for(i=(selectionModel.length-1);i>-1;i--)
+        {
+            if(selectionModel[i]==1)
+            {
+                var xv = document.ModifyProfileForm.existingGroups.options[i].value;
+                var xn = document.ModifyProfileForm.existingGroups.options[i].text;
+                document.ModifyProfileForm.existingGroups.options[i] = null;
+                var add = new Option(xn, xv);
+                document.ModifyProfileForm.availableGroups.options[currentSize] = add;
+                currentSize = ++currentSize;
+            }
+        }
+}
+
+function removeUser()
+{
+
+    var currentSize = document.ModifyProfileForm.availableGroups.options.length;
+    var selectSize =  document.ModifyProfileForm.existingGroups.options.length;
+    var allSelected = true;
+            
+    for(var j=0; j<selectSize; j++)
+    {
+        if(document.ModifyProfileForm.existingGroups.options[j].selected == false)
+        {
+            allSelected = false;
+            break;
+        }
+    }    
+
+    if(allSelected == false)
+    {
+        var selectionModel = new Array();
+
+        for(var i=0; i<selectSize; i++)
+        {
+            selectionModel[i] = 0;
+            if(document.ModifyProfileForm.existingGroups.options[i] != null)
+            {
+                if(document.ModifyProfileForm.existingGroups.options[i].selected == true)
+                {
+                    selectionModel[i] = 1;
+                }
+            }
+        }
+
+        for(i=(selectionModel.length-1);i>-1;i--)
+        {
+            if(selectionModel[i]==1)
+            {
+                var xv = document.ModifyProfileForm.existingGroups.options[i].value;
+                var xn = document.ModifyProfileForm.existingGroups.options[i].text;
+                document.ModifyProfileForm.existingGroups.options[i] = null;
+                var add = new Option(xn, xv);
+                document.ModifyProfileForm.availableGroups.options[currentSize] = add;
+                currentSize = ++currentSize;
+            }
+        }
+
+    }
+    else
+    {
+        alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.useroptions'/>");
+    }
+}
+//Function : Remove item/items from selection list and appends to unviewed list
+function remove()
+{
+
+    var currentSize = document.ModifyProfileForm.availableGroups.options.length;
+    var selectSize =  document.ModifyProfileForm.existingGroups.options.length;
+    var allSelected = true;
+            
+    for(var j=0; j<selectSize; j++)
+    {
+        if(document.ModifyProfileForm.existingGroups.options[j].selected == false)
+        {
+            allSelected = false;
+            break;
+        }
+    }    
+
+    if(allSelected == false)
+    {
+        var selectionModel = new Array();
+
+        for(var i=0; i<selectSize; i++)
+        {
+            selectionModel[i] = 0;
+            if(document.ModifyProfileForm.existingGroups.options[i] != null)
+            {
+                if(document.ModifyProfileForm.existingGroups.options[i].selected == true)
+                {
+                    selectionModel[i] = 1;
+                }
+            }
+        }
+
+        for(i=(selectionModel.length-1);i>-1;i--)
+        {
+            if(selectionModel[i]==1)
+            {
+                var xv = document.ModifyProfileForm.existingGroups.options[i].value;
+                var xn = document.ModifyProfileForm.existingGroups.options[i].text;
+                document.ModifyProfileForm.existingGroups.options[i] = null;
+                var add = new Option(xn, xv);
+                document.ModifyProfileForm.availableGroups.options[currentSize] = add;
+                currentSize = ++currentSize;
+            }
+        }
+
+    }
+    else
+    {
+        alert("<fmt:message key='webclient.admin.modifyuserprofile.validation.groupoptions'/>");
+    }
+}
+
+
+</script>

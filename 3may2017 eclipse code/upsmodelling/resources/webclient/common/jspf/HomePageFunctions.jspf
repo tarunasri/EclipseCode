@@ -1,0 +1,315 @@
+<%-- $Id: HomePageFunctions.jspf,v 1.2 2010/10/29 13:47:02 swaminathap Exp $ --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<script language="javascript" src="/webclient/common/js/validation.js" type="text/javascript"></script>
+<script language="javascript">
+
+
+function getXmlObj(formElem) {
+	var xmlObject = null;
+	if(document.all) {
+
+		var xmlObject = null;
+		if (window.XMLHttpRequest){ // check for IE7
+			xmlObject = new XMLHttpRequest();
+		}
+
+		else 
+		{
+			if(!formElem) {
+				try { 
+					xmlObject = new ActiveXObject('Microsoft.XMLDOM');
+				} catch(e) {}
+			}
+			if(xmlObject == null) {
+				try { 
+					xmlObject = new ActiveXObject('Msxml2.XMLHTTP');
+				} catch(e) {}
+			}
+			if(xmlObject == null) {
+				try { 
+					xmlObject = new ActiveXObject('Microsoft.XMLHTTP'); 
+				} catch(e) {
+					throw new Exception('<fmt:message key="webclient.browser.ajax.notsupported"/>');
+				}
+			}
+		}
+
+
+	} else {
+		xmlObject = new XMLHttpRequest();
+	}
+	return xmlObject;
+}
+
+function deleteWidget(associationID, dashboardID)
+{
+	if(isEditing==associationID)
+	{
+		isEditing=null;
+	}
+	var resp = confirm('<fmt:message key="webclient.homepage.dialog.deletewidget.confirm"/>');
+	if(resp)
+	{
+		var removedWidget = widgetArray[associationID];
+		document.getElementById(associationID).style.display="none";
+		url="/associateWidget.do?method=deAssociate&associationID="+associationID+"&dashboardID="+dashboardID;
+		clearInterval(removedWidget.refreshInterval);
+		getHtml(url,"");
+	}
+}
+
+function confirmDelete(dashboardID)
+{
+	var resp = confirm('<fmt:message key="webclient.homepage.dialog.deletedashboard.confirm"/>');
+	if(resp)
+	{
+		location.href="modifyWidget.jsp?methodCall=deleteDashboard&dashboardID="+dashboardID;
+	}
+}
+
+function checkValidWidgetName(widgetName)
+{
+	if(isEmpty(widgetName))
+	{
+		alert('<fmt:message key="webclient.homepage.dialog.editwidget.invalidname"/>');
+		return false;
+	}
+	return true;
+}
+
+function editWidget(associationID, widgetName,columnWidth)
+{
+if(isEditing!=null)
+{
+	alert('<fmt:message key="webclient.homepage.dialog.widgetedit.notallowed"/>');
+	return false;
+}
+	isEditing=associationID;
+	url='/editWidget.do?method=showForm&associationId='+associationID+'&columnWidth='+columnWidth;
+	paramValues = new Array();
+	paramValues[0] = associationID;
+	getHtml(url,"setContent",paramValues);
+}
+
+function deleteDashboard(dashboardId)
+{
+	var confirmDelete = confirm('<fmt:message key="webclient.homepage.manage.confirmDelete"/>');
+	if(confirmDelete)
+	{
+		window.location="/modifyDashboard.do?method=deleteDashboard&dashboardId="+dashboardId;
+	}
+}
+
+function deleteCctv(cctvId)
+{
+	var confirmDelete = confirm('<fmt:message key="webclient.homepage.manage.confirmDelete"/>');
+	if(confirmDelete)
+	{
+		window.location="/associateWidget.do?method=deleteCctv&cctvId="+cctvId;
+	}
+}
+
+function checkWidgetSelected(elementname,message)
+{
+	var allelements = document.getElementsByName(elementname);
+	for(i=0;i<allelements.length;i++)
+	{
+		if(allelements[i].checked)
+		{
+			return true;	
+		}
+	}
+	alert(message);
+	return false;
+}
+
+function validateWidgets()
+{
+	var values=document.getElementsByName("Id");
+if(document.dashboardForm!=null)
+{
+	values=document.getElementsByName('widgetId');
+	if(isEmpty(document.dashboardForm.dashboardName.value))
+	{
+		alert('<fmt:message key="webclient.homepage.dialog.dashboardForm.noname"/>')
+		document.dashboardForm.dashboardName.focus();
+		return false;
+	}
+}
+if(!validateColumns())
+{
+return false;
+}
+	var selected=false;
+	for(i=0;i<values.length;i++)
+	{
+		if(values[i].checked)
+		{
+			selected= true;	
+		}
+	}
+	if(!selected)
+	{
+		alert('<fmt:message key="webclient.homepage.dialog.widgets.notselected"/>')
+	}
+return selected;
+}
+
+function validateColumns()
+{
+	if(document.dashboardForm!=null)
+	{
+		sum=100;
+		var noOfColumns = document.dashboardForm.numberOfColumns.value;
+		if(noOfColumns >= 1 && isPositiveInteger(document.dashboardForm.columnWidth1.value))
+		{
+			var col1= parseInt(document.dashboardForm.columnWidth1.value);
+			sum = sum - col1;
+		}
+		if(noOfColumns>=2 && isPositiveInteger(document.dashboardForm.columnWidth2.value))
+		{
+			var col2=parseInt(document.dashboardForm.columnWidth2.value);
+			sum = sum - col2;
+		}
+		if(noOfColumns==3 && isPositiveInteger(document.dashboardForm.columnWidth3.value))
+		{
+			var col3=parseInt(document.dashboardForm.columnWidth3.value);
+			sum = sum - col3;
+		}
+		if(sum !=0)
+		{
+			alert('<fmt:message key="webclient.homepage.dialog.addDashboardForm.invalidColumnWidths"/>');
+			return false;
+		}
+		return true;
+	}
+}
+
+function validateCctv()
+{
+	if(document.addCctvForm!=null)
+	{
+		if(isEmpty(document.addCctvForm.cctvName.value))
+		{
+			alert('<fmt:message key="webclient.homepage.dialog.addCctvForm.noname"/>')
+			document.addCctvForm.cctvName.focus();
+				return false;
+		}
+		if(isEmpty(document.addCctvForm.timeInterval.value))
+		{
+			alert('<fmt:message key="webclient.homepage.dialog.addCctvForm.refreshinterval.invalid"/>')
+			document.addCctvForm.timeInterval.focus();
+				return false;
+		}
+		var values=document.getElementsByName("dashboards");
+		var selected=false;
+		for(i=0;i<values.length;i++)
+		{
+			if(values[i].checked)
+			{
+				selected= true;	
+			}
+		}
+		if(!selected)
+		{
+			alert('<fmt:message key="webclient.homepage.dialog.addCctvForm.nodashboards"/>')
+		}
+		return selected;
+
+	}
+}
+
+function deleteSelected()
+{
+	var myvar = document.getElementsByName('dashcheckbox');
+
+	var count=0;
+	for(j=0;j<myvar.length;j++)
+	{
+		if(myvar[j].checked)
+		{
+			count++;
+		}
+	}
+
+	var resp=null;
+	if(count!=0)
+	{
+		resp = confirm('<fmt:message key="webclient.homepage.dialog.deletedashboard.confirm"/>');
+	}
+	else
+	{
+		alert('<fmt:message key="webclient.homepage.dialog.deletedashboard.notselected"/>')
+	}
+	if(resp)
+	{
+		url=window.location;
+		for(i=0;i<myvar.length;i++)
+		{
+			if(myvar[i].checked)
+			{
+				url="/modifyDashboard.do?method=deleteDashboard&dashboardId="+myvar[i].value;
+				ajaxPost(url,"",dashboardId,'true');
+
+			}
+		}
+
+		window.location=url;
+	}
+}
+function deleteAllCctv()
+{
+	var myvar = document.getElementsByName('cctvCheck');
+	var count=0;
+	for(j=0;j<myvar.length;j++)
+	{
+		if(myvar[j].checked)
+		{
+			count++;
+		}
+	}
+
+	var resp=null;
+	if(count!=0)
+	{
+		resp = confirm('<fmt:message key="webclient.homepage.dialog.deletecctv.all.confirm"/>');
+	}
+	else
+	{
+		alert('<fmt:message key="webclient.homepage.dialog.deletecctv.notselected"/>')
+	}
+
+	if(resp)
+	{
+		url=window.location;
+		for(i=0;i<myvar.length;i++)
+		{
+			if(myvar[i].checked)
+			{
+				url="/associateWidget.do?method=deleteCctv&cctvId="+myvar[i].value;
+				ajaxPost(url,"",dashboardId,'true');
+			}
+		}
+
+		window.location=url;
+	}
+}
+
+
+function isExistDashboard(response,args)
+{
+	if(!isEmpty(response))
+	{
+		document.dashboardForm.dashboardName.className ='inputFocusText';
+		document.dashboardForm.dashboardName.focus();
+document.getElementById('errormsg').innerHTML = '<fmt:message key="webclient.adddashboard.dashboardName.exist"/>';
+		document.getElementById('errormsg').style.display = '';
+		return;
+	}
+	document.dashboardForm.dashboardName.className ='';
+	document.getElementById('errormsg').innerHTML = '';
+	document.getElementById('errormsg').style.display = 'none';
+	
+}
+
+</script>

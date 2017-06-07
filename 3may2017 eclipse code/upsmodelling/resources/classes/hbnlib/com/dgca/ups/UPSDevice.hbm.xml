@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<subclass abstract="false" discriminator-value="UPSDevice"
+	dynamic-insert="false" dynamic-update="false"
+	extends="com.adventnet.nms.topodb.SnmpNode" lazy="false"
+	name="com.dgca.ups.UPSDevice" select-before-update="false">
+<join fetch="select" table="UPSDevice">
+<key on-delete="cascade">
+<column name="MOID"/>
+</key>
+<!-- <property column="UPSBATTERYSTATUS" length="25" name="upsBatteryStatus" type="integer"/> -->
+<!-- <property column="TYPE" length="25" name="type" type="string"/> -->
+<property column="LOCATION" length="25" name="location" type="string"/>
+
+</join>
+</subclass>
+</hibernate-mapping>

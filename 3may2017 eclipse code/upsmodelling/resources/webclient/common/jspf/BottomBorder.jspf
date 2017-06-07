@@ -1,0 +1,11 @@
+<%--  $Id: BottomBorder.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $  --%>
+
+		</td>
+		<td class=dashRight><img src="/webclient/common/images/1spacer.gif" width=7 height=7></td>
+	</tr>
+	<tr>
+		<td class=dashBottomLeft><img src="/webclient/common/images/1spacer.gif" width=7 height=7></td>
+		<td class=dashBottom width=100%><img src="/webclient/common/images/1spacer.gif" width=7 height=7></td>
+		<td class=dashBottomRight><img src="/webclient/common/images/1spacer.gif" width=7 height=7></td>
+	</tr>
+</table>

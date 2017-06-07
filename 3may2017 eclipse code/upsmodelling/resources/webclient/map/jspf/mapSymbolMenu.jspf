@@ -1,0 +1,33 @@
+<%-- $Id: mapSymbolMenu.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+
+<%@ page  import="java.util.*" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="popup" uri="http://www.adventnet.com/nms/webclient/components" %>
+
+
+
+<c:if test='${!empty menulist[props.name]}'>
+ <c:set target="${DATA_PROPERTIES}" property="name" value="${props.name}"/>
+ <c:set target="${DATA_PROPERTIES}" property="menuName" value="${props.menuName}"/>
+ <c:set target="${DATA_PROPERTIES}" property="type" value="${props.type}"/>
+ <c:set target="${DATA_PROPERTIES}" property="mapName" value="${props.mapName}"/>
+ <c:set target="${DATA_PROPERTIES}" property="label" value="${props.label}"/>
+ <c:set target="${DATA_PROPERTIES}" property="viewId" value="${props.mapName}"/>
+ <c:set target="${DATA_PROPERTIES}" property="x" value="${props.x}"/>
+ <c:set target="${DATA_PROPERTIES}" property="y" value="${props.y}"/>
+ <c:set target="${DATA_PROPERTIES}" property="height" value="${props.height}"/>
+ <c:set target="${DATA_PROPERTIES}" property="width" value="${props.width}"/>
+ <c:set target="${DATA_PROPERTIES}" property="snmpport" value="${props.snmpport}"/>
+ <c:set target="${DATA_PROPERTIES}" property="symbol" value="${props.name}"/>
+
+<c:set value='${menulist[props.name]}' var="rootElementsList" scope="request"/>
+<c:set value='${DATA_PROPERTIES}' var="dataProperties" scope="request"/>
+<c:set var="menuIndex" value='${status.index}' scope="request"/>
+<%--
+<popup:popupmenu model="rootElementsList" type='<%="popupmenu_"+((Integer)request.getAttribute("menuIndex")).toString()%>' objectData="dataProperties" />
+--%>
+</c:if>
+
+

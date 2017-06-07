@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<AUDIO_INFO>
+<!--
+   
+** This file is used to configure the audio notification of alerts.
+**
+**
+** The audio properties can also be configured at runtime from the menu option Actions -> Audio Notifier
+** The corresponding entry for menu item in menu file alertsmenu.xml is as follows:
+**	    <MENU-ITEM name="Alert Notifier"> 
+**	         <JAVA-UI  action_type="openframe" action_value="com.adventnet.nms.audio.AudioFrame"/>
+**	    </MENU-ITEM>
+**
+** All common audio properties have to be configured from within the element AUDIO_PROPERTIES.
+** The following are the properties that can be configured as attributes of AUDIO_PROPERTIES.
+**
+**	 enableAudio   -  specifies the status of audio notification. A value of true will enable
+**			  audio notification for alerts received in the Alarms Panel
+**
+**	 playbackTime  -  specifies the duration for which the audio files has to be played. 
+**	                  Only valid integer values must be specified else a default value of
+**			  3 will be taken.
+**
+**	 defaultAudio  -  specifies the location of the default audio file that is to be played
+**	                  in case no audio file is associated with alert severities.
+**
+** The severity specific properties must be configured through the element AUDIO. The
+** following are the properties that can be configured for each severity present in
+** SeverityInfo.xml as attributes of element AUDIO.
+**
+**	 severity   -  contains the severity names as specified in SeverityInfo.conf
+**
+**	 audioFile  -  specifies the location of the associated audio file.
+**
+**	 enabled    -  specifies the status of audio notfication for the corresponding severity.
+**	               A value of true will enable audio notification for the corresponding severity.
+
+-->
+<AUDIO_PROPERTIES defaultAudio="" enableAudio="false" playbackTime="3"/>
+<AUDIO severity="Critical" audioFile="" enabled="false"/>
+<AUDIO severity="Major" audioFile="" enabled="false"/>
+<AUDIO severity="Minor" audioFile="" enabled="false"/>
+<AUDIO severity="Warning" audioFile="" enabled="false"/>
+<AUDIO severity="Clear" audioFile="" enabled="false"/>
+</AUDIO_INFO>
+
+<!-- $Id: AudioInfo.xml,v 1.2 2010/11/01 18:37:27 prabakaran Exp $ -->
+

@@ -1,0 +1,592 @@
+<%-- $Id: operationTree.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+
+<script>
+
+function toggleChkBox(oImg) {
+	if (oImg.src.indexOf("checkbox_included")>=0) {
+		oImg.src="/webclient/common/images/checkbox_excluded.gif";
+	} else if (oImg.src.indexOf("checkbox_excluded")>=0) {
+		oImg.src="/webclient/common/images/checkbox_void.gif";
+	} else {
+		oImg.src="/webclient/common/images/checkbox_included.gif";
+	}
+}
+
+
+
+function initializeTree()
+{
+    storeOperationAsDO();
+    updateChildOperations();
+    var treeRootNode = eval(document.getElementsByName("treeRow"));
+    if(treeRootNode[0] != undefined) {
+        document.OperationTree.treeImgSRC[0].src="/webclient/common/images/checkbox_disabled.gif";
+    }   
+}
+
+
+
+function expandCollapseOperation(sendURL)
+{
+    var outputHash = "";
+    for( var k in operationList)
+    {
+        if(k != 0)
+        {
+            outputHash = outputHash + ":";
+        }
+        outputHash = outputHash + operationList[k][0] + "=" + operationList[k][1];
+    }
+    document.OperationTree.OperationTreeAsXML.value = outputHash;
+    /*  var groupName = '<c:out value="${groupName}"/>';
+	if(groupName == null || groupName =='') { 
+        groupName = document.OperationTree.groupName.value;
+    } */
+    var selectedUser = '<c:out value="${selectedUser}"/>';
+    var OperationConfig = '<c:out value="${OperationConfig}"/>';
+    var toPerform   = '<c:out value="${OperationConfig}"/>';
+
+    
+    //sendURL = sendURL + '&groupName='+groupName + '&selectedUser='+selectedUser+'&OperationConfig='+OperationConfig+'toPerform='+toPerform;
+    sendURL = sendURL +  '&selectedUser='+selectedUser+'&OperationConfig='+OperationConfig+'toPerform='+toPerform;
+document.OperationTree.action = sendURL;
+    
+    //document.OperationTree.groupName.value = '<c:out value="${groupName}"/>';
+    //document.OperationTree.selectedUser.value = '<c:out value="${selectedUser}"/>';
+    //document.OperationTree.toPerform.value = '<c:out value="${toPerform}"/>';
+    //document.OperationTree.OperationConfig.value = '<c:out value="${OperationConfig}"/>';
+    document.OperationTree.submit();
+
+}
+
+function onOperationSubmit()
+{
+    var gName = document.OperationTree.groupName.value;
+    if(document.OperationTree.toPerform.value == 'addGroupNOperation')
+    {
+        if(trimAll(gName) == '')
+        {
+            alert('<fmt:message key="webclient.admin.addgroup.nameempty"/>');
+            document.OperationTree.groupName.focus();
+		    return false;
+        } 
+    }
+    
+    var outputHash = "";
+    for( var k in operationList)
+    {
+        if(k != 0)
+        {
+            outputHash = outputHash + ":";
+        }
+        outputHash = outputHash + operationList[k][0] + "=" + operationList[k][1];
+    }
+    document.OperationTree.OperationTreeAsXML.value = outputHash;
+}
+
+
+function updateChildOperations()
+{
+    var i = 0;
+    
+    <c:forEach var="prop" items="${AuthOperations}" varStatus="status">
+        var operationName = "<c:out value="${prop.key}"/>";
+        var operationType = "<c:out value="${prop.value}"/>";
+
+        operationList[i] = new Array(2);
+        operationList[i][0] = operationName;      
+        operationList[i][1] = operationType;
+        var isUserSpecific = false;
+        i++;
+
+        <c:forEach var="prop1" items="${UserOperations}" varStatus="status1">
+            var userOperation = "<c:out value="${prop1.key}"/>";
+            if(userOperation == operationName) {
+                isUserSpecific = true;
+            }
+        </c:forEach>
+        var updateAll = false;
+        updateChildNode(operationName, operationType, isUserSpecific, updateAll);
+    </c:forEach>
+   
+}
+
+function isParentExcluded(opname)
+{
+    var parentState = false;
+    var tableName = getParentOperation(opname);
+    if(tableName != '')
+    {
+         parentState = getOperationState(tableName);
+    }
+    return parentState;
+}
+
+function getParentOperation(opname)
+{
+    var tables = daobj.getTables(); // returns an array of tables
+    for(var k in tables)
+    {
+        var rows = daobj.getRowsForTable(tables[k]);
+        // iterate all the rows in the table 
+        for(var index in rows)
+        {
+            for(var name in rows[index]) // iterate the columns
+            {
+                if(name == opname)
+                {
+                    return tables[k];  
+                }
+            }
+        }
+    }
+    return null;
+}
+
+function getOperationState(tableName)
+{
+     var leng = document.OperationTree.treeRow.length;
+     for(i=0; i<leng; i++) {
+        var elementN = eval("document.OperationTree.treeRow[i]");
+        if(elementN.value == tableName) {
+            var imgN = eval("document.OperationTree.treeImgSRC[i]");
+            if(imgN.src.indexOf("checkbox_excluded")>=0 ) {
+               return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+}
+
+    
+
+
+function updateChildren(selectedImg, opname)
+{
+    if (selectedImg.src.indexOf("_disabled")>=0) {
+    return;
+    }
+
+    if (isParentExcluded(opname)) {
+        return;
+    }
+
+    toggleChkBox(selectedImg);
+
+    if (selectedImg.src.indexOf("checkbox_included")>=0) {
+		updateChildNode(opname, 1, true, true);
+         updateOperationHash(opname, 1);
+         isParentOperation(opname);
+	} 
+    else if (selectedImg.src.indexOf("checkbox_excluded")>=0) {
+		 updateChildNode(opname, 0, true, true);
+         updateOperationHash(opname, 0);
+         isParentOperation(opname);
+	} 
+    else {
+		 updateChildNode(opname, -1, true, true);
+         updateOperationHash(opname, -1);
+         isParentOperation(opname);
+	}
+}
+
+
+
+function isParentOperation(oprname)
+{
+   var tables = daobj.getTables();
+    for(var k in tables)
+    {
+       if(oprname == tables[k])
+       {
+          var rows = daobj.getRowsForTable(tables[k]);
+          for(var index in rows)
+          {
+             for(var name  in rows[index])
+             {
+                   updateOperationHash(name,-1);
+                   isParentOperation(name);
+             }
+          }
+       }
+    }
+}
+
+function updateOperationHash(operationName, seltype)
+{
+    var selName = operationName;
+    var selType = seltype;
+    
+    var len = operationList.length;
+
+    var isExist = false;
+    for( var k in operationList)
+    {
+        var opName = operationList[k][0];
+        if(opName == selName)
+        {
+             operationList[k][1] = selType;
+             isExist = true;
+             break;
+        }
+    }
+    if(!isExist)
+    {   
+        operationList[len] = new Array(2);
+        operationList[len][0] = selName;
+        operationList[len][1] = selType;
+    }
+
+}
+
+
+
+function updateChildNode(opname, optype, isUserSpecific, updateAll)
+{
+    var leng = document.OperationTree.treeRow.length;
+    var isExist = daobj.containsTable(opname);
+    if(isExist)
+    {
+        var rows = daobj.getRowsForTable(opname);  
+        for(var index in rows)
+        {
+            for(var name in rows[index]) // iterate the columns
+            {
+                if(daobj.containsTable(name)) 
+                {
+                    /*
+                    if(optype == -1) {
+                        var subchild = rows[index][name];
+                        optype =  subchild; 
+                    } */
+                    updateChildNode(name, optype, isUserSpecific, updateAll);
+                }
+                for(i=0; i<leng; i++) {
+                    var elementN = eval("document.OperationTree.treeRow[i]");
+                    if(elementN.value == name) {
+                        var imgN = eval("document.OperationTree.treeImgSRC[i]");
+                        if(updateAll) {
+                          
+                        if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+                        }
+                        else {
+                          if(imgN.src.indexOf("checkbox_ex") == -1 ) {
+                           if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                           imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+
+                            }
+                       
+                        }
+                    }
+                   
+                    if(elementN.value == opname) {
+
+                    var imgN = eval("document.OperationTree.treeImgSRC[i]");
+                        if(updateAll) {
+                          
+                        if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+                        }
+                        else {
+                          if(imgN.src.indexOf("checkbox_ex") == -1 ) {
+                           if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                           imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+
+                            }
+                       
+                        }
+
+                    /*
+                        var imgN = eval("document.OperationTree.treeImgSRC[i]");
+
+                        if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value == 'UserBased') {
+                            imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased') {
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+                    */
+                    }
+                }
+                if(optype != rows[index][name])
+                {
+                    daobj.setColumn(opname, name , optype) ;
+                }
+            }
+       }
+    }   
+    else
+    {
+        for(i=0; i<leng; i++) {
+            var elementN = eval("document.OperationTree.treeRow[i]");
+            if(elementN.value == opname) {
+
+                var imgN = eval("document.OperationTree.treeImgSRC[i]");
+                        if(updateAll) {
+                          
+                        if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+                        }
+                        else {
+                          if(imgN.src.indexOf("checkbox_ex") == -1 ) {
+                           if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value =='UserBased'){
+                           imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+                        }
+                        else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased'){
+                            imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+                        }
+                        else if(optype == 1) {
+                            imgN.src="/webclient/common/images/checkbox_included.gif";
+                        }
+                        else if(optype == 0) {
+                            imgN.src="/webclient/common/images/checkbox_excluded.gif";
+                        }
+                        else {
+                            imgN.src="/webclient/common/images/checkbox_void.gif";
+                        }
+
+                            }
+                       
+                        }
+
+
+
+
+            /*
+                 var imgN = eval("document.OperationTree.treeImgSRC[i]");
+
+                 if(optype == 1 && !isUserSpecific && document.OperationTree.OperationConfig.value == 'UserBased') {
+                 imgN.src="/webclient/common/images/checkbox_inc_disabled.gif";
+            }
+            else if(optype == 0 &&!isUserSpecific &&document.OperationTree.OperationConfig.value=='UserBased') {
+                imgN.src="/webclient/common/images/checkbox_ex_disabled.gif";
+            }
+            else if(optype == 1) {
+                imgN.src="/webclient/common/images/checkbox_included.gif";
+            }
+            else if(optype == 0) {
+                imgN.src="/webclient/common/images/checkbox_excluded.gif";
+            }
+            else {
+                imgN.src="/webclient/common/images/checkbox_void.gif";
+            }
+        */
+            }
+        }   
+        updateLeafNode(opname, optype);     
+    
+    }     
+}
+
+
+function updateLeafNode(opname, optype)
+{
+  
+    var tables = daobj.getTables(); // returns an array of tables
+    var content = ""; 
+    for(var k in tables)
+    {
+        var rows = daobj.getRowsForTable(tables[k]);
+        //content = content + "<br>Table  :"+tables[k]; 
+        // iterate all the rows in the table 
+        for(var index in rows)
+        {
+            for(var name in rows[index]) // iterate the columns
+            {
+                if(name == opname) {
+                    if(optype != rows[index][name])
+                    {
+                        daobj.setColumn(tables[k], name , optype) ;
+                    }
+                }
+                //content = content + "<br>Row number"+ index + ":    " +"<i>Property name </i>   " + name + "   <i>Value</i>   " +rows[index][name] + "      ";
+            }
+            //content = content + "<br>"; 
+        }
+    }
+  //return content;
+}
+
+
+
+
+function storeOperationAsDO()
+{
+    var rowcount= 0;
+   <%--
+    <c:forEach var="something" items="${OperationTreeHash}" varStatus="status">
+        <c:if test="${status.last}"><c:set var="rowCount" value="${status.count}"/>
+            rowcount= "<c:out value="${rowCount}"/>";
+        </c:if>
+    </c:forEach>
+   --%>
+    //var operationInfo = new Array(rowcount);
+
+     var i = 0;
+    <c:forEach var="operation" items="${OperationTreeHash}" varStatus="status">
+        var colcount= 0;
+        i = 0;
+        var parentNode = "<c:out value="${operation.key}"/>";
+
+        <c:forEach var="something" items="${operation.value}" varStatus="status1">
+            <c:if test="${status1.last}"><c:set var="colCount" value="${status1.count}"/>
+                colcount = "<c:out value="${colCount}"/>";  </c:if>
+        </c:forEach>
+
+        var operationInfo = new Array(colcount);
+        for (var j=0; j <colcount; j++)
+        {
+             operationInfo[j] = new Array(2);   
+        } 
+       
+        <c:forEach var="prop" items="${operation.value}" varStatus="status1">
+            operationInfo[i][0] = "<c:out value="${prop.OPERATIONNAME}"/>";
+            operationInfo[i][1] = "<c:out value="${prop.OPERATIONTYPE}"/>";
+            i++;
+        </c:forEach>
+         
+        daobj.addRowsForTable(parentNode,operationInfo);
+        
+    </c:forEach>
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%--
+function updateChildren(opname)
+{
+    if (opname.checked) {
+	    updateChildNode(opname.value,1, true);
+	}
+	else {
+	    updateChildNode(opname.value,0, true);
+	}
+    updateOperationHash(opname);
+}
+--%>
+<%--
+function updateOperationHash(operationName)
+{
+    var selName = operationName.value;
+    var selType = -1;
+    if(operationName.checked) {
+        selType = 1;
+    }
+    else {
+        selType = 0;
+    }
+    var len = operationList.length;
+
+    var isExist = false;
+    for( var k in operationList)
+    {
+        var opName = operationList[k][0];
+        if(opName == selName)
+        {
+             operationList[k][1] = selType;
+             isExist = true;
+             break;
+        }
+    }
+    if(!isExist)
+    {   
+        operationList[len] = new Array(2);
+        operationList[len][0] = selName;
+        operationList[len][1] = selType;
+    }
+
+}
+--%>
+
+
+
+</script>

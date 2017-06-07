@@ -1,0 +1,205 @@
+<%-- $Id: switchMapSymbolRenderer.jspf,v 1.2 2008/08/25 10:56:28 sudharshan Exp $--%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
+<TD vAlign=top align=middle>
+
+<table cellspacing="5" cellpadding="0" align="center" border="0" width="600">
+        <tbody>
+
+        <tr> 
+
+          <td valign="top" align="left"> 
+            <table cellpadding="0" cellspacing="0" border="0" width="650">
+              <tbody><tr> 
+                <td valign="bottom" align="left" colspan="3"> <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tbody><tr> 
+                      <td valign="bottom" align="left" width="35"><img height="12" width="35" src="/webclient/map/images/swlefttaper.gif"></td>
+                      <td background="/webclient/map/images/swtopsurface.gif"><img height="12" width="5" src="/webclient/map/images/swtopsurface.gif"></td>
+                      <td valign="bottom" align="right" width="35"><img height="12" width="35" src="/webclient/map/images/swrighttaper.gif"></td>
+                    </tr>
+                  </tbody></table></td>
+              </tr>
+              <tr> 
+                <td valign="top" align="left" width="3"><img height="3" width="3" src="/webclient/map/images/swbodyltc.gif"></td>
+                <td background="/webclient/map/images/swtoptile.gif" width="376"><img height="3" width="3" src="/webclient/map/images/swtoptile.gif"></td>
+                <td valign="top" align="right" width="3"><img height="3" width="3" src="/webclient/map/images/swbodyrtc.gif"></td>
+              </tr>
+              <tr> 
+                <td background="/webclient/map/images/swbodyltile.gif" valign="top" align="left" height="45"><img height="2" width="3" src="/webclient/common/images/trans.gif"></td>
+                <td background="/webclient/map/images/swbodybg.gif" valign="top" align="left"><table cellpadding="0" cellspacing="5" border="0" width="600">
+                    <tbody><tr> 
+                      <td valign="top" align="left"> <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                          <tbody><tr> 
+                            <td background="/webclient/map/images/swlinebg.gif" valign="top" align="left"><img height="6" width="39" src="/webclient/map/images/swlineleft.gif"></td>
+                            <td background="/webclient/map/images/swlinebg.gif" valign="top" align="right"><img height="6" width="5" src="/webclient/map/images/swlineright.gif"></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                    <tr> 
+                      <td><table cellpadding="0" cellspacing="0" border="0">
+                          <tbody><tr> 
+                            <td valign="top" align="left" width="40"> <table cellpadding="0" cellspacing="0" border="0" width="10%">
+                                <tbody><tr> 
+                                  <td valign="top" align="left"><img height="1" width="6" src="/webclient/common/images/trans.gif"></td>
+                                  <td bgcolor="<c:out value='${props.bgColor}'/>" width="0"><img height="19" width="19" src="/webclient/map/images/swstatus.gif" alt="<c:out value='${port.smartLabel}'/>"  title="Name: <c:out value='${props.name}'/> Status : <c:out value='${props.stringStatus}'/>"></td>
+                                </tr>
+                                <tr> 
+                                  <td valign="top" align="left" colspan="2"><img height="17" width="1" src="/webclient/common/images/trans.gif"></td>
+                                </tr>
+                                <tr> 
+                                  <td valign="top" align="left">&nbsp;</td>
+                                  <td><a href='<c:out value="${props.link}"/>&displayName=<c:out value="${props.label}"/>&currentTopology=grid&mapSymbolRenderer=styled'><img border="0" height="23" width="19" title="<fmt:message key='webclient.map.switchmap.drildown'/>" alt="<fmt:message key='webclient.map.switchmap.drildown'/>" src="/webclient/map/images/swdrill.gif"></a></td>
+                                </tr>
+                              </tbody></table></td>
+                            <td valign="top" align="center"><img height="1" width="10" src="/webclient/common/images/trans.gif"></td>
+                            <td valign="top" align="left"> 
+                              <!--this table contains all cards and ports-->
+                        
+      <table cellpadding="0" cellspacing="0" border='0'>
+                                <tbody><tr valign="top" align="left"> 
+
+
+
+        <c:set var="shelfIndex" value="0"/>
+        <c:set var="rowIndex" value="0"/>
+        <c:set var="colIndex" value="0"/>
+        <c:set var="total" value="0"/>
+       <c:forEach var="port" items="${parentVsChild[props.name]}" varStatus="portStatus" >
+        <c:set var="total" value="${portStatus.count}"/>
+              <c:if test='${colIndex ==0}'>           
+                    <c:if test='${rowIndex == 0}'>
+                                  <td> 
+                                    <!--card table-->
+                                    <table cellpadding="0" cellspacing="0" border="0" width="150">
+                                      <tbody><tr valign="top" align="left"> 
+                                        <td valign="middle" align="center" width="16"><img height="24" width="5" src="/webclient/map/images/swcardscrews.gif"></td>
+                                        <td background="/webclient/map/images/swportbg.gif" width="5"><img height="1" width="5" src="/webclient/common/images/trans.gif"></td>
+                                        <td background="/webclient/map/images/swportbg.gif" width="111"> 
+                                          <!-- table where the ports are -->
+                                          <table background="/webclient/map/images/swportbg.gif" cellspacing="1" cellpadding="0" border="0" width="111">
+                                            <tbody>
+                   </c:if>         
+          <tr > 
+           </c:if>
+           <TD width=21 height=27 bgcolor="<c:out value='${port.bgColor}'/>">
+       <A HREF="/topo/objectdetails.do?requestid=SNAPSHOT&type=<c:out value='${props["type"]}'/>&menuName=<c:out value='${props["menuName"]}'/>&name=<c:out value='${port.objName}'/>&discover=<c:out value='${port.discover}'/>&managed=<c:out value='${port.managed}'/>&symbol=<c:out value='${props["name"]}'/>&mapName=<c:out value='${port.mapName}'/>" class="text"> 
+    <%--   <A HREF="/map/mapSymbolDetails.do?name=<c:out value='${port.name}'/>&mapName=<c:out value='${port.mapName}'/>" class="text"> --%>
+<IMG height=27 
+<c:choose> 
+<c:when test='${rowIndex == 0}'>
+src="/webclient/map/images/swport1.gif" 
+</c:when>
+ <c:otherwise>
+src="/webclient/map/images/swport2.gif" 
+ </c:otherwise>
+</c:choose> 
+width=21 alt="<c:out value='${port.smartLabel}'/>"  title="Name: <c:out value='${port.name}'/> Status : <c:out value='${port.stringStatus}'/>" border="0"></a></TD>
+
+        <c:set var="colIndex" value='${colIndex+1}'/>
+          <c:if test='${colIndex ==5}'>
+             </TR>
+             <c:set var="colIndex" value="0"/>
+             <c:set var="rowIndex" value='${rowIndex+1}'/>
+             <c:if test='${rowIndex ==2}'>
+             <c:set var="rowIndex" value="0"/>
+             <c:set var="shelfIndex" value='${shelfIndex+1}'/>
+
+             </tbody></table></td>
+            <td background="/webclient/map/images/swportbg.gif" width="5"><img height="1" width="5" src="/webclient/common/images/trans.gif"></td>
+             <td valign="middle" align="center" width="16"><img height="24" width="5" src="/webclient/map/images/swcardscrews.gif"></td>
+                 </tr>
+                   </tbody></table></td>
+           </c:if>
+          </c:if>
+       
+      </c:forEach>       
+
+      <c:set var='emptyCells' value="${total%10}"/>
+
+   <c:if test='${emptyCells != 0 && emptyCells != 10}'>
+        <c:set var="colIndex" value="${total%5}"/>
+
+       <c:forEach begin="${total%10}" end='9' varStatus="emptyStatus" >
+
+              <c:if test='${colIndex ==0}'>           
+               <TR>
+             </c:if>
+           <TD width=21 height=27><IMG height=27 src="/webclient/common/images/trans.gif" width=21></TD>
+      <c:set var="colIndex" value='${colIndex+1}'/>
+          <c:if test='${colIndex ==5}'>
+             </TR>
+             <c:set var="colIndex" value="0"/>
+             <c:set var="rowIndex" value='${rowIndex+1}'/>
+             <c:if test='${rowIndex ==2}'>
+             <c:set var="rowIndex" value="0"/>
+             <c:set var="shelfIndex" value='${shelfIndex+1}'/>
+                                         </tbody></table></td>
+                                        <td background="/webclient/map/images/swportbg.gif" width="5"><img height="1" width="5" src="/webclient/common/images/trans.gif"></td>
+                                        <td valign="middle" align="center" width="16"><img height="24" width="5" src="/webclient/map/images/swcardscrews.gif"></td>
+                                      </tr>
+                                    </tbody></table></td>
+
+           </c:if>
+          </c:if>
+       
+
+       </c:forEach>            
+</c:if>
+
+
+
+ </tr>
+        </tbody></table></td>
+              </tr>
+                </tbody></table></td>
+                    </tr>
+
+                    <tr> 
+                      <td valign="top" align="left"><table cellpadding="0" cellspacing="0" border="0" width="100%">
+                          <tbody><tr> 
+                            <td background="/webclient/map/images/swlinebg.gif" valign="top" align="left"><img height="6" width="39" src="/webclient/map/images/swlineleft.gif"></td>
+                            <td background="/webclient/map/images/swlinebg.gif" valign="top" align="right"><img height="6" width="5" src="/webclient/map/images/swlineright.gif"></td>
+                          </tr>
+                        </tbody></table></td>
+                    </tr>
+                  </tbody></table></td>
+                <td background="/webclient/map/images/swbodyrighttile.gif" valign="top" align="right"><img height="2" width="3" src="/webclient/common/images/trans.gif"></td>
+              </tr>
+              <tr> 
+                <td valign="bottom" align="left"><img height="3" width="3" src="/webclient/map/images/swbodylbc.gif"></td>
+                <td background="/webclient/map/images/swbottile.gif"><img height="3" width="3" src="/webclient/map/images/swbottile.gif"></td>
+                <td background="/webclient/map/images/swbottile.gif" valign="bottom" align="right"><img height="3" width="3" src="/webclient/map/images/swbodyrbc.gif"></td>
+              </tr>
+              <tr> 
+                <td valign="top" align="center" colspan="3"> <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tbody><tr> 
+                      <td valign="bottom" align="left" width="15"><img height="1" width="10" alt="" src="/webclient/common/images/trans.gif"></td>
+                      <td valign="top" align="left" width="94"><img height="3" width="81" alt="" src="/webclient/map/images/swbase.gif"></td>
+                      <td valign="top" align="left"><img height="1" width="200" alt="" src="/webclient/common/images/trans.gif"></td>
+                      <td valign="top" align="right" width="94"><img height="3" width="81" alt="" src="/webclient/map/images/swbase.gif"></td>
+                      <td valign="top" align="right" width="10"><img height="1" width="10" alt="" src="/webclient/common/images/trans.gif"></td>
+                    </tr>
+                  </tbody></table></td>
+              </tr>
+            </tbody></table></td>
+        </tr>
+     
+<tr  class="symbolBg"> 
+          <td align="right"> <table cellpadding="0" cellspacing="0" border="0" width="100%" align="right">
+              <tbody><tr>
+                <td nowrap="nowrap" valign="right" align="right" class="text">
+ <A HREF="/topo/objectdetails.do?requestid=SNAPSHOT&type=<c:out value='${props["type"]}'/>&menuName=<c:out value='${props["menuName"]}'/>&name=<c:out value='${props.objName}'/>&discover=<c:out value='${props["discover"]}'/>&managed=<c:out value='${props["managed"]}'/>&symbol=<c:out value='${props["name"]}'/>&mapName=<c:out value='${props.mapName}'/>" > 
+<%--
+<A HREF="/map/mapSymbolDetails.do?name=<c:out value='${props.name}'/>&mapName=<c:out value='${props.mapName}'/>">
+--%>
+<c:out value='${props.label}'/></a></td>
+                <td valign="bottom" align="right" width="20"><img height="1" width="20" src="/webclient/common/images/trans.gif"></td>
+                      <TD width=20 align="left"><%@include file="/webclient/map/jspf/mapSymbolMenu.jspf"%></TD>
+                      <TD width=1 align="right"><img height="1" width="5" src="/webclient/common/images/trans.gif"></TD>
+              </tr>
+            </tbody></table></td>
+        </tr>
+
+
+ </tbody></table>
+</td>

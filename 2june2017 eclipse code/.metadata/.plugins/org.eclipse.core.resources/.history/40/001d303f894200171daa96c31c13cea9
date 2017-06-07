@@ -1,0 +1,14 @@
+package com.dgca;
+
+public class DgcaConstants {
+
+	public static String SIL_CISCO_PRIME = "10.208.0.11";
+	public static String SIL_TBLDBE207_KMMGMTCP01_CMS = "10.131.128.5";
+	public static String SIL_TBLDBM112_KMMGMTCP01_CMS = "10.131.128.69";
+	public static String SIL_KCMCG08_KMMGMTCP01_CMS = "10.131.134.229";
+	public static String SIL_KCMCG68_KMMGMTCP01_CMS = "10.131.135.5";
+	public static String SIL_CISCO_PRIME_PRO1 = "10.208.0.11";
+	public static String SIL_CISCO_PRIME_PRO2 = "10.208.0.11";
+	public static String SIL_CISCO_IP = "10.208.0.11";
+
+}

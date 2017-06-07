@@ -1,0 +1,126 @@
+package com.dgca;
+
+import java.util.Date;
+import java.util.Enumeration;
+
+import com.adventnet.nms.eventdb.Event;
+import com.adventnet.snmp.snmp2.SnmpPDU;
+import com.adventnet.snmp.snmp2.SnmpVarBind;
+
+public class ExternalSystemsImpl implements ExternalSystems {
+
+	@Override
+	public Event getCiscoEvent(SnmpPDU pdu,Event event) {
+		
+		System.err.println("varbs : " + pdu.printVarBinds());
+		System.err.println("==============getVariableBindings==============");
+		for (Enumeration e = pdu.getVariableBindings().elements(); e.hasMoreElements();) {
+
+			String input1 = ((SnmpVarBind) e.nextElement()).toTagString();
+			System.out.println("Input1 : " + input1);
+			String displayName = null;
+			String description1 = null;
+			
+			if (input1.contains("Object ID: .1.3.6.1.4.1.9.9.712.1.1.2.1.12.0")) {
+
+				String reportingAddress = input1.substring(
+						input1.indexOf("reportingEntityAddress=") + "reportingEntityAddress=".length(),
+						input1.indexOf("reportingEntityAddress=") + "reportingEntityAddress=".length()
+								+ 12);
+				if (reportingAddress.contains(",")) {
+
+					String str[] = reportingAddress.split("\\,");
+					reportingAddress = str[0];
+					System.out.println("After Splitting:" + reportingAddress);
+
+				}
+			
+				
+				String description = input1.substring(
+						input1.indexOf("description=") + "description=".length(),
+						input1.lastIndexOf(".,"));
+				System.out.println("Description at 12.0" +description);
+			
+				
+				if((input1.contains("isArchived=false, authEntityClass"))==true){
+					displayName = input1.substring(
+							input1.indexOf("displayName=") + "displayName=".length(),
+							input1.lastIndexOf(", isArchived=false"));
+					System.out.println("DisplayName at 12.0:" + displayName);
+					
+				} else if((input1.contains("isArchived=false, rrmGroupEventReceiveTimeRrm"))==true){
+					displayName = input1.substring(
+							input1.indexOf("displayName=") + "displayName=".length(),
+							input1.lastIndexOf(", Interface 802.11"));
+
+					System.out.println("DisplayName at 12.0:" + displayName);
+					
+				} else if(input1.contains("Interface 802.11")==true ){
+					displayName = input1.substring(
+							input1.indexOf("displayName=") + "displayName=".length(),
+							input1.lastIndexOf(", Interface 802.11"));
+
+					System.out.println("DisplayName at 12.0:" + displayName);
+					
+				} else {
+					displayName = input1.substring(
+							input1.indexOf("displayName=") + "displayName=".length(),
+							input1.lastIndexOf(", authEntityClass"));
+
+					System.out.println("DisplayName at 12.0:" + displayName);
+					
+				}
+
+				String severity = input1.substring(input1.indexOf("severity=") + "severity=".length(),
+						input1.indexOf("severity=") + "severity=".length() + 1);
+
+				System.out.println("Severity of Cisco" + severity);
+				if (severity.equals("0"))
+					severity = "1";
+				if (severity.equals("1"))
+					severity = "1";
+				if (severity.equals("2"))
+					severity = "2";
+				if (severity.equals("3"))
+					severity = "3";
+				if (severity.equals("4"))
+					severity = "4";
+				if (severity.equals("5"))
+					severity = "3";
+				if (severity.equals("6"))
+					severity = "2";
+				if (severity.equals("7"))
+					severity = "1";
+
+				reportingAddress = reportingAddress.trim();
+				System.out.println("reportingAddress : " + reportingAddress);
+
+				
+				
+				System.out.println("Before add node"+reportingAddress+displayName);
+				try {
+					DgcaManagedObjetsOperations.AddObject(displayName);
+				} catch (Exception e1) {
+					
+					System.err.println("Exception in While adding ManagedObject from TrapSample");
+				}
+				System.out.println("Displayname displayed");
+
+				System.out.println("In Cisco  PI  Testing" + severity);
+							
+				event = new Event();
+				event.setTime((new Date()).getTime());
+				event.setSource(displayName);
+				event.setEntity(displayName);
+				event.setText(description);
+				event.setCategory("Topology");
+				event.setSeverity(Integer.parseInt(severity));
+			}
+		}
+		System.err.println("==============getVariableBindings End=========");
+		System.err.println("event properties : "+event.getProperties() );
+		return event;
+	
+	}
+
+}

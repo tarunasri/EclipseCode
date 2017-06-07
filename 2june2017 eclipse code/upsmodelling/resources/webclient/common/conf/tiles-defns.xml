@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: tiles-defns.xml,v 1.2 2010/10/29 13:46:57 swaminathap Exp $ -->
+
+<!DOCTYPE tiles-definitions  PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="mainlayout" path="/webclient/common/jsp/MainLayout.jsp">
+	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+      <!--    <put name="Right" value=".right.controller"/> -->
+    </definition>
+
+    <definition name="mibbrowserdef" extends="mainlayout">
+         <put name="MainPage" value="/webclient/common/jsp/MibBrowser.jsp"/>
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name="addingWidget" path="/webclient/home/jsp/AssociateWidgetForm.jsp"/>
+
+    <definition name="modifyingCctv" extends="mainlayout">
+         <put name="MainPage" value="/webclient/home/jsp/ModifyCctv.jsp"/>
+ </definition>
+
+ <definition name="addCctvDialog" path="/webclient/home/jsp/ModifyCctv.jsp"/>
+
+ <definition name="addDashDialog" path="/webclient/home/jsp/AddModifyDashboard.jsp"/>
+
+ <definition name="modifyDashboardDialog" path="/webclient/home/jsp/AddModifyDashboard.jsp"/>
+	 
+	 <definition name="dashboardList" extends="mainlayout">
+         <put name="MainPage" value="/webclient/home/jsp/DashboardList.jsp"/>
+    </definition>
+
+
+
+     <definition name="supportDef" extends="mainlayout">
+	  <!--  <put name="Left" value="/webclient/common/jsp/supportLeft.jsp"/> -->
+	 <put name="MainPage" value="/webclient/common/jsp/support.jsp"/>
+    </definition>
+
+    <!--<definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>-->
+<!--
+    <definition name="homepage" extends="mainlayout">
+         <put name="MainPage" value="homepagedef"/>
+    </definition>
+
+<definition name="homepagedef" path="/webclient/common/jsp/HomeLayout.jsp">
+		<put name="frontpanel" value="/webclient/fault/jsp/accPieChart.jsp"/>
+		<put name="accPanel" value="/webclient/fault/jsp/accPanelMain.jsp"/>
+		<put name="ListView" value="/webclient/fault/jsp/alarms.jsp"/>
+        </definition>
+-->
+</tiles-definitions>
+

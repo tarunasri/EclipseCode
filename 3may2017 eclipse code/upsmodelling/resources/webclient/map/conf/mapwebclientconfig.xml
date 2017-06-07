@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE map-web-config SYSTEM "mapwebclientconfig.dtd">
+<!-- $Id: mapwebclientconfig.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<map-web-config>
+	<severity-config>
+		<severity-icon name="Clear" imageName="/webclient/common/images/severity_clear.gif"/>
+		<severity-icon name="Major" imageName="/webclient/common/images/severity_major.gif"/>
+		<severity-icon name="Minor" imageName="/webclient/common/images/severity_minor.gif"/>
+		<severity-icon name="Warning" imageName="/webclient/common/images/severity_warning.gif"/>
+		<severity-icon name="Critical" imageName="/webclient/common/images/severity_critical.gif"/>
+		<severity-icon name="Unknown" imageName="/webclient/common/images/severity_unknown.gif"/>
+	</severity-config>
+    <type-config type="Windows 2000" >
+        <map-view>
+          <icon-config status="default" imageName="/webclient/map/images/win2k_icon.gif"/>
+       </map-view>
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Apple" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/mac_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Macintosh" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/mac_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Linux" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/linux_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="WindowsNT" >
+        <map-view>
+          
+           <icon-config status="default" imageName="/webclient/map/images/winnt_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="HP-Printer" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/printer_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Network" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/network_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/network_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Node" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/node_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/node_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="WindowsNT_Server" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/winnt_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Switch" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/switch_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="SUN" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/solaris_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Solaris" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/solaris_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="snmp-node" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/snmpnode_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="CISCO" >
+        <map-view>
+           <icon-config status="default" imageName="/webclient/map/images/routers_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Interface" >
+        <map-view>
+
+           <icon-config status="default" imageName="/webclient/map/images/interface_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/interfac_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+    <type-config type="Port" >
+        <map-view>
+
+          <icon-config status="default" imageName="/webclient/map/images/port_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/port_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/port_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/port_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/port_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/port_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/port_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+   <type-config type="symbol" >
+        <map-view>
+          <icon-config status="default" imageName="/webclient/map/images/node_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="Clear" imageName="/webclient/topo/images/port_clear_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+   <type-config type="container" >
+        <map-view>
+          <icon-config status="default" imageName="/webclient/map/images/container_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="default" imageName="/webclient/map/images/container_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+   <type-config type="group" >
+        <map-view>
+          <icon-config status="default" imageName="/webclient/map/images/group_icon.gif"/>
+       </map-view>
+
+       <symbol-details>
+          <icon-config status="default" imageName="/webclient/map/images/group_icon.gif"/>
+       </symbol-details>
+   </type-config>
+
+</map-web-config>
+

@@ -1,0 +1,416 @@
+<!-- $Id: EventFilterOperations.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<script>
+
+    var flag = "";
+
+    function openNotificationWindow(selVal)
+    {
+        if(selVal == "suppress")
+        {
+            openSuppressWindow('/admin/ConfigureSuppressAction.do?toPerform=load&actionToPerform=add&openInNewWindow=true');
+        }
+        else if(selVal == "runcmd")
+        {
+            openRunCmdWindow('/admin/ConfigureRunCommandAction.do?toPerform=load&actionToPerform=add&openInNewWindow=true')
+        }
+        else if(selVal == "sendTrap")
+        {
+            openSendTrapWindow('/admin/ConfigureSendTrapAction.do?toPerform=load&actionToPerform=add&openInNewWindow=true');
+        }
+        else if(selVal == "sendEmail")
+        {
+            openSendEmailWindow('/admin/ConfigureSendEMailAction.do?toPerform=load&actionToPerform=add&openInNewWindow=true');
+        }
+        else if(selVal == "customFilter")
+        {
+            openCustomFilterWindow('/admin/ConfigureCustomFilterAction.do?toPerform=load&actionToPerform=add&openInNewWindow=true');
+        }
+        else
+        {
+        }
+    }
+
+    
+    function setAvailableNotificationsFlag()
+    {
+        flag="adv";
+        document.AddEventFilterForm.SelectedActions.selectedIndex=-1;
+    }
+
+    function setSelectedNotificationsFlag()
+    {
+        flag="sel";
+        document.AddEventFilterForm.AvailableActions.selectedIndex=-1;
+    }
+
+    function configureNotifications()
+    {
+        var notifName;
+        var notifType;
+
+        if(flag=="adv")
+        {
+	    if(document.AddEventFilterForm.AvailableActions.selectedIndex != -1)
+	    { 
+	            notifName = document.AddEventFilterForm.AvailableActions.options[document.AddEventFilterForm.AvailableActions.selectedIndex].text;
+        	    notifType = document.AddEventFilterForm.AvailableActions.options[document.AddEventFilterForm.AvailableActions.selectedIndex].value;
+	    }
+	    else
+	    {
+		alert('<fmt:message key="webclient.admin.filter.selectnotification"/>');
+                return;
+	    } 
+        }
+
+        else if(flag=="sel")
+        {
+	     if(document.AddEventFilterForm.SelectedActions.selectedIndex != -1)
+	     {
+        	     notifName = document.AddEventFilterForm.SelectedActions.options[document.AddEventFilterForm.SelectedActions.selectedIndex].text;
+	             notifType = document.AddEventFilterForm.SelectedActions.options[document.AddEventFilterForm.SelectedActions.selectedIndex].value;
+  	     }
+	    else
+	    {
+		alert('<fmt:message key="webclient.admin.filter.selectnotification"/>');
+                return;
+	    } 
+             
+        }
+        else
+        {
+            alert('<fmt:message key="webclient.admin.filter.selectnotification"/>');
+            return;
+        }
+
+        if(notifType == "Suppress Action")
+        {
+            openSuppressWindow('/admin/ConfigureSuppressAction.do?toPerform=load&NotificationName='+notifName+'&actionToPerform=modify&openInNewWindow=true');
+        }
+        else if(notifType == "Run Command Action")
+        {
+            openRunCmdWindow('/admin/ConfigureRunCommandAction.do?toPerform=load&NotificationName='+notifName+'&&actionToPerform=modify&openInNewWindow=true');
+        }   
+        else if(notifType == "Send Trap Action")
+        {
+            openSendTrapWindow('/admin/ConfigureSendTrapAction.do?toPerform=load&NotificationName='+notifName+'&&actionToPerform=modify&openInNewWindow=true');
+        }
+        else if(notifType == "Send Email Action")
+        {
+            openSendEmailWindow('/admin/ConfigureSendEMailAction.do?toPerform=load&NotificationName='+notifName+'&&actionToPerform=modify&openInNewWindow=true');
+        }
+        else if(notifType == "Custom Filter")
+        {
+            openCustomFilterWindow('/admin/ConfigureCustomFilterAction.do?toPerform=load&NotificationName='+notifName+'&&actionToPerform=modify&openInNewWindow=true');
+        }
+        else
+        {
+        }       
+    }
+
+
+    function userProperties()
+    {   
+        document.AddEventFilterForm.toPerform.value="userProperties";
+        var url = document.AddEventFilterForm.action + "#userProp";
+        document.AddEventFilterForm.action = url;
+        verifyTokens(false);
+        document.AddEventFilterForm.submit();
+    }
+
+    function fillNotifications(name)
+    {
+        document.AddEventFilterForm.selNotifications.value=name;
+        document.AddEventFilterForm.toPerform.value="fillNotifications";
+        var url = document.AddEventFilterForm.action + "#userProp";
+        document.AddEventFilterForm.action = url;
+        verifyTokens(false);
+        document.AddEventFilterForm.submit();
+    }
+
+function more()
+{
+    document.AddEventFilterForm.toPerform.value="more";
+    var url = document.AddEventFilterForm.action + "#userProp";
+    document.AddEventFilterForm.action = url;
+    verifyTokens(false);
+    document.AddEventFilterForm.submit();
+}
+
+function fewer()
+{
+    document.AddEventFilterForm.toPerform.value="fewer";
+    var url = document.AddEventFilterForm.action + "#userProp";
+    document.AddEventFilterForm.action = url;
+    verifyTokens(false);
+    document.AddEventFilterForm.submit();
+}
+
+    function appendSeverity(selVal)
+    {
+        if(selVal!="-------")
+        {
+            document.AddEventFilterForm.stringseverity.value=document.AddEventFilterForm.stringseverity.value+" "+selVal;
+        }
+    }
+
+    function moveup()
+    {
+        var box = document.AddEventFilterForm.SelectedActions;
+        if(box.length != 0)    
+        {
+            var selectionModel = new Array();
+            
+            for(i=0; i<box.length;i++)
+            {
+    	        selectionModel[i] = 0;
+                if(box.options[0].selected == false)
+                {
+                    if(box.options[i].selected == true)
+                    {
+                        selectionModel[i] = 1;	
+                    }
+                }
+            }
+        
+            for(i=0;i<box.length;i++)
+            {
+    	        if(selectionModel[i]==1)
+                {
+	                var temptext = box.options[i-1].text;
+                    var tempvalue = box.options[i-1].value;
+                    box.options[i-1].text = box.options[i].text;
+                    box.options[i-1].value = box.options[i].value;
+                    box.options[i].text = temptext;
+                    box.options[i].value = tempvalue;
+                    box.options[i].selected = false;
+                    box.options[i-1].selected = true;
+                }
+            }
+        }
+    }
+
+    //Function : Select item move-down(Multiple select added)
+    function movedown()
+{
+    var box = document.AddEventFilterForm.SelectedActions;
+    var selectionModel = new Array();
+
+    if(box.length != 0)    
+    {
+        for(i=0; i<box.length;i++)
+        {
+    	        selectionModel[i] = 0;
+                if(box.options[box.length-1].selected == false)
+                {
+		        if(box.options[i].selected == true)
+		        {
+			        selectionModel[i] = 1;	
+		        }       
+                }
+        }
+
+
+        for(i=(box.length-1);i>-1; i--)
+        {
+    	        if(selectionModel[i]==1)
+	        {
+	                var temptext = box.options[i+1].text;
+                        var tempvalue = box.options[i+1].value;
+                        box.options[i+1].text = box.options[i].text;
+                        box.options[i+1].value = box.options[i].value;
+                        box.options[i].text = temptext;
+                        box.options[i].value = tempvalue;
+                        box.options[i].selected = false;
+                        box.options[i+1].selected = true;
+	        }
+        }
+   }
+}
+
+
+    function addNotification()
+    {
+        var actionsList = document.AddEventFilterForm.AvailableActions;
+        var selectedActions = document.AddEventFilterForm.SelectedActions;
+        var currentSize = actionsList.options.length;
+        var selectSize = selectedActions.options.length;
+        var selectionModel = new Array();
+
+        for(var i=0; i<currentSize; i++)
+        {
+            selectionModel[i] = 0;
+            if(actionsList.options[i] != null)
+            {
+                if(actionsList.options[i].selected == true)
+                {
+                    selectionModel[i] = 1;
+                }
+            }
+        }
+        
+        for(i=(selectionModel.length-1);i>-1;i--)
+        {
+            if(selectionModel[i]==1)
+            {
+                var xv = actionsList.options[i].value;
+                var xn = actionsList.options[i].text;
+                actionsList.options[i] = null;
+                var add = new Option(xn, xv);
+                selectedActions.options[selectSize] = add;
+                selectSize = ++selectSize;
+            }
+        }
+
+    }
+
+    function removeNotification()
+    {
+        var actionsList = document.AddEventFilterForm.AvailableActions;
+        var selectedActions = document.AddEventFilterForm.SelectedActions;
+        var currentSize = actionsList.options.length;
+        var selectSize = selectedActions.options.length;
+        var allSelected = true;
+            
+            var selectionModel = new Array();
+
+            for(var i=0; i<selectSize; i++)
+            {
+                selectionModel[i] = 0;
+                if(selectedActions.options[i] != null)
+                {
+        	        if(selectedActions.options[i].selected == true)
+        	        {
+                        selectionModel[i] = 1;
+                    }
+                }
+            }
+
+            for(i=(selectionModel.length-1);i>-1;i--)
+            {
+                if(selectionModel[i]==1)
+                {
+                    var xv = selectedActions.options[i].value;
+            		var xn = selectedActions.options[i].text;
+                    selectedActions.options[i] = null;
+            		var add = new Option(xn, xv);
+            		actionsList.options[currentSize] = add;
+            		currentSize = ++currentSize;
+                }
+            }
+
+}
+
+function submitForm()
+{
+    if(document.AddEventFilterForm.name.value==null || document.AddEventFilterForm.name.value=='')
+    {
+        alert('<fmt:message key="webclient.admin.filter.emptyfiltername"/>');
+        return false;
+    }
+
+    var noOfRows = document.AddEventFilterForm.rowCount.value;
+    
+    if(noOfRows==1)
+    {
+        if(isEmpty(document.AddEventFilterForm.userPropsName.value))
+        {
+            alert('<fmt:message key="webclient.admin.filter.attribute.errormessage"/>');
+            document.AddEventFilterForm.userPropsName.focus();
+            return false;
+        }
+        if(isEmpty(document.AddEventFilterForm.userPropsValue.value))
+        {
+            alert('<fmt:message key="webclient.admin.filter.value.errormessage"/>');
+            document.AddEventFilterForm.userPropsValue.focus();
+            return false;
+        }
+    }
+    if(noOfRows>1)
+    {
+        for(i=0;i<noOfRows;i++)
+        {
+            if(isEmpty(document.AddEventFilterForm.userPropsName[i].value))
+            {
+                alert('<fmt:message key="webclient.admin.filter.attribute.errormessage"/>');
+                document.AddEventFilterForm.userPropsName[i].focus();
+                return false;
+            }
+            if(isEmpty(document.AddEventFilterForm.userPropsValue[i].value))
+            {
+                alert('<fmt:message key="webclient.admin.filter.value.errormessage"/>');
+                document.AddEventFilterForm.userPropsValue[i].focus();
+                return false;
+            }
+        }
+    }
+
+	var cansubmit = verifyTokens(true);
+	if(!cansubmit)
+	{
+        return false;
+	}
+    else
+    {
+        var val = document.AddEventFilterForm.actionToPerform.value;
+        document.AddEventFilterForm.toPerform.value=val;
+        //document.AddEventFilterForm.submit();
+    }
+}
+
+function verifyTokens(flag)
+{
+    var selectedViewSize = document.AddEventFilterForm.SelectedActions.options.length;
+    var selecteditems = "";
+  
+    if(document.AddEventFilterForm.SelectedActions.options.length != 0)
+    {
+        for(var i=0; i<selectedViewSize; i++)
+        {
+	        if(i==0)
+	        {
+		        selecteditems = document.AddEventFilterForm.SelectedActions.options[i].text;
+	        }
+	        else
+	        {
+		        selecteditems = selecteditems+":"+document.AddEventFilterForm.SelectedActions.options[i].text;
+	        }
+        }
+        document.AddEventFilterForm.selitems.value = selecteditems;
+        if(selecteditems == null || selecteditems == '')
+        {
+            alert('<fmt:message key="webclient.admin.filter.selectanaction"/>');
+            return false;
+        }
+        return true;
+    }
+    else
+    {
+        if(flag)
+        {
+            alert('<fmt:message key="webclient.admin.filter.configureanaction"/>');
+        }
+        return false;
+    }
+}
+
+function loadForm(val,filterName,selNot)
+{
+    document.AddEventFilterForm.oldFilterName.value=filterName;
+    var len = document.AddEventFilterForm.AvailableActions.options.length;
+    for(i=0;i<len;i++)
+    {
+       if(selNot==document.AddEventFilterForm.AvailableActions.options[i].text)
+       setAvailableNotificationsFlag();
+    }
+    var leng = document.AddEventFilterForm.SelectedActions.options.length;
+    for(i=0;i<leng;i++)
+    {
+       if(selNot==document.AddEventFilterForm.SelectedActions.options[i].text)
+       {
+          setSelectedNotificationsFlag();
+       }
+    }
+}
+
+</script>

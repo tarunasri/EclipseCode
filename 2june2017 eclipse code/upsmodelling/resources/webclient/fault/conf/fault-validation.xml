@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!-- $Id: fault-validation.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+
+
+   <formset>
+
+        <form name="EventCVForm">
+            <field property="cvName"
+                 depends="required">
+        	     <arg0 key="webclient.fault.customview.customviewname"/>
+            </field>
+            <field property="ageValue"
+                 depends="required,integer">
+        	     <arg0 key="webclient.fault.customview.event.agevalue.required"/>
+            </field>
+            <field property="refreshPeriod"
+                 depends="required,integer">
+        	     <arg0 key="webclient.fault.customview.event.refreshperiod.required"/>
+            </field>
+           <field property="fromTime"
+                depends="validateDateOrder">
+                     <arg0 key="webclient.fault.customview.event.time.invaliddate.msg"/>
+                        <var>
+                           <var-name>secondProperty</var-name>
+                           <var-value>toTime</var-value>
+                         </var>
+            </field>
+
+        </form>
+
+        <form name="AlarmCVForm">
+            <field property="cvName"
+                 depends="required">
+        	     <arg0 key="webclient.fault.customview.customviewname"/>
+            </field>
+            <field property="ageValue"
+                 depends="required,integer">
+        	     <arg0 key="webclient.fault.customview.alarm.agevalue.required"/>
+            </field>
+            <field property="refreshPeriod"
+                 depends="required,integer">
+        	     <arg0 key="webclient.fault.customview.alarm.refreshperiod.required"/>
+            </field>
+            <field property="createdfrom"
+                depends="validateDateOrder">
+                     <arg0 key="webclient.fault.customview.alarm.createdtime.invaliddate.msg"/>
+                        <var>
+                           <var-name>secondProperty</var-name>
+                           <var-value>createdto</var-value>
+                         </var>
+             </field>
+             <field property="modifiedfrom"
+                depends="validateDateOrder">
+                     <arg0 key="webclient.fault.customview.alarm.modified.invaliddate.msg"/>
+                        <var>
+                           <var-name>secondProperty</var-name>
+                           <var-value>modifiedto</var-value>
+                         </var>
+            </field>
+
+
+        </form>
+
+
+
+   </formset>
+</form-validation>

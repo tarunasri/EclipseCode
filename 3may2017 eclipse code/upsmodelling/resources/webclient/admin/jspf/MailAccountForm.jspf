@@ -1,0 +1,235 @@
+<%-- $Id: MailAccountForm.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
+<%@ taglib prefix="html"
+	uri="http://jakarta.apache.org/struts/tags-html"%>
+<%@ taglib uri="http://jakarta.apache.org/struts/tags-html-el"
+	prefix="html-el"%>
+
+
+<html>
+
+
+<body onload="pageOnLoad()">
+
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+	<tbody>
+		<tr>
+			<td style="padding: 3px;">
+			<table cellspacing="0" cellpadding="0" border="0" width="100%"
+				class="hRule1">
+				<tbody>
+					<tr>
+						<td height="27" class="boldTxt" id="addTitle"><fmt:message
+							key='webclient.admin.mailserver.addTitle' /></td>
+						<td height="27" class="hide" id="modifyTitle"><fmt:message
+							key='webclient.admin.mailserver.modifyTitle' /></td>	
+						<td align="right" valign="top"><img align="absmiddle"
+							title="Close" onclick="javascript:hideAccountDiv()"
+							src="/webclient/common/images/spacer.gif" class="popClose1" /></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table width="100%" border="0" cellspacing="0" cellpadding="0"
+				id="errorTab">
+				<c:if test="${!empty success}">
+					<tr>
+
+						<td class="responseText" align="center" height="40"><img
+							valign="centre" src="/webclient/common/images/tick.gif"
+							hspace="4"><span style=""><c:out value="${success}" /></span></td>
+					</tr>
+				</c:if>
+				<c:if test="${!empty failure}">
+					<tr>
+						<td align="center" height="40"><img valign="centre"
+							src="/webclient/common/images/cross.gif" hspace="4"><span
+							style="" class="errorText"><c:out value="${failure}" /></span></td>
+					</tr>
+				</c:if>
+
+			</table>
+
+
+			<html:form action="/MailServerSettingsadmin">
+				<table style="padding: 0px;padding-top:0px" width="96%" align="center" border="0"
+					cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="generalCurveLeftTop"><img src="images/spacer.gif"
+							width="1px" height="1px" /></td>
+						<td align="left" valign="top" nowrap="nowrap"
+							class="generalCurveTop" style="padding-right: 10px;"></td>
+						<td class="generalCurveRightTop"><img src="images/spacer.gif"
+							width="1px" height="1px" /></td>
+					</tr>
+					<tr>
+						<td class="generalCurveLeft">&nbsp;</td>
+						<td>
+						<table cellspacing="0" cellpadding="0" border="0" width="100%">
+							<tbody>
+								<tr class="generalTBHeader">
+									<td class="boldTxt"><fmt:message
+										key='webclient.admin.mailserver.accountDetails' /></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+						<td class="generalCurveRight">&nbsp;&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="generalCurveLeft">&nbsp;</td>
+						<td valign="top" class="generalTBPadding">
+
+						<table border='0' cellpadding='0' cellspacing='0'>
+							<tr>
+								<td class='htableBorder' style="padding: 1px;">
+								<table style="margin-top: 7px;" width='100%' cellspacing='0'
+									cellpadding='3' border='0'>
+									<tr>
+										<td width="20%" align='right' valign='middle' nowrap="nowrap"
+											class='text' style='padding-top: 5px;'><fmt:message
+											key="webclient.admin.mailserver.form.text.accountname" /></td>
+
+										<td valign='bottom' align='left' style="padding-left: 10px;"
+											colspan='2'><html:text name="MailServerForm"
+											styleClass="formStyle" property="accountname" /></td>
+									</tr>
+
+									<tr>
+										<td align='right' valign='middle' nowrap="nowrap" class='text'
+											style='padding-top: 9px;'><fmt:message
+											key="webclient.admin.mailserver.mailservername" /></td>
+										<td valign='bottom' align='left' class='text' colspan='2'
+											style="padding-left: 10px;"><html:text
+											name="MailServerForm" styleClass="formStyle"
+											property="servername" /></td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' class='text'><fmt:message
+											key="webclient.admin.mailserver.secureconnection" /></td>
+										<td valign='middle' align='left' style="padding-left: 10px;">
+										<table width="50%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td><html:radio name="MailServerForm" value="true"
+													property="smtp" onclick="invert(this.form,'smtp')" /></td>
+												<td class='text'><fmt:message
+													key="webclient.admin.mailserver.smtp" /></td>
+												<td style="padding-left: 15px;"><html:radio
+													name="MailServerForm" value="true" property="smtpssl"
+													onclick="invert(this.form,'smtpssl')" /></td>
+												<td class='text'><fmt:message
+													key="webclient.admin.mailserver.smtpssl" /></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' style='padding-top: 9px;'
+											class='text'><fmt:message
+											key="webclient.admin.mailserver.port" /></td>
+										<td valign='bottom' align='left' style="padding-left: 10px;"
+											colspan='2'><html:text name="MailServerForm"
+											styleClass="formStyle" property="serverport" /></td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' style='padding-top: 9px;'
+											class='text'>&nbsp;</td>
+										<td valign='bottom' align='left' colspan='2'
+											style="padding-left: 10px;">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td width="10"><span class="text"
+													style="padding-top: 9px;"> <input type="checkbox"
+													name="requiresauth" value="true" onclick="enDisFields();" />
+												</span></td>
+												<td nowrap="nowrap" class="text"><fmt:message
+													key="webclient.admin.mailserver.requiresauth" /></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' style='padding-top: 9px;'
+											class='text'>&nbsp;</td>
+										<td valign='bottom' align='left' colspan='2'
+											style="padding-left: 10px;">
+										<table border="0" cellspacing="0" cellpadding="2">
+											<tr>
+												<td nowrap="nowrap" class="text"><fmt:message
+													key="webclient.admin.mailserver.username" /></td>
+												<td style="padding-left: 7px;"><html:text
+													name="MailServerForm"
+													styleClass="formStyleDisabled" property="username" /></td>
+											</tr>
+											<tr>
+												<td nowrap="nowrap" class="text"><fmt:message
+													key="webclient.admin.mailserver.password" /></td>
+												<td style="padding-left: 7px;"><html:password
+													name="MailServerForm" property="userpassword"
+													styleClass="formStyleDisabled" /></td>
+											</tr>
+										</table>
+										</td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' style='padding-top: 9px;'
+											class='text'><fmt:message
+											key="webclient.admin.mailserver.fromemailid" /></td>
+										<td valign='bottom' align='left' colspan='2'
+											style="padding-left: 10px;"><html:text
+											name="MailServerForm" styleClass="formStyle"
+											property="fromaddress" /></td>
+									</tr>
+									<tr>
+										<td valign='middle' align='right' class='text'><fmt:message
+											key="webclient.admin.mailserver.toemailid" /></td>
+										<td valign='middle' align='left' style="padding-left: 10px;"><html:text
+											name="MailServerForm" styleClass="formStyle"
+											property="toaddress" /></td>
+									</tr>
+								</table>
+								</td>
+							</tr>
+							<tr>
+								<td align="right"></td>
+							</tr>
+						</table>
+						</td>
+						<td class="generalCurveRight">&nbsp;&nbsp;</td>
+					</tr>
+					<tr>
+						<td class="generalCurveLeftBot"><img src="images/spacer.gif"
+							width="1px" height="1px" /></td>
+						<td class="generalCurveBottom"><img src="images/spacer.gif"
+							width="1px" height="1px" /></td>
+						<td class="generalCurveRightBot"><img src="images/spacer.gif"
+							width="1px" height="1px" /></td>
+					</tr>
+				</table>
+				<table style="clear: both; margin-bottom: 10px;padding-top:10px;" width="100%"
+					border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td align="center"><input class='button' type="submit"
+							onclick=' return testmail("<c:out value='${ReturnPageValue}' />")'
+							value="<fmt:message key="webclient.admin.mailserver.mailbutton" />"
+							name='test' /> <input class="button" type="submit" name="modify"
+							value='<fmt:message key="webclient.admin.mailserver.form.button.update"/>'
+							onclick=' return updateAccount("<c:out value='${ReturnPageValue}' />")' /> <input class="button"
+							type="button" name="cancel"
+							value='<fmt:message key="webclient.admin.mailserver.form.button.cancel"/>'
+							onclick="javascript:hideAccountDiv();"></td>
+					</tr>
+				</table>
+			</html:form></td>
+		</tr>
+	</tbody>
+</table>
+
+
+</body>
+</html>

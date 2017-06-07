@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: search-props.xml,v 1.2 2010/11/02 09:31:43 prabakaran Exp $ -->
+
+<!--
+    Document   : search-props.xml
+    Created on : October 10, 2003, 2:25 PM
+    Author     : baskar
+    Description:
+-->
+
+<!DOCTYPE Search-Props SYSTEM 'SearchPropsList.dtd'>
+<Search-Props>
+<view name="Topology">
+    <property key ="name" type = "STRING"/>
+    <property key ="status" type = "STRING"/>
+    <property key ="ipAddress" type = "STRING"/>
+    <property key ="managed" type = "BOOLEAN"/>
+    <property key ="type" type = "STRING"/>
+    <property key ="snmpport" type = "NUMBER"/>
+    <property key ="version" type = "STRING"/>
+    <property key ="isSNMP" type = "BOOLEAN"/>
+    <property key ="statusPollEnabled" type = "BOOLEAN"/>
+    <property key ="pollInterval" type = "NUMBER"/>
+    <property key ="statusUpdateTime" type = "DATE" inputaction="/DateInput.do"/>
+    <property key ="statusChangeTime" type = "DATE" inputaction="/DateInput.do"/>
+    <property key ="isDHCP" type = "BOOLEAN"/>
+    <property key ="isNode" type = "BOOLEAN"/>
+    <property key ="isInterface" type = "BOOLEAN"/>
+    <property key ="isRouter" type = "BOOLEAN"/>
+    <property key ="isNetwork" type = "BOOLEAN"/>
+      
+</view>
+
+<view name="Map">
+    <property key ="name" type = "STRING"/>
+    <property key ="status" type = "STRING"/>
+    <property key ="ipAddress" type = "STRING"/>
+    <property key ="managed" type = "BOOLEAN"/>
+    <property key ="type" type = "STRING"/>
+    <property key ="snmpport" type = "NUMBER"/>
+    <property key ="version" type = "STRING"/>
+    <property key ="isSNMP" type = "BOOLEAN"/>
+    <property key ="statusPollEnabled" type = "BOOLEAN"/>
+    <property key ="pollInterval" type = "NUMBER"/>
+    <property key ="statusUpdateTime" type = "DATE" inputaction="/DateInput.do"/>
+    <property key ="statusChangeTime" type = "DATE" inputaction="/DateInput.do"/>
+    <property key ="isDHCP" type = "BOOLEAN"/>
+    <property key ="isNode" type = "BOOLEAN"/>
+    <property key ="isInterface" type = "BOOLEAN"/>
+    <property key ="isRouter" type = "BOOLEAN"/>
+    <property key ="isNetwork" type = "BOOLEAN"/>
+    <property key ="parentNet" type = "STRING"/>    
+</view>
+
+<view name="Events"> 
+    <property key ="source" type = "STRING"/> 
+    <property key ="severity" type = "STRING" />
+    <property key ="entity" type = "STRING"/> 
+    <property key ="text" type = "STRING"/> 
+    <property key ="category" type = "STRING"/> 
+    <property key ="id" type = "NUMBER"/> 
+    <property key ="network" type = "STRING"/> 
+    <property key ="domain" type = "STRING"/> 
+    <property key ="node" type = "STRING"/> 
+    <property key ="time" type = "DATE" inputaction="/DateInput.do"/> 
+</view> 
+
+<view name="Alerts"> 
+    <property key ="source" type = "STRING"/> 
+    <property key ="severity" type = "STRING" />
+    <property key ="previousseverity" type = "STRING" />
+    <property key ="entity" type = "STRING"/> 
+    <property key ="message" type = "STRING"/> 
+    <property key ="category" type = "STRING"/> 
+    <property key ="groupName" type = "STRING"/> 
+    <property key ="owner" type = "STRING"/> 
+    <property key ="createTime" type = "DATE" inputaction="/DateInput.do"/> 
+    <property key ="modTime" type = "DATE" inputaction="/DateInput.do"/> 
+</view> 
+
+<view name="AuthAudit"> 
+	<property key ="userName" type = "STRING" />
+	<property key ="operation" type = "STRING" />
+	<property key ="status" type = "STRING"/> 
+	<property key ="auditTime" type = "STRING"/> 
+	<property key ="category" type = "STRING"/> 
+	<property key ="auditedObj" type = "STRING"/> 
+</view> 
+
+<view name="ConfigAudit">
+	<property key="taskName" type="STRING"/>
+	<property key="subTaskName" type="STRING"/>
+	<property key="deviceName" type="STRING"/>
+	<property key="status" type="STRING"/>
+	<property key="rollbackStatus" type="STRING"/>
+	<property key="timeOfStart" type="DATE" inputaction="/DateInput.do"/>
+	<property key="timeOfFinish" type="DATE" inputaction="/DateInput.do"/>
+</view>
+
+</Search-Props>

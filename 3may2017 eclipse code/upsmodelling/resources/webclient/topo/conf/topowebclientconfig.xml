@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE topo-web-config SYSTEM "topowebclientconfig.dtd">
+<!-- $Id: topowebclientconfig.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<topo-web-config>
+    <type-config type="Windows 2000" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/win2k_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/win2k_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Apple" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/mac_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Macintosh" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/mac_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/mac_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Linux" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/linux_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/linux_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="WindowsNT" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/winnt_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="HP-Printer" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/printer_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/printer_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Network" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/network_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/network_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/network_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Node" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/node_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/node_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/node_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="WindowsNT_Server" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/winnt_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/winnt_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Switch" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/switch_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/switch_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="SUN" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/solaris_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Solaris" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/solaris_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/solaris_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="snmp-node" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/snmpnode_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/snmp_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="CISCO" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/routers_icon.gif"/>
+       </list-view>
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/routers_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Interface" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/interface_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/map/images/interface_sev_icon.gif"/>
+       </object-details>
+   </type-config>
+
+    <type-config type="Port" >
+        <list-view>
+           <icon-config status="default" imageName="/webclient/topo/images/port_icon.gif"/>
+       </list-view>
+
+       <object-details>
+          <icon-config status="Clear" imageName="/webclient/topo/images/port_clear_icon.gif"/>
+          <icon-config status="Major" imageName="/webclient/topo/images/port_major_icon.gif"/>
+          <icon-config status="Minor" imageName="/webclient/topo/images/port_minor_icon.gif"/>
+          <icon-config status="Warning" imageName="/webclient/topo/images/port_warning_icon.gif"/>
+          <icon-config status="Critical" imageName="/webclient/topo/images/port_critical_icon.gif"/>
+          <icon-config status="Unknown" imageName="/webclient/topo/images/port_unknown_icon.gif"/>
+       </object-details>
+   </type-config>
+
+</topo-web-config>
+

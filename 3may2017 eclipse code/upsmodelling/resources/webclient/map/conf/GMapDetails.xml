@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<GMAP-DATA>
+<KEY>
+</KEY>
+<LOCATIONS-GROUP>
+<LOCATION area="Afghanistan" latitude="33.95" longitude="67.4"/>
+<LOCATION area="Albania" latitude="41.1298611" longitude="20.19472225"/>
+<LOCATION area="Algeria" latitude="28.12083335" longitude="1.51361115"/>
+<LOCATION area="Austria" latitude="47.725" longitude="13.3165278"/>
+<LOCATION area="Azerbaijan" latitude="40.125" longitude="47.73972225"/>
+<LOCATION area="Bahrain" latitude="26.08375" longitude="50.5525"/>
+<LOCATION area="Bangaluru" latitude="12.9747616" longitude="77.5936889"/>
+<LOCATION area="Bangladesh" latitude="23.7666667" longitude="90.24166665"/>
+<LOCATION area="Barbados" latitude="13.1833333" longitude="-59.51666665"/>
+<LOCATION area="Belarus" latitude="53.425" longitude="27.7"/>
+<LOCATION area="Belgium" latitude="50.59166665" longitude="4.475"/>
+<LOCATION area="Belize" latitude="17.1916667" longitude="-88.5233333"/>
+<LOCATION area="Benin" latitude="9.31666665" longitude="2.29972225"/>
+<LOCATION area="Bermuda" latitude="32.31944445" longitude="-64.7672222"/>
+<LOCATION area="Bhutan" latitude="27.3916667" longitude="90.49166665"/>
+<LOCATION area="Bolivia" latitude="-6.59444445" longitude="-63.60833335"/>
+<LOCATION area="Bosnia" latitude="43.91652775" longitude="17.68444445"/>
+<LOCATION area="Brazil" latitude="-14.54166665" longitude="-53.09166665"/>
+<LOCATION area="Bulgaria" latitude="42.6051389" longitude="25.48388885"/>
+<LOCATION area="Canada" latitude="62.14166665" longitude="-96.825"/>
+<LOCATION area="Central African Republic" latitude="5.78333335" longitude="20.68333335"/>
+<LOCATION area="Chad" latitude="14.66875" longitude="18.25833335"/>
+<LOCATION area="Chennai" latitude="13.0597246" longitude="80.2087783"/>
+<LOCATION area="China" latitude="35.84444445" longitude="104.40833335"/>
+<LOCATION area="Colombia" latitude="4.58402775" longitude="-74.2926389"/>
+<LOCATION area="Comoros" latitude="-12.18375" longitude="44.25444445"/>
+<LOCATION area="Croatia" latitude="44.46388885" longitude="16.4406944"/>
+<LOCATION area="Cuba" latitude="21.70833335" longitude="-58.28819445"/>
+<LOCATION area="Cyprus" latitude="35.0958333" longitude="33.39069445"/>
+<LOCATION area="Czech Republic" latitude="46.09166665" longitude="15.475"/>
+<LOCATION area="Denmark" latitude="56.15" longitude="11.63333335"/>
+<LOCATION area="Djibouti" latitude="11.82430555" longitude="42.59583335"/>
+<LOCATION area="Egypt" latitude="35.6222222" longitude="30.31708335"/>
+<LOCATION area="El Salvador" latitude="13.80791665" longitude="-88.8826389"/>
+<LOCATION area="Finland" latitude="64.925" longitude="25.5033333"/>
+<LOCATION area="France" latitude="46.2333333" longitude="2.2083333"/>
+<LOCATION area="Georgia" latitude="42.3661111" longitude="43.33611115"/>
+<LOCATION area="Germany" latitude="51.1666667" longitude="10.45"/>
+<LOCATION area="Ghana" latitude="7.95458335" longitude="-1.0036111"/>
+<LOCATION area="Gibraltar" latitude="36.125" longitude="-5.34166665"/>
+<LOCATION area="Greece" latitude="38.2679167" longitude="24.4923611"/>
+<LOCATION area="Greenland" latitude="70.8" longitude="-45.23333335"/>
+<LOCATION area="Hungary" latitude="47.28847225" longitude="19.51986115"/>
+<LOCATION area="Hyderabad" latitude="17.3853495" longitude="78.49336624"/>
+<LOCATION area="Iceland" latitude="64.94916665" longitude="-19.0413889"/>
+<LOCATION area="India" latitude="21.3375" longitude="82.76666665"/>
+<LOCATION area="Iran" latitude="32.40944445" longitude="53.65194445"/>
+<LOCATION area="Iraq" latitude="33.3366667" longitude="43.82680555"/>
+<LOCATION area="Ireland" latitude="53.4109722" longitude="-8.240694"/>
+<LOCATION area="Israel" latitude="31.4236111" longitude="34.97430555"/>
+<LOCATION area="Italy" latitude="39.08444445" longitude="27.97888885"/>
+<LOCATION area="Jamaica" latitude="18.11666665" longitude="-77.45"/>
+<LOCATION area="Japan" latitude="36.8092847" longitude="136.4941406"/>
+<LOCATION area="Jordan" latitude="31.02166665" longitude="36.6083333"/>
+<LOCATION area="Kazakhstan" latitude="47.96666665" longitude="81.19166665"/>
+<LOCATION area="Kenya" latitude="-0.2333333" longitude="37.89805555"/>
+<LOCATION area="Kuwait" latitude="29.14805555" longitude="48.02583335"/>
+<LOCATION area="Kyrgyzstan" latitude="41.1833333" longitude="74.2083333"/>
+<LOCATION area="Latvia" latitude="56.875" longitude="24.5916667"/>
+<LOCATION area="Lebanon" latitude="33.88069445" longitude="35.80805555"/>
+<LOCATION area="Liberia" latitude="6.44180555" longitude="-9.4861111"/>
+<LOCATION area="Luxembourg" latitude="49.82125" longitude="6.1290278"/>
+<LOCATION area="Macedonia" latitude="41.6205556" longitude="21.70708335"/>
+<LOCATION area="Madagascar" latitude="-18.775" longitude="46.85"/>
+<LOCATION area="Malawi" latitude="-13.325" longitude="34.2916667"/>
+<LOCATION area="Maldives" latitude="3.09166665" longitude="73.23333335"/>
+<LOCATION area="Mauritius" latitude="-15.5" longitude="60.09166665"/>
+<LOCATION area="Mexico" latitude="26.5875" longitude="-101.9166667"/>
+<LOCATION area="Mongolia" latitude="46.76944445" longitude="103.83333335"/>
+<LOCATION area="Morocco" latitude="19.995" longitude="-6.92666665"/>
+<LOCATION area="Mozambique" latitude="-15.5672222" longitude="22.42555555"/>
+<LOCATION area="Mumbai" latitude="19.0387308" longitude="72.8719711"/>
+<LOCATION area="Nepal" latitude="28.275" longitude="84.1083333"/>
+<LOCATION area="Netherlands" latitude="52.125" longitude="5.2916667"/>
+<LOCATION area="New Delhi" latitude="28.63920526" longitude="77.22530364"/>
+<LOCATION area="Nicaragua" latitude="12.88333335" longitude="-85.34166665"/>
+<LOCATION area="Nigeria" latitude="8.98333335" longitude="8.575"/>
+<LOCATION area="Norway" latitude="64.575" longitude="17.88333335"/>
+<LOCATION area="Oman" latitude="21.53569445" longitude="56.18930555"/>
+<LOCATION area="Pakistan" latitude="30.44166665" longitude="69.075"/>
+<LOCATION area="Peru" latitude="-6.8533333" longitude="-74.99666665"/>
+<LOCATION area="Poland" latitude="51.99166665" longitude="19.13333335"/>
+<LOCATION area="Portugal" latitude="36.84166665" longitude="-18.6916667"/>
+<LOCATION area="Qatar" latitude="25.36291665" longitude="51.1929167"/>
+<LOCATION area="Romania" latitude="45.88333335" longitude="24.9416667"/>
+<LOCATION area="Russia" latitude="43.10833335" longitude="99.715"/>
+<LOCATION area="Saudi Arabia" latitude="24.04708335" longitude="42.9925"/>
+<LOCATION area="Spain" latitude="35.825" longitude="-6.03333335"/>
+<LOCATION area="Sri Lanka" latitude="7.875" longitude="80.7666667"/>
+<LOCATION area="Sudan" latitude="13.325" longitude="30.1416667"/>
+<LOCATION area="Sweden" latitude="62.15" longitude="35.875"/>
+<LOCATION area="Switzerland" latitude="49.125" longitude="8.23333335"/>
+<LOCATION area="Syria" latitude="34.79847225" longitude="38.9827778"/>
+<LOCATION area="Tajikistan" latitude="38.825" longitude="71.1225"/>
+<LOCATION area="Tanzania" latitude="-6.3675" longitude="35.0083333"/>
+<LOCATION area="Tunisia" latitude="34.1854167" longitude="9.60833335"/>
+<LOCATION area="Turkey" latitude="38.95138885" longitude="35.2534722"/>
+<LOCATION area="Turkmenistan" latitude="38.925" longitude="59.59166665"/>
+<LOCATION area="Ukraine" latitude="52.30833335" longitude="40.85833335"/>
+<LOCATION area="United Arab Emirates" latitude="24.4911111" longitude="53.90166665"/>
+<LOCATION area="United Kingdom" latitude="55.35" longitude="-3.16666665"/>
+<LOCATION area="United States" latitude="43.88944766" longitude="-98.7890625"/>
+<LOCATION area="Uzbekistan" latitude="41.925" longitude="68.35833335"/>
+<LOCATION area="Venezuela" latitude="6.1011111" longitude="-39.94916665"/>
+<LOCATION area="Zambia" latitude="-13.00833335" longitude="25.36666665"/>
+</LOCATIONS-GROUP>
+</GMAP-DATA>
+<!--$Id: GMapDetails.xml,v 1.2 2010/10/29 13:47:10 swaminathap Exp $-->

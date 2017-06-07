@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+  <!-- $Id: topo-tiles-defs.xml,v 1.2 2010/10/29 13:47:15 swaminathap Exp $ -->
+
+    <definition name="topoPage" path="/webclient/common/jsp/MainLayout.jsp">
+         <put name="Tree" value=".tree.controller"/>
+         <put name="Tab" value=".tab.controller"/>
+         <put name="AccPanel" value=".accPanel.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+      <!--    <put name="Right" value=".right.controller"/> -->
+    </definition>
+
+    <definition name="inventoryPageWithTab" extends="topoPage">
+      <put name="MainPage" value="inventoryPage"/>
+    </definition>
+
+    <definition name="inventoryPage" path="/webclient/common/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/topo/jsp/inventoryViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/topo/jsp/inventoryHeaderInclude.jsp"/>
+    <put name="Toolbar" value="/webclient/topo/jsp/InventoryViewHeader.jsp"/>
+    <put name="StatusMessage" value="/webclient/topo/jsp/inventoryViewStatus.jsp"/>
+    <put name="PageTraversal" value=".component.pagetraversal"/>
+    <put name="ListView" value="/webclient/topo/jsp/inventoryList.jsp"/>
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+     <definition name=".component.pagetraversal"
+        path="/webclient/common/jsp/PageNavigation.jsp" 
+        controllerClass="com.adventnet.nms.webclient.common.PageTraversalController">
+    </definition>
+
+    <definition name="message" extends="topoPage"> 
+        <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/> 
+     </definition> 
+
+    <definition name="addNodePageDef" extends="topoPage">
+      <put name="MainPage" value="/webclient/topo/jsp/addNode.jsp"/>
+    </definition>
+
+    <definition name="addNodeResponsePageDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/addNodeResponse.jsp"/>
+    </definition>
+
+    <definition name="refreshNodePageDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/refreshNode.jsp"/>
+    </definition>
+
+    <definition name="refreshNodeResponsePageDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/refreshNodeResponse.jsp"/>
+    </definition>
+
+    <definition name="addNetworkPageDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/addNetwork.jsp"/>
+    </definition>
+
+    <definition name="addNetworkResponsePageDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/addNetworkResponse.jsp"/>
+    </definition>
+
+   <definition name="responsePageDef" extends="topoPage">
+      <put name="MainPage" value="/webclient/topo/jsp/operationResponse.jsp"/>
+   </definition>
+
+   <definition name="errorPage" extends="topoPage">
+      <put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+   </definition>
+
+   <definition name="detailsError" extends="topoPage">
+		<put name="MainPage" value="/webclient/topo/jsp/detailsError.jsp"/>
+	</definition>
+
+  <definition name="messagePage" extends="topoPage">
+     <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/>
+  </definition>
+
+
+    <definition name="snmpOIDsQueryResultsDef" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/snmpOIDsQueryResults.jsp"/>
+    </definition>
+
+
+    <definition name="searchPageDef" extends="topoPage">
+      <put name="MainPage" value="inventorySearchPage"/>
+    </definition>
+
+    <definition name="inventorySearchPage" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="SearchComponent" value="/webclient/common/jsp/SearchComponent.jsp"/>
+         <put name="SearchView" value="/webclient/topo/jsp/inventoryList.jsp"/>
+    </definition>
+
+
+    <definition name="addCVDef" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/topo/jsp/addCVHeader.jsp"/>
+         <put name="Body" value="/webclient/topo/jsp/addCVBody.jsp"/>
+         <put name="Core" value="addCVComponentDef"/>
+         <put name="Footer" value="/webclient/topo/jsp/addCVFooter.jsp"/>
+    </definition>
+
+    <definition name="searchDef" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/topo/jsp/searchHeader.jsp"/>
+         <put name="Body" value="/webclient/topo/jsp/searchBody.jsp"/>
+         <put name="Core" value="searchComponentDef"/>
+         <put name="Footer" value="/webclient/topo/jsp/searchResults.jsp"/>
+    </definition>
+
+    <definition name="searchComponentDef" path="/webclient/common/jsp/SearchComponent.jsp">
+         <put name="Footer" value="/webclient/common/jsp/searchFooter.jsp"/>
+    </definition>
+
+    <definition name="addCVComponentDef" extends="searchComponentDef">
+         <put name="Footer" value="/webclient/topo/jsp/addCVSearchFooter.jsp"/>
+    </definition>
+
+    <definition name="addTopoCVDef" extends="topoPage">
+      <put name="MainPage" value="addCVDef"/>
+    </definition>
+
+    <definition name="topoSearchDef" extends="topoPage">
+         <put name="MainPage" value="searchDef"/>
+    </definition>
+
+    <definition name="deviceSearchDef" path="/webclient/topo/jsp/ConfigSearchLayout.jsp">
+         <put name="Header" value="/webclient/topo/jsp/searchHeader.jsp"/>
+         <put name="Body" value="/webclient/topo/jsp/searchBody.jsp"/>
+         <put name="Core" value="configSearchComponentDef"/>
+         <put name="Footer" value=""/>
+    </definition>
+
+    <definition name="configSearchComponentDef" path="/webclient/common/jsp/SearchComponent.jsp">
+         <put name="Footer" value="/webclient/topo/jsp/ConfigSearchFooter.jsp"/>
+    </definition>
+
+   <definition name="cvStatus" extends="topoPage">
+        <put name="MainPage" value="/webclient/topo/jsp/cvStatus.jsp"/>
+    </definition>
+
+
+	<definition name="managedObjectPage" extends="topoPage">
+		 <put name="MainPage" value="ManagedObjectDef1"/>
+	</definition>
+
+	<definition name="portObjectPage" extends="topoPage">
+		 <put name="MainPage" value="PortObjectDef"/>
+	</definition>
+
+	<definition name="topoObjectPage" extends="topoPage">
+		 <put name="MainPage" value="TopoObjectDef"/>
+	</definition>
+
+	<definition name="nodePage" extends="topoPage">
+		 <put name="MainPage" value="NodeDef"/>
+	</definition>
+
+	<definition name="ipAddressPage" extends="topoPage">
+		 <put name="MainPage" value="IpAddressDef"/>
+	</definition>
+
+	<definition name="networkPage" extends="topoPage">
+		 <put name="MainPage" value="NetworkDef"/>
+	</definition>
+
+	<definition name="snmpNodePage" extends="topoPage">
+		 <put name="MainPage" value="SnmpNodeDef"/>
+	</definition>
+
+	<definition name="snmpInterfacePage" extends="topoPage">
+		 <put name="MainPage" value="SnmpInterfaceDef"/>
+	</definition>
+
+	<definition name="switchObjectPage" extends="topoPage">
+		 <put name="MainPage" value="SwitchObjectDef"/>
+	</definition>
+
+	<definition name="printerPage" extends="topoPage">
+		 <put name="MainPage" value="PrinterDef"/>
+	 </definition>
+
+	 <definition name="moBasePage1" path="/webclient/topo/jsp/MODetailsBaseLayout1.jsp">
+		  <put name="Tree" value=".tree.controller"/>
+	          <put name="Tab" value=".tab.controller"/>
+		  <put name="AccPanel" value=".accPanel.controller"/>
+		  <put name="Actions" value=".actions.controller"/>
+		  <put name="UpdateMsg" value="/webclient/topo/jsp/tabDetailsHeader.jsp"/>
+		  <put name="DeviceDetails" value="/webclient/topo/jsp/DeviceDetailsLayout1.jsp"/>
+		  <put name="EditDeviceDetails" value="/webclient/topo/jsp/EditDeviceDetailsLayout1.jsp"/>
+		  <put name="DeviceNotes" value="/webclient/topo/jsp/DeviceNotes.jsp"/>
+		  <put name="PerformanceMonitors" value="/webclient/topo/jsp/PerformanceMonitors.jsp"/>
+		  <put name="RecentAlarms" value="/webclient/topo/jsp/RecentAlarms.jsp"/>
+		  <put name="InterfaceTable" value="/webclient/topo/jsp/InterfaceTable.jsp"/>
+		  <put name="Graphs" value="/webclient/topo/jsp/MOGraphs.jsp"/>
+		  <put name="RouterGraphs" value="/webclient/topo/jsp/RouterGraph.jsp"/>
+		  <put name="MainPage" value=""/>
+         </definition>
+	 
+	 <definition name="moBasePage2" path="/webclient/topo/jsp/MODetailsBaseLayout2.jsp">
+		  <put name="Tree" value=".tree.controller"/>
+	          <put name="Tab" value=".tab.controller"/>
+		  <put name="AccPanel" value=".accPanel.controller"/>
+		  <put name="Actions" value=".actions.controller"/>
+		  <put name="UpdateMsg" value="/webclient/topo/jsp/tabDetailsHeader.jsp"/>
+		  <put name="DeviceDetails_2" value="/webclient/topo/jsp/DeviceDetailsLayout2.jsp"/>
+		  <put name="EditDeviceDetails_2" value="/webclient/topo/jsp/EditDeviceDetailsLayout2.jsp"/>
+		  <put name="RecentAlarms" value="/webclient/topo/jsp/RecentAlarms.jsp"/>
+		  <put name="Graphs" value="/webclient/topo/jsp/MOGraphs.jsp"/>
+		  <put name="MainPage" value=""/>
+	  </definition>
+
+	  <definition name=".actions.controller" path="/webclient/topo/jsp/MOActions.jsp"
+		      controllerClass ="com.adventnet.nms.webclient.home.MenuController">
+          </definition>
+
+
+    <definition name="networkadminpanel" extends="topoPage">
+         <put name="MainPage" value="/webclient/topo/jsp/networkAdminPanel.jsp"/>
+    </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>
+
+</tiles-definitions>

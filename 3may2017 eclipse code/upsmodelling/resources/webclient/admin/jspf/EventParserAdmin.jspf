@@ -1,0 +1,209 @@
+<%-- $Id: EventParserAdmin.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+<script language="javascript">
+
+function selectedParser()
+{
+    var parserForm = document.EventParser;
+    var len = parserForm.elements.length;
+    var selectedParsers = '';
+
+    for ( var i=0; i < len; i++)
+    {
+        formElement = parserForm.elements[i];
+        if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+        {
+            if(selectedParsers == '')
+            {
+                selectedParsers = formElement.value;
+            }
+            else
+            {
+                selectedParsers += ',' + formElement.value;
+            }
+        }
+    }
+    return selectedParsers;
+}
+
+function enable()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.operations.notselected.error"/>');
+        return false;
+    }
+    document.EventParser.toPerform.value='enableParsers';
+    document.EventParser.submit();
+}
+
+function disable()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.operations.notselected.error"/>');
+        return false;
+    }
+    document.EventParser.toPerform.value="disableParsers";
+    document.EventParser.submit();
+}
+
+function deleteParsers()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.operations.notselected.error"/>');
+        return false;
+    }
+    var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+    if(con != true)
+    {
+      return;
+    }
+    else
+    {
+      document.EventParser.toPerform.value="deleteParsers";
+      document.EventParser.submit();
+    }
+}
+
+function saveEventParser()
+{
+    if (isEmpty(document.EventParserConfigurationForm.name.value))
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.form.enterparsername"/>');
+        document.EventParserConfigurationForm.name.focus();
+        return false;
+    }
+    var formAction = window.location.href;
+
+    var len= document.EventParserConfigurationForm.rowCount.value;
+    if ( len != 0)
+    {
+        if(len==1)
+        {
+         if(isEmpty(document.EventParserConfigurationForm.userPropsName.value) )
+         {
+             alert('<fmt:message key="webclient.fault.eventparser.form.userpropname.errormessage"/>');
+             document.EventParserConfigurationForm.userPropsName.focus();
+             return false;
+         }
+         if(isEmpty(document.EventParserConfigurationForm.userPropsDefnString.value) )
+         {
+             alert('<fmt:message key="webclient.fault.eventparser.form.userpropdefn.errormessage"/>');
+             document.EventParserConfigurationForm.userPropsDefnString.focus();
+             return false;
+         }
+        }         
+        else
+        {
+            for (var i = 0; i<len;i++)
+            {
+                if(isEmpty(document.EventParserConfigurationForm.userPropsName[i].value))
+                {
+                    alert('<fmt:message key="webclient.fault.eventparser.form.userpropname.errormessage"/>');
+                    document.EventParserConfigurationForm.userPropsName[i].focus();
+                    return false;
+                }
+                if(isEmpty(document.EventParserConfigurationForm.userPropsDefnString[i].value))
+                {
+                    alert('<fmt:message key="webclient.fault.eventparser.form.userpropdefn.errormessage"/>');
+                    document.EventParserConfigurationForm.userPropsDefnString[i].focus();
+                    return false;
+                }
+                
+            }
+        }
+    }
+    //If modifyParserName doesn't have value thens its addform!
+    if(isEmpty(document.EventParserConfigurationForm.modifyParserName.value))
+    {
+        var names = document.getElementsByName("nameOfParsers");
+        if(names.length == 1)
+        {
+            if(document.EventParserConfigurationForm.nameOfParsers.value == document.EventParserConfigurationForm.name.value)
+            {
+                var con = confirm('<fmt:message key="webclient.fault.eventparser.form.parsername.alreadyexists"/>');
+                if(con!=true)
+                {
+                    document.EventParserConfigurationForm.name.focus();
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for(var i=0;i<names.length;i++)
+            {
+                if(document.EventParserConfigurationForm.nameOfParsers[i].value == document.EventParserConfigurationForm.name.value)
+                {
+                    var con = confirm('<fmt:message key="webclient.fault.eventparser.form.parsername.alreadyexists"/>');
+                    if(con!=true)
+                    {
+                        document.EventParserConfigurationForm.name.focus();
+                        return false;
+                    }
+                }
+            }    
+        }
+    }
+    else
+    {
+        var con = confirm('<fmt:message key="webclient.fault.eventparser.form.modify.existing.values"/>');
+        if(con!=true)
+        {
+            document.EventParserConfigurationForm.name.focus();
+            return false;
+        }
+    }
+    document.EventParserConfigurationForm.toPerform.value="saveEventParser";
+    document.EventParserConfigurationForm.submit();
+}
+function provideUserPropertiesField()
+{
+    document.EventParserConfigurationForm.toPerform.value="provideUserPropertiesField";
+    document.EventParserConfigurationForm.submit();
+}
+function more()
+{
+    document.EventParserConfigurationForm.toPerform.value="more";
+    document.EventParserConfigurationForm.submit();
+}
+function fewer()
+{
+    document.EventParserConfigurationForm.toPerform.value="fewer";
+    document.EventParserConfigurationForm.submit();
+}
+function loadParsers()
+{
+    if(isEmpty(document.LoadParserFromFileForm.parserFileName.value)) 
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.saveparser.provide.filename"/>');
+        document.LoadParserFromFileForm.parserFileName.focus();
+        return;
+    }
+    document.LoadParserFromFileForm.toPerform.value="loadParsersFromFile";
+    document.LoadParserFromFileForm.submit();
+}
+function saveParsers()
+{
+    var selectedParsers = document.getElementsByName("rowSelection");
+    if(selectedParsers.length == 0)
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.save.file.noparsers"/>');
+        return;        
+    }
+    if(isEmpty(document.EventParser.fileName.value)) 
+    {
+        alert('<fmt:message key="webclient.fault.eventparser.saveparser.provide.filename"/>');
+        document.EventParser.fileName.focus();
+        return;
+    }
+    document.EventParser.toPerform.value="saveParsers";
+    document.EventParser.action="/admin/EventParserFromFile.do";
+    document.EventParser.submit();
+
+}
+</script>

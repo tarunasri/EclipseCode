@@ -1,0 +1,71 @@
+<%-- $Id: NavigateByPage.jspf,v 1.3 2010/10/29 13:47:02 swaminathap Exp $ --%>
+
+<table border="0" width="350" cellpadding="0" style='float:right;'>
+<tr align="right">
+	<td nowrap colspan="2" align="right"  class="text">
+	<fmt:message key="webclient.tableview.pagelength.description"/>
+	<select name="viewLength" onchange="updatePageLength()" class="entriesSelect">
+		<c:forEach items="${PAGE_LENGTHS}" var="pls" varStatus="index">
+		<c:choose>
+		  <c:when test="${viewLength == pls}">
+		  <option selected value='<c:out value="${pls}"/>' >
+		  <c:out value="${pls}"/>
+		  </option>
+		  </c:when>
+		<c:otherwise>
+		  <option value='<c:out value="${pls}"/>'>
+		  <c:out value="${pls}"/>
+		  </option>
+		</c:otherwise>
+		</c:choose>
+		</c:forEach>
+		</select>
+	</td>
+	
+	
+
+    <td nowrap align="right"   class="textSmall">
+        	<fmt:message key="webclient.tableview.viewrange.description">
+        	<fmt:param value="${requestScope.FROM_INDEX}"/>
+                <fmt:param value="${requestScope.TO_INDEX}"/>
+                <fmt:param value="${requestScope.TOTAL_RECORDS}"/>
+                </fmt:message>
+	</td>
+
+	<td  nowrap valign = "middle" align="right"  class="text">
+<c:choose>
+		<c:when test="${requestScope.PAGE_NUMBER != 1}">
+			&nbsp;<a href='javascript:showPage("<c:out value="${requestScope.FIRST_LINK}"/>")'><IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/firstpage.gif" border="0"></a> &nbsp; <a href='javascript:showPage("<c:out value="${requestScope.PREVIOUS_LINK}"/>")'><IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/prevpage.gif" border="0"></a>  &nbsp;
+		</c:when>
+			
+	<c:otherwise><IMG SRC="/webclient/common/images/<c:out value = "${sessionScope.selectedskin}"/>/firstpage-blur.gif" border="0"> &nbsp; <IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/prevpage-blur.gif" border="0">  &nbsp; </c:otherwise>	
+			
+	</c:choose> 
+
+	<c:choose>
+		<c:when test="${requestScope.PAGE_NUMBER != requestScope.TOTAL_PAGES}">
+			<a href='javascript:showPage("<c:out value="${requestScope.NEXT_LINK}"/>")'> <IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/nextpage.gif" border="0"></a>  &nbsp; <a href='javascript:showPage("<c:out value="${requestScope.LAST_LINK}"/>")'><IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/lastpage.gif" border="0"> </a>						</c:when>
+	<c:otherwise> <IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/nextpage-blur.gif" border="0">  &nbsp; <IMG SRC="/webclient/common/images/<c:out value='${sessionScope.selectedskin}'/>/lastpage-blur.gif" border="0">  </c:otherwise>	
+	</c:choose>
+
+<%--
+
+	<c:choose>
+		<c:when test="${requestScope.PAGE_NUMBER != 1}">
+			<a href='javascript:showPage("<c:out value="${requestScope.FIRST_LINK}"/>")'><fmt:message key="webclient.common.pagenavigation.First"/></a>  | <a href='javascript:showPage("<c:out value="${requestScope.PREVIOUS_LINK}"/>")'><fmt:message key="webclient.common.pagenavigation.Previous"/></a>  |
+		</c:when>
+			
+	<c:otherwise><fmt:message key="webclient.common.pagenavigation.First"/>  | <fmt:message key="webclient.common.pagenavigation.Previous"/>  | </c:otherwise>	
+			
+	</c:choose> 
+
+	<c:choose>
+		<c:when test="${requestScope.PAGE_NUMBER != requestScope.TOTAL_PAGES}">
+			<a href='javascript:showPage("<c:out value="${requestScope.NEXT_LINK}"/>")'><fmt:message key="webclient.common.pagenavigation.Next"/></a>  | <a href='javascript:showPage("<c:out value="${requestScope.LAST_LINK}"/>")'><fmt:message key="webclient.common.pagenavigation.Last"/></a>						</c:when>
+	<c:otherwise><fmt:message key="webclient.common.pagenavigation.Next"/>  | <fmt:message key="webclient.common.pagenavigation.Last"/>  </c:otherwise>	
+	</c:choose>
+--%>
+
+	</td>
+</tr>
+</table>

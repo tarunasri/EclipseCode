@@ -1,0 +1,75 @@
+	package com.dgca.ups;
+
+	import java.util.Properties;
+
+	public class UPSDevice extends com.adventnet.nms.topodb.TopoObject {
+
+		private int upsBatteryStatus;
+		private String upsBatteryVoltage;
+		private String Type;
+		private String upsType;
+
+		public UPSDevice() {
+			setClassname("UPSDevice");
+		}
+
+		public void setUpsBatteryStatus(int upsBatteryStatus) {
+			this.upsBatteryStatus = upsBatteryStatus;
+		}
+
+		public void setUpsBatteryVoltage(String upsBatteryVoltage) {
+			this.upsBatteryVoltage = upsBatteryVoltage;
+		}
+
+		public int getUpsBatteryStatus() {
+			return upsBatteryStatus;
+		}
+
+		public String getUpsBatteryVoltage() {
+			return upsBatteryVoltage;
+		}
+
+		public String getUpsType() {
+			return upsType;
+		}
+
+		public void setUpsType(String upsType) {
+			this.upsType = upsType;
+		}
+
+		public void setProperties(Properties props) {
+			String upsBatteryStatus_value = (String) props
+					.remove("upsBatteryStatus");
+			if (upsBatteryStatus_value != null) {
+				upsBatteryStatus = Integer.parseInt(upsBatteryStatus_value);
+			}
+
+			String upsBatteryVoltage_value = (String) props
+					.remove("upsBatteryVoltage");
+			if (upsBatteryVoltage_value != null) {
+				upsBatteryVoltage = upsBatteryVoltage_value;
+			}
+			String type_value=(String)props.remove("upsType");
+			if (type_value != null) {
+				upsType = type_value;
+			}
+
+			super.setProperties(props);
+		}
+
+		public Properties getProperties() {
+			Properties props = super.getProperties();
+			props.put("upsBatteryStatus", String.valueOf(getUpsBatteryStatus()));
+
+			if (getUpsBatteryVoltage() != null) {
+				props.put("upsBatteryVoltage", getUpsBatteryVoltage());
+			}
+			if(getType()!=null){
+				props.put("upsType", getType());
+
+			}
+			
+			return props;
+		}
+
+	}

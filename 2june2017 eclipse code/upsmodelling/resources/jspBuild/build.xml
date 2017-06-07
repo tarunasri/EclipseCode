@@ -1,0 +1,82 @@
+<project name="JSPBuild" default="all">
+<property file="ant.properties"/>
+
+	<description>
+		This script is used to compile and package the JSP files for deployment in WebNMS.
+	</description>
+	
+	<target name="init"
+		description="target creates the WEB-INF, classes and lib directories needed for this build.">
+		<mkdir dir="${build.src}"/>
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.lib}"/>
+	</target>
+	
+	<target name="jspSrcGen" depends="init"
+		description="generates the java source from the jsp files.">
+		<echo>
+			Classpath set to::: ${jsp.gen.classpath}
+		</echo>
+		<java classname="org.apache.jasper.JspC" fork="yes" classpath="${jsp.gen.classpath}">
+			<arg line="-v -d ${build.src} -webinc ${build.src}\web1.xml -uriroot ${build.dir} -webapp ${webapp.dir}"/>
+		</java>   
+	</target>
+	
+	<target name="jspCompile" depends="jspSrcGen"
+		description="compiles the generated java source.">
+		<echo>
+			Classpath set to::: ${jsp.compile.classpath}
+		</echo>
+		<javac srcdir="${build.src}" destdir="${build.dest}" debug="on" classpath="${jsp.compile.classpath}" memoryInitialSize="100m" memoryMaximumSize="200m" fork="true">
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+	
+	<target name="webXmlGen" depends="jspCompile"
+		description="Generates the Web.xml file.">
+		<echo>
+			Generating web.xml file....
+		</echo>
+		<concat destfile="${build.src}/web.xml">
+			<filelist dir="${build.src}"
+				files="web-header.xml,web1.xml,web-footer.xml"/>
+		</concat>
+		<delete file="${build.src}/web1.xml"/>
+	</target>
+	
+	<target name="createJar" depends="jspCompile"
+		description="Creates jar files for each module.">
+		<echo>
+			Packaging all class files in JAR....
+		</echo>
+		<jar update="true" destfile="${build.lib}/webclient-topo.jar" basedir="${build.dest}" 
+			includes="**/topo/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-map.jar" basedir="${build.dest}" 
+			includes="**/map/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-fault.jar" basedir="${build.dest}" 
+			includes="**/fault/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-perf.jar" basedir="${build.dest}" 
+			includes="**/perf/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-home.jar" basedir="${build.dest}" 
+			includes="**/home/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-admin.jar" basedir="${build.dest}" 
+			includes="**/admin/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-report.jar" basedir="${build.dest}" 
+			includes="**/report/**/*.class"/>
+		<jar update="true" destfile="${build.lib}/webclient-common.jar" basedir="${build.dest}" 
+			includes="**/common/**/*.class"/>
+	</target>
+	
+	<target name="cleanup">
+		<delete dir="${build.src}/org"/>
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.dest}/org/apache/jsp" excludes="jsp/" />
+		</delete>
+	</target>
+	
+	<!-- This is the default target called while executing this build script -->
+	<target name="all" depends="init,jspSrcGen,jspCompile,webXmlGen,createJar,cleanup">
+	</target>
+</project>	
+	

@@ -1,0 +1,74 @@
+<!-- $Id: Login.html,v 1.3 2010/10/29 13:46:58 swaminathap Exp $ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<script>
+var supportedbrowser = "yes";
+function detect()
+{
+    var agt=navigator.userAgent.toLowerCase();
+    var is_major = parseInt(navigator.appVersion);
+    var is_minor = parseFloat(navigator.appVersion);
+
+    var is_nav  = ((agt.indexOf('mozilla')!=-1) && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera')==-1));
+    var is_nav6up = (is_nav && (is_major >= 5));
+    var is_gecko = (agt.indexOf('gecko') != -1);
+    
+    var is_ie     = (agt.indexOf("msie") != -1);
+    
+    if (is_gecko)
+    {
+	var test = navigator.userAgent.toLowerCase();
+	var ver = parseFloat(test.substring((test.indexOf("rv:")+3),(test.indexOf(")",(test.indexOf("rv:")+3)))));
+	if( ver >= 1.8)
+	{
+	     return;
+	}
+	else
+	{
+                supportedbrowser = "no";
+	}
+    }
+    else if (is_nav6up)
+    {
+	return;
+    }
+    else if (is_ie)
+    {
+	    var is_ie3 =  is_major < 4;
+	    var is_ie4 = (is_ie && (agt.indexOf("msie 4.")!=-1)); 
+	    var ie_ie5 = (is_ie && (agt.indexOf("msie 5.")!=-1));
+	    var is_ie6up = (!is_ie3 && !is_ie4 && !ie_ie5)
+
+	    if(is_ie6up)
+	    {
+		    return;
+	    }
+	    else
+	    {
+	    	supportedbrowser = "no";
+	    }	    
+	    return;
+    }
+    else
+    {
+        supportedbrowser = "no";
+    }
+}
+
+</script>
+</head>
+
+<body>
+<form name="logininfo" action="/LoginPage.do" method="post">
+<input type="hidden" name="supportedBrowser" >
+</form>
+</body>
+
+<script>
+detect();
+document.logininfo.supportedBrowser.value=supportedbrowser;
+document.logininfo.submit();
+</script>
+
+</html>

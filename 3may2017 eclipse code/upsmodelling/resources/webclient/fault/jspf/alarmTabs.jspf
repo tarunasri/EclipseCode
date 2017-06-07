@@ -1,0 +1,91 @@
+<%-- $Id: alarmTabs.jspf,v 1.3 2007/10/05 11:21:15 gnanasekar Exp $ --%>
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <c:choose> 
+    <c:when test="${showTabOne == 'true'}"> 
+      <tr class="propertyTabSelected"> 
+        <td height="45" align="center"><img src="/webclient/fault/images/general_details_on.gif" alt="<fmt:message key='webclient.fault.alarmdetails.general.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.general.image.tooltip'/>"></td>
+       </tr>
+       <tr class="propertyTabSelected">
+        <td height="20" align="center">
+         <span class="propertyTabSelectedText"><fmt:message key='webclient.fault.alarmdetails.general.message'/></span></td>
+     </tr>
+    </c:when> 
+    <c:otherwise> 
+    <tr> 
+      <td height="45" align="center"><a class="propertyTabUnselectedText" href="/fault/AlarmDetails.do?method=traversePage&tab=tabOne&entity=<c:out value="${entity}"/>"><img src="/webclient/fault/images/general_details_off.gif" alt="<fmt:message key='webclient.fault.alarmdetails.general.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.general.image.tooltip'/>"></a></td></tr>
+     <tr>     
+       <td height="20" align="center"><span><a class="propertyTabUnselectedText" href="/fault/AlarmDetails.do?method=traversePage&tab=tabOne&entity=<c:out value="${entity}"/>"><fmt:message key='webclient.fault.alarmdetails.general.message'/></a></span></td></tr>
+    </tr>
+   </c:otherwise>
+  </c:choose>
+
+  <tr> 
+     <td align="center" class="headerBg"><img src="/webclient/topo/images/spacer.gif" width="1" height="1"></td>
+  </tr>
+
+
+<c:if test="${isUserPermittedToViewAnnotation  || isUserPermittedToViewHistory }">
+
+  <c:choose> 
+
+     <c:when test="${showTabTwo ==  'true'}"> 
+ 
+      <tr class="propertyTabSelected"> 
+        <td height="45" align="center"><img src="/webclient/fault/images/icon_annotatetabsel.gif" alt="<fmt:message key='webclient.fault.alarmdetails.viewannotationandhistory.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.viewannotationandhistory.image.tooltip'/>"></a></td></tr>
+
+     <tr class="propertyTabSelected">
+        <td height="20" align="center">
+        <span class="propertyTabSelectedText"><fmt:message key='webclient.fault.alarmdetails.tab.viewannotationandhistory.message'/></span></td>
+      </tr>
+
+     </c:when>
+     <c:otherwise> 
+
+      <tr> 
+        
+        <td height="45" align="center"><a href="/fault/AlarmDetails.do?method=traversePage&tab=tabTwo&entity=<c:out value="${entity}"/>&view=default"><img src="/webclient/fault/images/icon_annotatetab.gif" alt="<fmt:message key='webclient.fault.alarmdetails.viewannotationandhistory.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.viewannotationandhistory.image.tooltip'/>"></a></td></tr>
+            
+     <tr><td height="20" align="center"><span><a class="propertyTabUnselectedText" href="/fault/AlarmDetails.do?method=traversePage&tab=tabTwo&entity=<c:out value="${entity}"/>&view=default"><fmt:message key='webclient.fault.alarmdetails.tab.viewannotationandhistory.message'/></a></td></tr>
+     </c:otherwise>
+   </c:choose> 
+
+  <tr> 
+     <td align="center" class="headerBg"><img src="/webclient/topo/images/spacer.gif" width="1" height="1"></td>
+  </tr>
+
+</c:if>
+
+
+   <c:choose>
+ 
+    <c:when test="${showTabThree == 'true'}"> 
+ 
+      
+  <tr class="propertyTabSelected"> 
+    <td height="45" align="center"><img src="/webclient/fault/images/icon_relatedalarmssel.gif" alt="<fmt:message key='webclient.fault.alarmdetails.relatedalarms.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.relatedalarms.image.tooltip'/>"></td></tr>
+
+     <tr class="propertyTabSelected">
+        <td height="20" align="center">
+        <span class="propertyTabSelectedText"><fmt:message key='webclient.fault.alarmdetails.tab.relatedfailures.message'/></span></td>
+     </tr>
+      
+    </c:when>
+   <c:otherwise> 
+
+      <tr> 
+         
+          <td height="45" align="center"><a class="propertyTabUnselectedText" href="/fault/AlarmDetails.do?method=traversePage&tab=tabThree&entity=<c:out value="${entity}"/>&groupName=<c:out value="${groupName}"/>"><img src="/webclient/fault/images/icon_relatedalarms.gif" alt="<fmt:message key='webclient.fault.alarmdetails.relatedalarms.image.tooltip'/>" border="0" title="<fmt:message key='webclient.fault.alarmdetails.relatedalarms.image.tooltip'/>"></a></td></tr>
+
+       <tr><td height="20" align="center"><span><a class="propertyTabUnselectedText" href="/fault/AlarmDetails.do?method=traversePage&tab=tabThree&entity=<c:out value="${entity}"/>&groupName=<c:out value="${groupName}"/>"><fmt:message key='webclient.fault.alarmdetails.tab.relatedfailures.message'/></a></span></td>
+       </tr>
+    </c:otherwise>
+   </c:choose> 
+ <tr> 
+     <td align="center" class="headerBg"><img src="/webclient/topo/images/spacer.gif" width="1" height="1"></td>
+  </tr>
+
+
+</table>

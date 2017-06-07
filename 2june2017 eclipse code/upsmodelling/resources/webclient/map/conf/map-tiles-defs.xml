@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	   "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+	   "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+  <!-- $Id: map-tiles-defs.xml,v 1.2 2010/10/29 13:47:10 swaminathap Exp $ -->
+
+	<definition name="mapPage" path="/webclient/common/jsp/MainLayout.jsp">
+   	     <put name="Tree" value=".tree.controller"/>
+	     <put name="Tab" value=".tab.controller"/>
+         <put name="AccPanel" value=".accPanel.controller"/>
+      <!--     <put name="Right" value=".right.controller"/> -->
+	     <put name="MainPage" value=""/>
+	      <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+	</definition>
+
+        <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	    controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+        </definition>
+
+	<definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+		controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+	</definition>
+
+    <definition name=".right.controller" path="/webclient/common/jsp/rightPanelList.jsp" 
+    controllerClass ="com.adventnet.nms.webclient.home.RightPanelController">
+    </definition>
+
+    <definition name="NoLayoutMapView" extends="mapPage">
+		 <put name="MainPage" value="NoLayoutMapViewer"/>
+	</definition>
+
+    <definition name="NoLayoutMapViewer" path="/webclient/map/jsp/mapView.jsp">
+		<put name="Header" value="/webclient/map/jsp/addMapMenu.jsp"/>
+	</definition>
+	
+	<definition name="MapViewer" path="/webclient/map/jsp/map.jsp">
+		<put name="Header" value="/webclient/map/jsp/addMapMenu.jsp"/>
+	</definition>
+
+     <definition name="responsePageDef" extends="mapPage">
+      <put name="MainPage" value="/webclient/topo/jsp/operationResponse.jsp"/>
+   </definition>
+
+	<definition name="MapViewPage" extends="mapPage">
+		 <!--put name="MainPage" value="/webclient/map/jsp/map.jsp"/-->
+         <put name="MainPage" value="MapViewer"/>
+	</definition>
+
+    <definition name="ExampleMapViewPage" extends="mapPage">
+        <put name="MainPage" value="ExampleMapViewer"/>
+    </definition>
+	
+    <definition name="ExampleMapViewer" path="/webclient/map/jsp/map.jsp">
+        <put name="Header" value="/webclient/map/jsp/addExampleHeader.jsp"/>
+    </definition>
+
+	<definition name="MapPropsPage" extends="mapPage">
+         <put name="MainPage" value="/webclient/map/jsp/mapProps.jsp"/>
+	</definition>
+
+    <definition name="addSymbolPage" extends="mapPage">
+         <put name="MainPage" value="/webclient/map/jsp/addSymbol.jsp"/>
+    </definition>   
+
+    <definition name="addLinkPage" extends="mapPage">
+         <put name="MainPage" value="/webclient/map/jsp/addLink.jsp"/>
+	</definition>
+
+    <definition name="addContainerPage" extends="mapPage">
+         <put name="MainPage" value="/webclient/map/jsp/addContainer.jsp"/>
+	</definition>
+
+    <definition name="addMapCVDef" extends="mapPage">
+      <put name="MainPage" value="addCVDef"/>
+    </definition>
+
+    <definition name="addCVDef" path="/webclient/map/jsp/MapCustomLayout.jsp">
+         <put name="Header" value="/webclient/map/jsp/addMapHeader.jsp"/>
+         <put name="Body" value="/webclient/map/jsp/addMapBody.jsp"/>
+         <put name="Core" value="addCVComponentDef"/>
+         <put name="Footer" value="/webclient/map/jsp/addMapFooter.jsp"/>
+    </definition>
+
+    <definition name="addCVComponentDef" path="/webclient/map/jsp/MoreFewComponent.jsp">
+         <put name="Footer" value="/webclient/map/jsp/addMoreFewFooter.jsp"/>
+    </definition>
+
+ 	<definition name="addCustomMap" extends="mapPage">
+         <put name="MainPage" value="/webclient/map/jsp/addCustomMap.jsp"/>
+	</definition> 
+
+	<definition name="MapSymbolDetailsDefWithTab" extends="mapPage">
+		 <put name="MainPage" value="MapSymbolDetailsDef"/>
+	</definition>
+
+	<definition name="mapMessage" path="/webclient/map/jsp/mapLayout.jsp">
+         <put name="Header" value="/webclient/map/jsp/addMapMenu.jsp"/>
+         <put name="Body" value="/webclient/common/jsp/MessagePage.jsp"/>
+    </definition>
+
+    <definition name="messagePage" extends="mapPage">
+        <put name="MainPage" value="mapMessage"/>
+    </definition>  
+
+	<definition name="exaMapMessage" path="/webclient/map/jsp/mapLayout.jsp">
+         <put name="Header" value="/webclient/map/jsp/addExampleHeader.jsp"/>
+         <put name="Body" value="/webclient/common/jsp/MessagePage.jsp"/>
+    </definition>
+
+    <definition name="exaMessagePage" extends="mapPage">
+        <put name="MainPage" value="exaMapMessage"/>
+    </definition>
+
+<!--  Older version
+  <definition name="messagePage" extends="mapPage">
+     <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/>
+  </definition>  -->
+
+
+  <!-- =======================================================	-->
+  <!-- MapSymbol Details Page								-->
+  <!-- =======================================================	-->
+
+  <definition name="MapSymbolDetailsDef" path="/webclient/map/jsp/mapSymbolDetails.jsp">
+	  <put name="mode"	value="tab" />
+	  <put name="initSelectedTab"  value="webclient.map.details.tabs.general" />
+	  <put name="header"   value="/webclient/map/jsp/mapSymbolDetailsHeader.jsp" />
+	  <put name="body"	 value="map.mapsymboldetails.tabs" />
+  </definition>
+
+	 <!-- tabs page -->
+  <definition name="map.mapsymboldetails.tabs" path="/webclient/map/jsp/mapDetailsTabLayout.jsp">
+	  <put name="header"   value="/webclient/topo/jsp/tabDetailsHeader.jsp" />
+	  <putList name="tabList" >
+	   <item value="webclient.map.details.tabs.general" icon="/webclient/topo/images/general_details" tooltip="webclient.map.details.tabs.general.tooltip" link="generaltab" />
+	   <item value="webclient.map.details.tabs.display" icon="/webclient/topo/images/monitoring_details" tooltip="webclient.map.details.tabs.display.tooltip" link="displaytab" />
+	   <item value="webclient.map.details.tabs.relationship" icon="/webclient/topo/images/relationship_details" tooltip="webclient.map.details.tabs.relationship.tooltip" link="relationshiptab" />
+	  </putList>
+  </definition>
+
+  <definition name="generaltab" path="/webclient/topo/jsp/tabsBodyLayout2.jsp" >
+	  <put name="details1"	 value="/webclient/map/jsp/baseSymbolDetails.jsp" />
+	  <put name="details2"	 value="/webclient/map/jsp/managedSymbolDetails.jsp" />
+  </definition>
+
+ <definition name="displaytab" path="/webclient/topo/jsp/tabsBodyLayout.jsp" >
+	  <put name="details1"	 value="/webclient/map/jsp/viewSymbolDetails.jsp" />
+  </definition>
+
+  <definition name="relationshiptab" path="/webclient/topo/jsp/tabsBodyLayout2.jsp" >
+	  <put name="details1"	 value="/webclient/map/jsp/relationshipSymbolDetails.jsp" />
+	  <put name="details2"	 value="/webclient/map/jsp/containerSymbolDetails.jsp" />
+  </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+</definition>
+
+<!-- GMap related  !-->
+<definition name="GMapFormdef" extends="mapPage">
+<put name="MainPage" value="/webclient/map/jsp/SetGMapKey.jsp"/>
+</definition>
+
+<definition name="showGoogleMapForm" extends="mapPage">
+<put name="MainPage" value="/webclient/map/jsp/AddGMapForm.jsp"/>
+</definition>
+
+<definition name="NmsGoogleMap" path="/webclient/map/jsp/GMapBody.jsp">
+        	<put name="Header" value="/webclient/map/jsp/addMapMenu.jsp"/>
+    </definition>
+<definition name="GMap" extends="mapPage">
+	<put name="MainPage" value="NmsGoogleMap"/>
+
+</definition>
+
+</tiles-definitions>

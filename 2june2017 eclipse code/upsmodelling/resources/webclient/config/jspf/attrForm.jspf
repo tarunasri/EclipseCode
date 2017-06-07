@@ -1,0 +1,1239 @@
+<%--  $Id: attrForm.jspf,v 1.3 2010/10/29 13:47:05 swaminathap Exp $ --%>
+ 
+<script language="javascript">
+
+var snmpHeaders = new Array('<fmt:message key='webclient.config.task.title.label'/>', '<fmt:message key='webclient.config.task.title.oid'/>', '<fmt:message key='webclient.config.task.title.type'/>','<fmt:message key='webclient.config.task.title.value'/>');
+var telnetHeaders = new Array('<fmt:message key='webclient.config.task.title.cmd'/>', '<fmt:message key='webclient.config.task.title.cmdArgs'/>', '<fmt:message key='webclient.config.task.title.value'/>');
+var ftpHeaders = new Array('<fmt:message key='webclient.config.task.title.srcFileName'/>', '<fmt:message key='webclient.config.task.title.cmd'/>', '<fmt:message key='webclient.config.task.title.mode'/>', '<fmt:message key='webclient.config.task.title.destFileName'/>');
+var tftpHeaders = new Array('<fmt:message key='webclient.config.task.title.srcFileName'/>', '<fmt:message key='webclient.config.task.title.cmd'/>', '<fmt:message key='webclient.config.task.title.binaryMode'/>', '<fmt:message key='webclient.config.task.title.destFileName'/>');
+var tl1Headers = new Array('<fmt:message key='webclient.config.task.title.messagePayLoadBlock'/>', '<fmt:message key='webclient.config.task.title.targetID'/>', '<fmt:message key='webclient.config.task.title.cmdcode'/>', '<fmt:message key='webclient.config.task.title.accessID'/>', '<fmt:message key='webclient.config.task.title.generalBlock'/>');
+
+function addTableRow()
+{
+	var oid = document.TaskForm.tableOID.value;
+	if(oid == '')
+	{
+		alert('<fmt:message key='webclient.config.task.tableattrform.notable'/>');
+		return;
+	}
+	editTableRow(oid,'-1')
+}
+
+var alreadyOpened;
+
+function openMIBBrowser(isTableRequired)
+{
+	if(alreadyOpened!=null || alreadyOpened!=undefined)
+	{
+		alreadyOpened.close();
+	}
+	var url = "/report/SelectOID.do?formName=TaskForm&isTableRequired="+isTableRequired;
+	var title = "OID";
+	var winProp = "scrollbars=yes,width=550,height=320,left=300,top=150,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes";
+	if(isTableRequired)
+	{
+	var form="<table  width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td style='padding:3px;'><input name='oid' value='' type='hidden'/></td><input name='type' value='' type='hidden'/></td></tr></table>";
+	document.getElementById('attrFormTable').style.display='block';
+	document.getElementById('attrFormTable').innerHTML=form;
+	}
+	alreadyOpened=window.open(url,title,winProp);
+}
+
+function afterTableOIDSelection(tableOID)
+{
+	var url="/config/TaskAction.do?actionToPerform=getOIDsOfTable&tableOID="+tableOID;
+	var xmlhttp=GetXMLHttpRequest();
+	document.getElementById('attrFormTable').style.display='none';
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4)
+		{
+			var result = xmlhttp.responseText;
+			var existingHeader = document.TaskForm.oidVsLabel.value;
+		if(existingHeader.indexOf(result)!=-1)
+		{
+			alert('<fmt:message key="webclient.config.tabularAttrbute.error.duplicate"/>');
+			return;
+		}
+			if(existingHeader.length != 0)
+			{
+				existingHeader += ";";
+			}
+			document.TaskForm.oidVsLabel.value = existingHeader+result;
+			populateTableAttr(tableOID);
+		}
+	}
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+}
+
+function editTableRow(tableOID,index)
+{
+
+	var isTemplate = document.TaskForm.isTemplate.value;
+        var form="<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td colspan='2' style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td colspan='2' height='27' class='boldTxt'>&nbsp;&nbsp;<fmt:message key='webclient.config.task.attrform.title'/></td><td align='right' valign='top'><a href='javascript:closeDiv(attrFormTable)'><img align='absmiddle' class='popClose1' border='0' src='/webclient/common/images/spacer.gif' title='<fmt:message key="webclient.config.attrFormTable.title.close"/>' /></a></td></tr></table></td></tr><tr><td style='padding:10px;' colspan='2'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tbody><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'>";
+	
+	if(isTemplate == 'true')
+	{
+		form+="<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.tableattrform.oid'/></td><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.tableattrform.placeholder'/></td><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.tableattrform.value'/></td></tr>";
+	}
+	else
+	{
+		form+="<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.tableattrform.oid'/></td><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.tableattrform.value'/></td></tr>";
+	}
+        var value="";
+        var rows = tob.getRowsForTable(tableOID);
+	var labelMap = document.TaskForm.oidVsLabel.value;
+        var pos = labelMap.indexOf(tableOID);
+        var oidVsLabel = labelMap.substring(pos+tableOID.length+1);
+	if(oidVsLabel.indexOf(";") != -1)
+	{
+		oidVsLabel = oidVsLabel.substring(oidVsLabel.indexOf(";"),0);
+	}
+	var headers = oidVsLabel.split(",");
+	for(var i=1;i<headers.length;i++)// since the oid vs label for the tableOID will also be available as first element, its dropped.
+	{
+		if(headers[i].indexOf("=") == -1)
+		{
+			continue;
+		}
+		var token = headers[i].split("=");
+		var oid = token[0];
+		var name = token[1];
+		var label = name;
+                if(label.indexOf("OID")==0)
+                {
+                        label=oid;
+                }
+                if(i%2==0)
+                {
+                        form+="<tr class='generalEvenRow' height='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'>"+label+"</td>";
+                }
+                else
+                {
+                        form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'>"+label+"</td>";
+                }
+	        if(index != '-1')
+        	{
+                	value=rows[index][oid];
+	        }
+		if(isTemplate == 'true')
+		{
+	                var token="0";
+        	        form+="<td style='padding-right:6px;'><select style='width:200px;' name='placeholder_"+name+"'><option value='NEInput'";
+	                if(value.indexOf("NEInput") != -1)
+        	        {
+                	        form+="selected='selected'";
+                        	token = "9";
+	                }
+        	        form+=">NEInput</option><option value='InventoryInput'";
+                	if(value.indexOf("InventoryInput") != -1)
+	                {
+        	                form+="selected='selected'";
+                	        token="16";
+	                }
+        	        form+=">InventoryInput</option><option value='UserInput'";
+                	if(value.indexOf("UserInput") != -1)
+	                {
+        	                form+="selected='selected'";
+                	        token="11";
+	                }
+        	        form+=">UserInput</option><option value='DataSourceParam'";
+	                if(value.indexOf("DataSourceParam") != -1)
+        		{
+                        	form+="selected='selected'";
+	                        token="17";
+        	        }
+	                form+=">DataSourceParam</option><option value='None'";
+        	        if(token=='0')
+                	{
+	                        form+="selected='selected'";
+        	        }
+                	form+=">None</option></select></td>";
+
+	                if(token!='0')
+        	        {
+                	        value = value.substring(token);
+	                }
+                	form+="<td style='padding-right:6px;' nowrap='nowrap';>";
+
+			form+="<input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+		}
+		else
+		{
+			form+="<td colspan='2' style='padding-right:6px;' nowrap='nowrap';>";
+			form+="<input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></sup></td></tr>";
+		}
+	}
+
+        form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+
+        form+="<table style='margin-top:15px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><input type='button' onclick=\"javascript:updateTableRow('"+tableOID+"','"+index+"')\" value='<fmt:message key='webclient.config.task.attrform.update'/>' class='button'/>&nbsp;<input type='button' value='<fmt:message key='webclient.config.task.attrform.cancel'/>' onClick='javascript:closeDiv(attrFormTable)' class='button' name='Submit'/></td></tr></table></td></tr></table>";
+        var div = document.getElementById('attrFormTable');
+        var refTable = document.getElementById('refTabularAttr');
+        var position = getDivLocation(refTable);
+	clearOtherDiv('attrFormTable');
+        var element1Width = getElementWidthHeight(refTabularAttr);
+        div.style.left=parseInt((position[0]+(element1Width[0]/2))-(500/2))+'px';
+        div.style.width=500+'px';
+        div.style.top=parseInt(position[1])+'px';
+        div.innerHTML=form;
+        div.style.display='';
+}
+
+
+function attrForm(index)
+{
+        var isTemplate = document.TaskForm.isTemplate.value;
+        var protocol = document.TaskForm.protocol.value;
+	var form="<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='27' class='boldTxt'>&nbsp;&nbsp;<fmt:message key='webclient.config.task.attrform.title'/></td><td align='right' valign='top'><a href='javascript:closeDiv(attrFormTable)'><img align='absmiddle' class='popClose1' border='0' src='/webclient/common/images/spacer.gif' title='<fmt:message key="webclient.config.attrForm.title.close"/>' /></a></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td style='padding:10px;'>";
+	form+="<table width='100%' cellspacing='0' cellpadding='0' border='0'><tbody><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td width='30%' nowrap='nowrap'><fmt:message key='webclient.config.task.attrform.name'/></td>";
+	if(protocol !='snmp' && isTemplate == 'true')
+	{
+		form+="<td width='10%' nowrap='nowrap'><fmt:message key='webclient.config.task.attrform.inputtype'/></td>";
+	}
+	form+="<td><fmt:message key='webclient.config.task.attrform.value'/></td></tr>";
+	switch(protocol)
+        {
+                case "snmp" : form+=snmpAttrTable(isTemplate,index); break;
+                case "telnet" : form+=telnetAttrTable(isTemplate,index); break;
+                case "tftp" : form+=tftpAttrTable(isTemplate,index); break;
+                case "ftp" : form+=ftpAttrTable(isTemplate,index); break;
+                case "tl1" : form+=tl1AttrTable(isTemplate,index); break;
+                default : ""; break;
+        }
+	form+="<table style='margin-top:15px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><input type='button' onclick='javascript:updateRow("+index+")' value='<fmt:message key='webclient.config.task.attrform.update'/>' class='button'/>&nbsp;&nbsp;<input type='button' value='<fmt:message key='webclient.config.task.attrform.cancel'/>' onClick='javascript:closeDiv(attrFormTable)' class='button' name='Submit'/></td></tr></table></td></tr></table></td></tr></table>";
+	var div = document.getElementById('attrFormTable');	
+	var refTable = document.getElementById('refAttrTable');
+	var position = getDivLocation(refTable);
+	clearOtherDiv('attrFormTable');
+	var element1Width = getElementWidthHeight(refAttrTable);
+	div.style.left=parseInt((position[0]+(element1Width[0]/2))-(500/2))+'px';
+	div.style.width=500+'px';
+	div.style.top=parseInt(position[1])+'px';
+	div.innerHTML=form;
+	div.style.display=''
+}
+
+function isValidOID(val)
+{
+	if(isSpecialSymbol(val))
+	{
+		alert('<fmt:message key="webclient.config.attr.oid.invalid"/>');
+	}
+}
+
+function snmpAttrTable(isTemplate,index)
+{
+	var form="";
+	var value="";
+	var rows = dob.getRowsForTable("table"+index);
+	var name="oid";
+	if(index != '-1')
+	{
+		value=rows[0]['identifier'];
+	}
+	form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.snmp.oid'/></td><td style='padding-right:6px;' valign='bottom'><input style='width:200px;' type='text' readonly class='disableBg' value='"+value+"' name='"+name+"' onblur='isValidOID(this.value);'/>&nbsp;<sup class='mandatory'><b>*</b></sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:openMIBBrowser(false)\"><img valign='bottom' border='0' class='addIcon' src='/webclient/common/images/spacer.gif'/></a>&nbsp;<a href=\"javascript:openMIBBrowser(false)\"><span class='blueLink'><fmt:message key='webclient.config.task.attrform.selectoid'/></span></a></td></tr>";
+
+	name="name";
+	if(index != '-1')
+	{
+		value=rows[0]['label'];
+	}
+	form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.snmp.label'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+
+	name="type";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+	
+	form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.snmp.type'/></td><td style='padding-right:6px;'><select size='6' style='width:200px;height:auto;' name='"+name+"'><option value='DisplayString'";
+	if(value == 'DisplayString')
+	{
+		form+="selected='selected'";
+	}	
+	form+=">DisplayString</option><option value='INTEGER'";
+	if(value == 'INTEGER')
+	{
+		form+="selected='selected'";
+	}
+	form+=">INTEGER</option><option value='Integer32'";
+	if(value== 'Integer32')
+	{
+		form+="selected='selected'";
+	}
+	form+=">Integer32</option><option value='Unsigned32'";
+        if(value== 'Unsigned32')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Unsigned32</option><option value='Guage'";
+        if(value== 'Guage')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Guage</option><option value='Guage32'";
+        if(value== 'Guage32')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Guage32</option><option value='Counter'";
+        if(value== 'Counter')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Counter</option><option value='Counter32'";
+        if(value== 'Counter32')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Counter32</option><option value='Counter64'";
+        if(value== 'Counter64')
+        {
+                form+="selected='selected'";
+        }	
+	form+=">Counter64</option><option value='TimeTicks'";
+        if(value== 'TimeTicks')
+        {
+                form+="selected='selected'";
+        }
+	form+=">TimeTicks</option><option value='OCTET STRING'";
+        if(value== 'OCTET STRING')
+        {
+                form+="selected='selected'";
+        }
+	form+=">OCTET STRING</option><option value='OBJECT INDETIFIER'";
+        if(value== 'OBJECT IDENTIFIER')
+        {
+                form+="selected='selected'";
+        }
+	form+=">OBJECT IDENTIFIER</option><option value='IpAddress'";
+        if(value== 'IpAddress')
+        {
+                form+="selected='selected'";
+        }
+	form+=">IpAddress</option><option value='Opaque'";
+        if(value== 'Opaque')
+        {
+                form+="selected='selected'";
+        }
+	form+=">Opaque</option><option value='BITS'";
+        if(value== 'BITS')
+        {
+                form+="selected='selected'";
+        }
+	form+=">BITS</option></select></td></tr>";
+
+	name="value";
+        if(index != '-1')
+        {
+	        value=rows[0][name];
+        }
+	if(isTemplate == 'true')
+	{
+		var token="0";
+		form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.snmp.value'/></td><td style='padding-right:6px;'><select style='width:200px;' name='placeholder'><option value='NEInput'";
+		if(value.indexOf("NEInput") != -1)
+		{
+			form+="selected='selected'";
+			token = "9";
+		}
+		form+=">NEInput</option><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+			token="16";
+                }
+		form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+			token="11";
+                }
+		form+=">UserInput</option><option value='DataSourceParam'";
+		if(value.indexOf("DataSourceParam") != -1)
+		{
+			form+="selected='selected'";
+			token="17";
+		}
+		form+=">DataSourceParam</option><option value='None'";
+		if(token=='0')
+		{
+			form+="selected='selected'";
+		}
+		form+=">None</option></select></td></tr>";
+		
+		if(token!='0')
+		{
+			value = value.substring(token);
+		}
+		form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ph'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+	}
+	else
+	{
+	        form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.snmp.value'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+	}
+
+        form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+	document.getElementById('attrFormTable').style.width='500px';
+        return form;
+}
+function getNoDataTable(funcName)
+{
+	
+	var table = "<table width='100%' cellspacing='0' class='tableBdr2' cellpadding='2' border='0' align='center'>";
+	if(funcName=='attrForm')
+	{
+	    var innerTable="<table width='100%' cellspacing='0'  cellpadding='0' border='0'><tr><td class='configParams'><fmt:message key='webclient.config.task.form.attr.table.message'/>&nbsp;&nbsp;<a href=\"javascript:attrForm('-1')\"><fmt:message key='webclient.config.task.form.tableattr.addRow'/></a></td></tr></table>";
+	}
+	else if(funcName=='mibbrowser')
+	{
+	 var innerTable="<table width='100%' cellspacing='0'  cellpadding='0' border='0'><tr><td class='configParams'><fmt:message key='webclient.config.task.form.attr.table.message'/>&nbsp;&nbsp;<a href=\"javascript:openMIBBrowser(true)\"><fmt:message key='webclient.config.task.form.tableattr.addRow'/></a></td></tr></table>";
+
+	}
+    table += "<tr><td style='padding:7px;'>"+innerTable+"</td></tr></table>";
+    table += "</table>";
+   return table;
+}
+
+function ftpAttrTable(isTemplate,index)
+{
+        var form="";
+        var value="";
+        var rows = dob.getRowsForTable("table"+index);
+
+        var name="identifier";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.cmd'/></td>";
+	if(isTemplate == 'true')
+        {
+                form+="<td style='padding-right:6px;'>&nbsp</td>";
+        }
+	form+="<td style='padding-right:6px;'><select style='width:200px;' name='"+name+"'><option value='get'";
+	if(value == 'get')
+	{
+		form+="selected='selected'";
+	}
+	form+="><fmt:message key='webclient.config.attr.ftp.get'/></option><option value='put'";
+        if(value == 'put')
+        {
+                form+="selected='selected'";
+        }
+	form+="><fmt:message key='webclient.config.attr.ftp.put'/></option></select></td></tr>";
+
+	var name="srcFileName";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.srcFileName'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;' nowrap='nowrap'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.srcFileName'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></td></tr>";
+        }
+
+        var name="destFileName";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.destFileName'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.destFileName'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }	
+
+        name="mode";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.mode'/></td>";
+        if(isTemplate == 'true')
+        {
+                form+="<td style='padding-right:6px;'>&nbsp</td>";
+        }
+	form+="<td style='padding-right:6px;'><select style='width:154px;' name='"+name+"'><option value='binary'";
+	if(value == 'binary')
+	{
+		form+="selected='selected'";
+	}
+	form+="><fmt:message key='webclient.config.attr.ftp.binary'/></option><option value='ascii'";
+        if(value == 'ascii')
+        {
+                form+="selected='selected'";
+        }		
+	form+="><fmt:message key='webclient.config.attr.ftp.ascii'/></option></select></td></tr>";
+	form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+	document.getElementById('attrFormTable').style.width='700px';
+	return form;
+}
+
+function tftpAttrTable(isTemplate,index)
+{
+        var form="";
+        var value="";
+        var rows = dob.getRowsForTable("table"+index);
+
+        var name="identifier";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.cmd'/></td>";
+        if(isTemplate == 'true')
+        {
+                form+="<td style='padding-right:6px;'>&nbsp</td>";
+        }
+        form+="<td style='padding-right:6px;' nowrap='nowrap'><select style='width:200px;' name='"+name+"'><option value='get'";
+        if(value == 'get')
+        {
+                form+="selected='selected'";
+        }
+        form+="><fmt:message key='webclient.config.attr.ftp.get'/></option><option value='put'";
+        if(value == 'put')
+        {
+                form+="selected='selected'";
+        }
+        form+="><fmt:message key='webclient.config.attr.ftp.put'/></option></select></td></tr>";
+
+        var name="srcFileName";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.srcFileName'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;' nowrap='nowrap'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/><sup class='mandatory'><b>*</b></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.srcFileName'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></td></tr>";
+        }
+
+        var name="destFileName";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.destFileName'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;' nowrap='nowrap'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.ftp.destFileName'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+
+        }
+
+        name="binaryMode";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tftp.binaryMode'/></td>";
+        if(isTemplate == 'true')
+        {
+                form+="<td style='padding-right:6px;'>&nbsp</td>";
+        }
+        form+="<td style='padding-right:6px;' nowrap='nowrap'><select style='width:154px;' name='"+name+"'><option value='true'";
+        if(value == 'true')
+        {
+                form+="selected='selected'";
+        }
+        form+="><fmt:message key='webclient.config.attr.ftp.binary'/></option><option value='false'";
+        if(value == 'false')
+        {
+                form+="selected='selected'";
+        }
+        form+="><fmt:message key='webclient.config.attr.ftp.ascii'/></option></select></td></tr>";
+        form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+        document.getElementById('attrFormTable').style.width='700px';
+        return form;
+}
+
+function tl1AttrTable(isTemplate,index)
+{
+        var form="";
+        var value="";
+        var rows = dob.getRowsForTable("table"+index);
+
+        var name="identifier";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.cmd'/></td>";
+        if(isTemplate == 'true')
+        {
+                form+="<td style='padding-right:6px;'>&nbsp</td>";
+        }
+        form+="<td style='padding-right:6px;' nowrap='nowrap'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b><td></tr>";
+
+        var name="targetID";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.target'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.target'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+
+
+        var name="accessID";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.access'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.access'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+
+        var name="generalBlock";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.gen'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.gen'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+
+        var name="messagePayLoadBlock";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.msg'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.tl1.msg'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+
+        form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+        document.getElementById('attrFormTable').style.width='700px';
+        return form;
+}
+
+function telnetAttrTable(isTemplate,index)
+{
+        var form="";
+        var value="";
+        var rows = dob.getRowsForTable("table"+index);
+
+        var name="identifier";
+        if(index != '-1')
+        {
+	        value=rows[0][name];
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.cmd'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;' nowrap><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></sup></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.cmd'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;<sup class='mandatory'><b>*</b></td></tr>";
+        }
+
+
+        var name="cmdArgs";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+		if(value == undefined)
+		{
+			value = '';
+		}
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.arg'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;</td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.arg'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/>&nbsp;</td></tr>";
+        }
+
+        var name="value";
+        if(index != '-1')
+        {
+                value=rows[0][name];
+		if(value == undefined)
+		{
+			value='';
+		}
+        }
+        if(isTemplate == 'true')
+        {
+                var token="0";
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.prompt'/></td><td style='padding-right:6px;'><select style='width:200px;' name='"+name+"_placeholder'><option value='InventoryInput'";
+                if(value.indexOf("InventoryInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="16";
+                }
+                form+=">InventoryInput</option><option value='UserInput'";
+                if(value.indexOf("UserInput") != -1)
+                {
+                        form+="selected='selected'";
+                        token="11";
+                }
+                form+=">UserInput</option><option value='DataSourceParam'";
+                if(value.indexOf("DataSourceParam") != -1)
+                {
+                        form+="selected='selected'";
+                        token="17";
+                }
+                form+=">DataSourceParam</option><option value='None'";
+                if(token=='0')
+                {
+                        form+="selected='selected'";
+                }
+                form+=">None</option></select></td>";
+                if(token!='0')
+                {
+                        value = value.substring(token);
+                }
+                form+="<td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+        else
+        {
+                form+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\"><td style='padding-right:6px;' nowrap='nowrap'><fmt:message key='webclient.config.attr.telnet.prompt'/></td><td style='padding-right:6px;'><input style='width:200px;' type='text' class='formstyle' value='"+value+"' name='"+name+"'/></td></tr>";
+        }
+
+        form+="</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table>";
+        document.getElementById('attrFormTable').style.width='700px';
+        return form;
+}
+
+function deleteAttr(index)
+{
+	if(confirm('<fmt:message key='webclient.config.task.delete.attr'/>') == false) return;
+
+	for(i = 0 ; i < dob.tableArray.length ; i++)
+	{
+	
+		var rearrange=false;
+		if(i==index)
+		{
+			rearrange=dob.deleteFirstRow("table"+i);	
+			
+		}
+		if(rearrange)	
+		{
+			dob.tableArray.splice(dob.tableToRowList["table"+i],1,dob.tableToRowList["table"+(i+1)]);
+		}
+
+/*		if(dob.tableArray.length == 1)	
+		{
+			dob.getTables().length = 0;
+			break;
+		}
+		if(i == (dob.tableArray.length-1))
+		{
+		   dob.tableArray.splice(dob.tableToRowList["table"+(i-2)],2,dob.tableToRowList["table"+i]);
+		}
+		else
+		{
+        	       dob.tableArray["table"+i] = dob.tableArray["table"+(i+1)];
+		}
+*/
+	}
+		populateAttrTable();
+}
+
+function deleteAllAttr()
+{
+	if(dob.getTables().length ==0)
+	{
+		alert('<fmt:message key='webclient.config.delete.nodata'/>');
+		return;
+	}
+
+	if(confirm('<fmt:message key='webclient.config.task.delete.allattr'/>') == false) return;	
+        for(var i=0;i<dob.getTables().length;i++)
+        {
+                dob.tableToRowList["table"+i] = null;
+                dob.tableArray["table"+i] = null;
+        }
+	dob.getTables().length = 0;
+        populateAttrTable();
+}
+
+function validateRow(protocol)
+{
+        switch(protocol)
+        {
+                case "snmp" :
+		    if(trimAll(document.TaskForm.oid.value) == '') 
+		    {
+		        alert('<fmt:message key='webclient.config.attr.oid.empty'/>');
+			return false;
+		    }
+		    break;
+                case "telnet" :
+		    if(trimAll(document.TaskForm.identifier.value) == '')
+		    {
+			alert('<fmt:message key='webclient.config.attr.cmd.empty'/>');
+			return false;
+		    }
+		    break;
+                case "tftp" : 
+		    if(trimAll(document.TaskForm.srcFileName.value) == '')
+		    {
+			alert('<fmt:message key='webclient.config.attr.srcFileName.empty'/>');
+			return false;
+		    }
+		    if(trimAll(document.TaskForm.destFileName.value) == '')
+		    {
+			document.TaskForm.destFileName.value=document.TaskForm.srcFileName.value;
+		    }	    
+		    break;
+                case "ftp" : 
+        	    if(trimAll(document.TaskForm.srcFileName.value) == '')
+		    {
+			alert('<fmt:message key='webclient.config.attr.srcFileName.empty'/>');
+			return false;
+		    }
+		    if(trimAll(document.TaskForm.destFileName.value) == '')
+		    {
+			document.TaskForm.destFileName.value=document.TaskForm.srcFileName.value;
+		    }	    
+		    break;
+	        case "tl1" : 
+		    if(trimAll(document.TaskForm.identifier.value) == '')
+		    {
+			alert('<fmt:message key='webclient.config.attr.cmd.empty'/>');
+			return false;
+		    }
+		    break;
+                default : ""; break;
+        }
+}
+
+function populateAttrTable()
+{
+        var props;
+        var table;
+	var checkEntry = true;
+        var protocol = document.TaskForm.protocol.value;
+        var isTemplate = document.TaskForm.isTemplate.value;
+        var operation = '<c:out value="${operation}"/>';
+	var tableHeaders;
+        switch(protocol)
+        {
+                case "snmp" : props = snmpProps1; tableHeaders = snmpHeaders; break;
+                case "telnet" : props = telnetProps; tableHeaders = telnetHeaders; break;
+                case "tftp" : props = tftpProps; tableHeaders = tftpHeaders; break;
+                case "ftp" : props = ftpProps; tableHeaders = ftpHeaders; break;
+                case "tl1" : props = tl1Props; tableHeaders = tl1Headers; break;
+                default : ""; break;
+        }
+
+	 if(dob.getTables().length == 0)
+	 {
+		checkEntry = false;	
+	 }
+        // this function should populate the table of rows to a DIV in the UI ...
+       //var table = "<table width='100%' cellspacing='0' class='tableBdr2' cellpadding='2' border='0' align='left' ><tbody><tr class='generalTBHeader'><td width='3'>&nbsp;</td><td width='3'>&nbsp;</td>"
+	
+	if(checkEntry)
+	{
+table ="<table width='100%'  class='tableBdr2'  border='0' align='left'> <tr><td>"
+	    table += "<table width='100%' cellpadding='2' style='table-layout:fixed;' cellspacing='0'   border='0' align='left'><tr class='generalTBHeader'><td style='padding-right: 5px; width: 15px;'>&nbsp;&nbsp;&nbsp;</td><td style='padding-right: 5px; width: 15px;'>&nbsp;&nbsp;&nbsp;</td>"
+        for(var headerIndex in tableHeaders)
+        {
+                table+="<td>"+tableHeaders[headerIndex]+"</td>";
+        }
+        if( dob.getTables().length>6)
+        {
+        table+="</tr></table><div id='scalartablediv' style='height:120px;overflow:auto;clear:both;'><table style='table-layout:fixed;' width='100%' border='0' cellspacing='0' cellpadding='2'>";
+
+	}
+else
+{
+	table+="</tr></table><div style='clear:both;' id='scalartablediv'><table  style='table-layout:fixed;' width='100%' border='0' cellspacing='0' cellpadding='2'>";
+}
+        var tableLength = 0;// whenever a row is deleted and populate table is called,
+        for(var i=0;i<dob.getTables().length;i++)
+        {
+                var rows = dob.getRowsForTable("table"+i);
+                if(rows == null ||rows == '') continue;
+                var headerCount = 0;
+                if(tableLength%2==0)
+                {
+                        table+="<tr class='generalEvenRow' heigth='20px' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+                else
+                {
+                        table+="<tr class='generalOddRow' heigth='20px' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+                }
+                tableLength++;
+		if(operation != 'execute')
+		{
+                	table+="<td style='padding-right:5px;width:15px;'  ><a href=\"javascript:attrForm("+i+")\"><img border='0' align='absmiddle' class='editIcon' title='<fmt:message key='webclient.config.task.attr.edit'/>' src='/webclient/common/images/spacer.gif'/></td><td style='padding-right:5px;width:15px;'></a><a href=\"javascript:deleteAttr("+i+")\"><img align='absmiddle' border='0' class='deleteIcon' title='<fmt:message key='webclient.config.task.attr.delete'/>' src='/webclient/common/images/spacer.gif'/></a></td>";
+		}
+		else
+		{
+			table+="<td style='padding-right:5px;width:15px;'>&nbsp;</td><td style='padding-right:5px;width:15px;'>&nbsp;</td>";
+		}
+                for(var index in rows)
+                {
+                        for(var colIndex in props)
+                        {
+                                var col = props[headerCount++];
+                                var value = rows[index][col];
+                                if(value == undefined || value=='')
+                                {
+                                        value = "-"
+                                }
+                                table+="<td>"+value+"</td>";
+                        }
+                }
+                table+="</tr>";
+        }
+       // table = table+"</table>";
+        
+       table += "</table></div></td></tr></table>";
+    }
+    else
+    {
+        table=getNoDataTable('attrForm');
+        // table += "</table>";
+    	
+    }
+	
+        document.getElementById('attrTable').style.display='';
+        document.getElementById('attrTable').innerHTML=table;
+	var divId=document.getElementById('toggleImg_attrTable');
+	if(divId!=null)
+	{
+	  divId.src="/webclient/common/images/toggleIcon1.gif";
+	}
+        
+}
+</script>

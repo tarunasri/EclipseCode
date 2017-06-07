@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><PROJECT name="upsmodelling">
+<WEBNMS installDir="/root/Desktop/UMS/infracentral" productContext="BE" productVersion="5.2" servicePackVersion="SP-0"/>
+<PACKAGE_JAR>
+<JAR outputfolder="classes" outputjar="Server.jar"/>
+<JAR outputfolder="clientClasses" outputjar="Client.jar"/>
+</PACKAGE_JAR>
+<PROJECT-RESOURCES>
+<MIBS name="RFC1213-MIB RFC1628cs121.MIB"/>
+</PROJECT-RESOURCES>
+<CONFIGURATION_FILES>
+<FILE name="/root/workspace1/upsmodelling/resources/conf/discovery.filters" targetDir="./conf"/>
+</CONFIGURATION_FILES>
+</PROJECT>

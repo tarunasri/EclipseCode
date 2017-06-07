@@ -1,0 +1,114 @@
+<!-- $Id: reportOptions.jspf,v 1.5 2010/10/29 13:47:13 swaminathap Exp $ -->
+<table style="margin-bottom:10px;" width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td class="generalCurveLeftTop"><img src="images/spacer.gif" width="1px" height="1px" /></td>
+    <td align="left" valign="top" nowrap="nowrap" class="generalCurveTop" style="padding-right:10px;">
+<span class="generalTitle">
+<fmt:message key="webclient.performance.reports.title.customizegraph"/>
+</span>
+</td>
+    <td class="generalCurveRightTop"><img src="images/spacer.gif" width="1px" height="1px" /></td>
+  </tr>
+  <tr>
+    <td class="generalCurveLeft">&nbsp;</td>
+    <td valign="top" class="generalTBPadding" >
+
+<table width="100%" valign="top" cellpadding=0 cellspacing=2 border="0">
+
+	<tr>
+		<td nowrap><span class="text"><fmt:message key="webclient.performance.reports.managedobject"/></span></td>
+		
+		<td>
+		<html:text property="name"  name="ReportViewForm"  styleClass="formstyle"/><span class="mandatory">&nbsp*</span>
+		</td> 
+	</tr>	
+	
+	<tr>
+		<td><span class="text"><fmt:message key="webclient.performance.reports.reporttype"/></span>
+		</td>
+		
+		<td><input type=hidden name="name" value='<c:out value="${param.name}"/>'>
+    		<html:select  styleClass="formstyle" name="ReportViewForm" value="reportType" property="reportType">
+    		   <c:forEach var="type" items="${reportTypes}">
+               <c:if test="${type.key != 'hrStorageAllocationUnits_RAM' && type.key != 'hrStorageSize_RAM' && type.key != 'hrStorageType_RAM' && type.key != 'hrStorageUsed_RAM'}">
+    		   <option value='<c:out value="${type.key}"/>' <c:if test="${type.key==param.reportType}"> selected </c:if>><c:out value="${type.value}"/></option>
+               </c:if>    
+    		   </c:forEach>
+    		 </html:select>
+    		</td>
+    		
+	</tr>
+	  <tr>
+    		<td class=text><fmt:message key="webclient.performance.reports.view"/></td>
+    		
+    		<td><html:select  styleClass="formstyle" name="ReportViewForm" property="graphType">
+    		<html:option value="LineGraph"><fmt:message key="webclient.performance.reports.view.linegraph"/></html:option>
+    		<html:option value="AreaGraph"><fmt:message key="webclient.performance.reports.view.areagraph"/></html:option>
+    		</html:select>
+		</td>
+	</tr>
+	<tr>
+		<td><span class="text"><fmt:message key="webclient.performance.reports.period"/></span>	</td>
+		
+		<td>
+		 <html:select  styleClass="formstyle" name="ReportViewForm"  property="period" onchange="doCustomPeriodSelectAction(this.form)">
+		   <c:forEach var="periodvalue" items="${applicationScope.ReportPeriodList}">
+		<option value='<c:out value="${periodvalue}"/>' <c:if test="${periodvalue==param.period}"> selected </c:if>><fmt:message>webclient.performance.reports.period.<c:out value="${periodvalue}"/></fmt:message></option> 
+	   	</c:forEach>
+		</html:select>
+		</td>
+	</tr>
+
+	<tr>	
+		<td class=text nowrap><fmt:message key="webclient.performance.reports.period.custom.startdate"/>
+		<td nowrap> <html:text readonly="true" property="startDate" styleId="start" styleClass="formstyle" size="17" />
+	
+		 <a href="#" ><img src="/webclient/common/images/<c:out value = "${selectedskin}"/>/cal.gif" border="0" id="startTrigger" title="start" align="absmiddle" alt=""></a> 
+
+			 <script type="text/javascript">
+					    Calendar.setup({
+				        inputField     :    "start",     // id of the input field
+				        ifFormat       :    "%Y-%m-%d %H:%M",      // format of the input field
+						showsTime	   :    true,	
+				        button         :    "startTrigger",  // trigger for the calendar (button ID)
+						timeFormat     :    "24",
+				        align          :    "Tl",           // alignment (defaults to "Bl")
+				        singleClick    :    true
+					    });
+					 </script></td> 
+	  </tr>	
+
+	<tr>	
+		
+		<td class=text nowrap><fmt:message key="webclient.performance.reports.period.custom.enddate"/>
+		<td nowrap> 
+<c:out value="${endTrigger.style.visibility}"/>
+<html:text readonly="true" property="endDate" styleId="end" size="17" styleClass="formstyle"/> 
+					 <a href="#"><img src="/webclient/common/images/<c:out value = "${selectedskin}"/>/cal.gif" title="End" border="0" id="endTrigger" align="absmiddle" alt=""></a>
+
+				 	 <script type="text/javascript">
+						Calendar.setup({
+						inputField     :    "end",     // id of the input field
+					        ifFormat       :    "%Y-%m-%d %H:%M",      // format of the input field
+						showsTime	   :    true,	
+					        button         :    "endTrigger",  // trigger for the calendar (button ID)
+						timeFormat     :    "24",
+					        align          :    "Tl",           // alignment (defaults to "Bl")
+					        singleClick    :    true
+						    });
+					 </script></td>
+	   </tr>
+<tr>
+	<td colspan="2" height=50 align=center><input name="rsubmit" type="submit" class="button" value='<fmt:message key="webclient.performance.reports.graphoptions.submit"/>'>
+	</td>
+</tr>
+</table>
+</td>
+    <td class="generalCurveRight">&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="generalCurveLeftBot"><img src="images/spacer.gif" width="1px" height="1px" /></td>
+    <td class="generalCurveBottom"><img src="images/spacer.gif" width="1px" height="1px" /></td>
+    <td class="generalCurveRightBot"><img src="images/spacer.gif" width="1px" height="1px" /></td>
+  </tr>
+</table>

@@ -1,0 +1,24 @@
+<%-- $Id: homePageContentInclude.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td height="58" align="left" class="loginStrip"><img src="/webclient/common/images/title.gif" alt='<fmt:message key="webclient.login.titlegif.alt"/>' width="253" height="45"></td>
+          </tr>
+          <tr> 
+            <td align="left" valign="top"><table width="100%" border="0" cellspacing="10" cellpadding="5" align="center">
+                <tr> 
+                  <td align="center"><img src="/webclient/common/images/splash.jpg" width="349" height="184" border="1"></td>
+                </tr>
+                <tr> 
+                  <td align="left" valign="top"> <p><span class="boldtext"><fmt:message key="webclient.login.aboutwebnms4"/></span><br>
+                      <span class="text"><fmt:message key="webclient.login.aboutwebnms4desc"/></span></p>
+                    <p><span class="boldtext"><fmt:message key="webclient.login.abouthtmlclient"/></span><br>
+                      <span class="text"><fmt:message key="webclient.login.abouthtmlclientdesc"/></span></p>
+                    <p> <span class="boldtext"><fmt:message key="webclient.login.aboutappletclient"/></span><br>
+                      <span class="text"><fmt:message key="webclient.login.aboutappletclientdesc"/></span> 
+                    <p><span class="boldtext"><fmt:message key="webclient.login.aboutjwsclient"/></span><br>
+                      <span class="text"><fmt:message key="webclient.login.aboutjwsclientdesc"/></span></p></td>
+                </tr>
+              </table></td>
+          </tr>
+        </table>

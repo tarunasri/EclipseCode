@@ -1,0 +1,114 @@
+package com.dgca;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class DbConnection {
+
+	public Connection getdatabaseConnection() {
+		Connection conn = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/dgcadbtest1", "master", "public");
+			System.out.println("Connecting to a MYSQL database...");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return conn;
+	}
+
+	public String gethostName(String ipAddress, String hostName, Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String Name = "";
+		String DisplayName = "";
+
+		String sql = "select * from  DGCAMapping where ipaddress=" + "'" + ipAddress + "'";
+		System.out.println("query" + sql);
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			// String sql = "select * from DGCAMapping where
+			// ipaddress=172.18.18.19";
+			rs = pstmt.executeQuery(sql);
+			while (rs.next()) {
+				// Retrieve by column name
+				Name = rs.getString("NAME");
+				DisplayName = rs.getString("DISPLAYNAME");
+
+				System.out.print(", NAME: " + Name);
+				System.out.println(", DISPLAYNAME: " + DisplayName);
+			}
+			System.out.println("Name Length" + Name.length());
+			rs.close();
+			pstmt.close();
+			
+		}
+		 catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+		System.out.println("Name Length out Side" + Name.length());
+			// if (Name != "" || Name.length() < 0) {
+			if (Name.length() == 0) {
+				System.out.println("IPAddress Doesnot exists hence adding the ip, hostname, displayname ");
+				// Insert query
+
+				try {
+					System.out.println("IpAddress in insertion call" + ipAddress);
+					String sqlInsert = "insert into DGCAMapping(MOID,IpAddress,NAME,DISPLAYNAME) values(?,?,?,?)";
+
+					System.out.println("Insert Sql Query" + sqlInsert);
+
+					pstmt = conn.prepareStatement(sqlInsert);
+					System.out.println("Prepared Statement" + pstmt);
+					pstmt.setInt(1, (Integer) null);
+					pstmt.setString(2, "172.16.0.32");
+					pstmt.setString(3, "SS-Y00GHT-KMMGMTCP01.dgca.gov.kw");
+					pstmt.setString(4, "SS-Y00GHT-KMMGMTCP01.dgca.gov.kw");
+					pstmt.executeUpdate();
+					
+					System.out.println("after insertion " + pstmt.executeUpdate());
+					pstmt.close();
+					
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
+
+			} else {
+				System.out.println("IPAddress already exists");
+			}
+			
+			
+			
+		
+	/*	
+	finally {
+		// finally block used to close resources
+		try {
+			rs.close();
+			pstmt.close();
+			//conn.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+
+	}*/
+
+		return Name;
+	}
+
+}

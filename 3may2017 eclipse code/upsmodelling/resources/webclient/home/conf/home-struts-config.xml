@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id: home-struts-config.xml,v 1.2 2010/10/29 13:47:08 swaminathap Exp $ -->
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+<action-mappings>
+
+  <action path="/Homepage" 
+	  type="com.adventnet.nms.webclient.home.HomepageAction">
+	  <forward name="homepage" path="homepage"/>
+	  <forward name="recitepage" path="recitepage"/>
+  </action>
+
+  <!-- added for homepage widgets-->
+  <action path="/404Error" forward = "/../webclient/common/jsp/404error.jsp" />
+  <action path="/modifyWidget" forward = "/../webclient/home/jsp/AddModifyDashboard.jsp"/>
+   
+  <action path="/generateWidgets"
+	  type="com.adventnet.nms.webclient.home.GenerateWidgetAction">
+	  <forward name="tree" path="/../webclient/home/jsp/MapTreeViewWidget.jsp"/>
+	  <forward name="invPage" path="/../webclient/home/jsp/ListViewWidget.jsp"/>
+	  <forward name="listView" path="/../webclient/home/jsp/AlarmsViewWidget.jsp"/>
+	  <forward name="cpureports" path="/../webclient/home/jsp/CpuReportWidget.jsp"/>
+	  <forward name="traffic" path="/../webclient/home/jsp/TrafficReportWidget.jsp"/>
+	  <forward name="barchart" path="/../webclient/home/jsp/ChartsWidget.jsp"/>
+	  <forward name="piechart" path="/../webclient/home/jsp/ChartsWidget.jsp"/>
+	  <forward name="graphView" path="/../webclient/home/jsp/GraphsWidget.jsp"/>
+	  <forward name="inventoryDisplay" path="/../webclient/home/jsp/InventoryDisplay.jsp"/>
+<forward name="nagiosPage" path="/../webclient/home/jsp/nagiosPage.jsp"/>
+<forward name="eventsDisplay" path="/../webclient/home/jsp/EventsDisplay.jsp"/>
+<forward name="devicesDisplay" path="/../webclient/home/jsp/DevicesDisplay.jsp"/>
+<forward name="alarmsDisplay" path="/../webclient/home/jsp/AlarmsDisplay.jsp"/>
+<forward name="alarmsSummaryDisplay" path="/../webclient/home/jsp/AlarmsSummaryDisplay.jsp"/>
+<forward name="upTimeDisplay" path="/../webclient/home/jsp/UpTimeDisplay.jsp"/>
+  <forward name="ciscoPi" path="/../webclient/common/jsp/CiscoPi.jsp"/>
+  <forward name="cms" path="/../webclient/common/jsp/Cms.jsp"/>
+  <forward name="pabx" path="/../webclient/home/jsp/Pabx.jsp"/>
+  <forward name="ups" path="/../webclient/home/jsp/Ups.jsp"/>
+  
+	  <forward name="error" path="/404Error.do"/>
+  </action>
+
+  
+  <action path="/Recite" type="com.adventnet.nms.webclient.home.ReciteAction">
+	  <forward name="recite" path="/../webclient/home/jsp/Recite.jsp"/>
+  </action>
+  <!-- added for homepage widgets end-->
+
+ </action-mappings>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+           <set-property property="definitions-config" value="/webclient/home/conf/home-tiles-defs.xml" />
+           <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

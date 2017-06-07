@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+ <!-- $Id: map-validation.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+   <formset>
+        <form name="MapSymbolForm">
+            <field property="label"
+                 depends="required">
+         	     <arg0 key="webclient.map.details.label"/>
+            </field>
+            <field property="objName"
+                 depends="required">
+         	     <arg0 key="webclient.map.details.objname"/>
+            </field>
+            <field property="iconName"
+                 depends="required">
+         	     <arg0 key="webclient.map.details.iconname"/>
+            </field>
+
+            <field property="menuName"
+                 depends="required">
+         	     <arg0 key="webclient.map.details.menuname"/>
+            </field>
+        </form>
+
+        <form name="AddMapSymbol">
+            <field property="name"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addmap.name"/>
+            </field>
+            
+            <field property="width"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addsymbol.width"/>
+            </field>
+           
+            <field property="height"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addsymbol.height"/>
+            </field>
+
+             <field property="x"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addsymbol.x"/>
+            </field>
+           
+            <field property="y"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addsymbol.y"/>
+            </field> 
+
+            <field property="objType"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addsymbol.objtype"/>
+            </field>
+        </form>
+
+        <form name="AddLink">
+            <field property="name"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addlink.name"/>
+            </field>
+           
+            <field property="source"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addlink.source"/>
+            </field>
+            <field property="dest"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addlink.dest"/>
+            </field>
+            <field property="mapName"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addlink.mapname"/>
+            </field>
+            <field property="thickness"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addlink.thickness"/>
+            </field>
+            <field property="linkType"
+                 depends="integer">
+         	     <arg0 key="webclient.map.cv.addlink.linktype"/>
+            </field>
+        </form>
+
+        <form name="AddContainer">
+            <field property="name"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addcontainer.name"/>
+            </field>
+            <field property="objName"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addcontainer.objname"/>
+            </field>
+            <field property="mapName"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addcontainer.mapname"/>
+            </field>
+
+            <field property="topology"
+                 depends="required">
+         	     <arg0 key="webclient.map.cv.addcontainer.topology"/>
+            </field>
+        </form>
+
+   </formset>
+</form-validation>

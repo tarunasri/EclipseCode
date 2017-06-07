@@ -1,0 +1,60 @@
+<%-- $Id: inputOptions.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<table width=100% class=botBorder border=0 cellpadding=2 cellspacing=0>
+	<tr>
+	<td colspan=7 class="header2Bg"><span class="header2"><fmt:message key='webclient.admin.systemadmin.modulestatus.perf.viewhdg'/></span></td>
+	</tr>
+	<tr>
+	<tr>
+		   <td colspan=6></td>
+	</tr>
+	
+	<tr>
+		<td><span class="text"><fmt:message key="webclient.admin.systemadmin.modulestatus.perf.nodename"/></span></td>
+		
+		<td colspan=2>
+		<html:text property="name"  style="width:120" name="PerfViewForm"  styleClass="formstyle"/>
+		</td>
+		
+    		<td >&nbsp;
+    		</td>
+    		
+    		<td width=90 class=text><fmt:message key="webclient.admin.systemadmin.modulestatus.perf.startdate"/>
+    		</td>
+    		<td width=100><html:text property="startDate" readonly="true" style="width:120" name="PerfViewForm"  styleClass="formstyle"/>
+    		</td>
+
+    		<td><a href="javascript:popupWin(document.PerfViewForm.startDate,'/DateInput.do')"><img src="/webclient/common/images/<c:out value = "${selectedskin}"/>/cal.gif" border="0" alt=""></a>
+    		</td>
+		</tr>	
+    	<tr>
+
+		<td><span class="text"><fmt:message key="webclient.admin.systemadmin.modulestatus.perf.period"/></span>
+		</td>
+		
+		<td colspan=2>
+		 <html:select  styleClass="formstyle" name="PerfViewForm" style="width:120" property="period" onchange="doCustomPeriodSelectAction(this.form)">
+		   <c:forEach var="periodvalue" items="${applicationScope.ReportPeriodList}">
+		<option value='<c:out value="${periodvalue}"/>' <c:if test="${periodvalue==param.period}"> selected </c:if>><fmt:message>webclient.admin.systemadmin.modulestatus.perf.<c:out value="${periodvalue}"/></fmt:message></option> 
+	   	</c:forEach>
+		</html:select>
+		</td>
+
+		<td>&nbsp;</td>
+		
+		<td class=text><fmt:message key="webclient.admin.systemadmin.modulestatus.perf.enddate"/>
+		</td>
+		</td>
+		
+		<td	><html:text readonly="true" property="endDate"  style="width:120" name="PerfViewForm" styleClass="formstyle"/> 
+		</td>
+		<td><a href="javascript:popupWin(document.PerfViewForm.endDate,'/DateInput.do')"><img src="/webclient/common/images/<c:out value = "${selectedskin}"/>/cal.gif" border="0" alt=""></a>
+		</td>		
+    	</tr>
+    </table>
+<table width=80% align=center border=0 cellpadding=2 cellspacing=0>
+<tr>
+	<td height=50 align=center><input name="rsubmit" type="submit" class="button" value='<fmt:message key="webclient.admin.systemadmin.modulestatus.perf.submit"/>'>
+	</td>
+</tr>
+</table>

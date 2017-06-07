@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!-- $Id: perf-struts-config.xml,v 1.3 2010/10/29 13:47:12 swaminathap Exp $ -->
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+
+<form-beans>
+    <form-bean name="ReportViewForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="reportType" type="java.lang.String"/>
+      <form-property name="graphType" type="java.lang.String"/>
+      <form-property name="period" type="java.lang.String"/>
+      <form-property name="startDate" type="java.lang.String"/>
+      <form-property name="endDate" type="java.lang.String"/>
+      <form-property name="rsubmit" type="java.lang.String"/>
+    </form-bean>
+
+
+<form-bean name="AddPollingObject" type="com.adventnet.nms.webclient.perf.poll.AddPollingObjectForm">
+	
+	<form-property name="selectOption" type="java.lang.String"/>  
+	<form-property name="ReportName" type="java.lang.String"/>
+
+	<form-property name="Units" type="java.lang.String"/>
+	<form-property name="Criteria" type="java.lang.String[]"/>
+	<form-property name="CriteriaVal" type="java.lang.String[]"/>
+	<form-property name="conditions" type="java.lang.String[]"/>
+	<form-property name="Props" type="java.lang.String[]"/>
+	<form-property name="listOfOIDs" type="java.lang.String[]"/>
+	<form-property name="rowCount" type="java.lang.String"/>
+   <!-- <form-property name="rows" type="java.lang.String"/> -->
+	<form-property name="showhelp" type="java.lang.String" initial="false"/>
+	<form-property name="displaySaveOption" type="java.lang.String" initial="false"/>
+
+	<form-property name="Class" type="java.lang.String"/>
+	<form-property name="oidList" type="java.lang.String"/>
+	<form-property name="Community" type="java.lang.String"/>
+
+    <form-property name="PollingObject" type="java.lang.String"/>
+	<form-property name="status" type="java.lang.String"/>
+    <form-property name="updateDiscoveredMO" type="java.lang.String"/>
+	<form-property name="prefix" type="java.lang.String"/>
+	<form-property name="pollingPeriod" type="java.lang.String" initial="300"/>
+
+    <form-property name="oid" type="java.lang.String"/>  
+    <form-property name="isMultiplePolledData" type="java.lang.String"/>
+    <form-property name="name" type="java.lang.String"/>
+	<form-property name="protocol" type="java.lang.String"/>
+	<form-property name="interval" type="java.lang.String"/>
+	<form-property name="Threshold" type="java.lang.String"/>
+	<form-property name="StoreData" type="java.lang.String"/>
+	<form-property name="statsDataTableName" type="java.lang.String"/>
+	<form-property name="stringDataTableName" type="java.lang.String"/>
+    <form-property name="failureThreshold" type="java.lang.String"/>
+	<form-property name="saveAbsolutes" type="java.lang.String" initial="false"/>
+	<form-property name="timeAvg" type="java.lang.String"/>
+    <form-property name="Active" type="java.lang.String"/>
+    <form-property name="savePollCount" type="java.lang.String"/>
+	<form-property name="saveOnThreshold" type="java.lang.String"/>
+	<form-property name="ThresholdList" type="java.lang.String[]"/>
+
+    <form-property name="Save" type="java.lang.String"/>
+    <form-property name="typeSelection" type="java.lang.String"/>
+
+
+	<form-property name="actionToPerform" type="java.lang.String" initial="property"/>
+</form-bean>
+
+
+<form-bean name="DeletePO" type="org.apache.struts.action.DynaActionForm">
+	<form-property name="POName" type="java.lang.String"/>
+</form-bean>
+
+    <form-bean name="ThresholdObject" type="org.apache.struts.validator.DynaValidatorForm">
+     <form-property name="name" type="java.lang.String"/>
+     <form-property name="kind" type="java.lang.String"/>
+     <form-property name="severity" type="java.lang.String"/>
+     <form-property name="category" type="java.lang.String"/>
+     <form-property name="message" type="java.lang.String"/>
+     <form-property name="clrMessage" type="java.lang.String"/>
+     <form-property name="thresholdType" type="java.lang.String"/>
+     <form-property name="thresholdValue" type="java.lang.String"/>
+     <form-property name="rearmValue" type="java.lang.String"/>
+     <form-property name="sendClear" type="java.lang.String"/>
+     <form-property name="allowed" type="java.lang.String"/>
+     <form-property name="disAllowed" type="java.lang.String"/>
+     <form-property name="triggerSeverity" type="java.lang.String"/>
+     <form-property name="resetSeverity" type="java.lang.String"/>
+     <form-property name="oid" type="java.lang.String"/>
+     <form-property name="isMultiplePolledData" type="java.lang.String"/>
+     <form-property name="thresholdData" type="java.lang.String"/>
+     
+   </form-bean>
+
+   <form-bean name="StatsPropsForm" type="org.apache.struts.validator.DynaValidatorForm"> 
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="snmpVersion" type="java.lang.String" initial="v2"/>
+      <form-property name="community" type="java.lang.String" initial="public"/>
+      <form-property name="writeCommunity" type="java.lang.String" />
+      <form-property name="agent" type="java.lang.String" />
+      <form-property name="port" type="java.lang.String" initial="161"/>     
+      <form-property name="id" type="java.lang.String" />
+      <form-property name="oid" type="java.lang.String" />
+      <form-property name="active" type="java.lang.String" initial="true"/>
+      <form-property name="period" type="java.lang.String" initial="300"/>
+      <form-property name="threshold" type="java.lang.String" />
+      <form-property name="dnsName" type="java.lang.String" />
+      <form-property name="lastCounterValue" type="java.lang.String" />
+      <form-property name="lastTimeValue" type="java.lang.String" />
+      <form-property name="timeVal" type="java.lang.String"/>
+      <form-property name="policyName" type="java.lang.String"/>
+      <form-property name="save" type="java.lang.String" initial="true"/>
+      <form-property name="saveAbsolutes" type="java.lang.String"/>
+      <form-property name="logDirectly" type="java.lang.String"/>
+      <form-property name="logFile" type="java.lang.String"/>
+      <form-property name="parentObj" type="java.lang.String"/>
+      <form-property name="thresholdList" type="java.lang.String[]"/>
+      <form-property name="currentSaveCount" type="java.lang.String" initial="0"/>
+      <form-property name="failureCount" type="java.lang.String"/>
+      <form-property name="protocol" type="java.lang.String" initial="SNMP"/>
+      <form-property name="pollerName" type="java.lang.String"/>
+      <form-property name="statsDataTableName" type="java.lang.String" initial="STATSDATA%"/>
+      <form-property name="savePollCount" type="java.lang.String" initial="1"/>
+      <form-property name="failureThreshold" type="java.lang.String" initial="1"/>
+      <form-property name="isMultiplePolledData" type="java.lang.String"/>
+      <form-property name="saveOnThreshold" type="java.lang.String" initial="false"/>
+      <form-property name="ownerName" type="java.lang.String" initial="NULL"/>
+      <form-property name="timeAvg" type="java.lang.String"/>
+     
+      <form-property name="userPropsName" type="java.lang.String[]"/>
+      <form-property name="userPropsValue" type="java.lang.String[]"/>
+      <form-property name="rowCount" type="java.lang.String"/>
+    </form-bean>
+
+
+</form-beans>
+
+<global-forwards>
+<forward name="messagePage" path="message" contextRelative="true"/> 
+<forward name="reLoadConfigCollection" path="/ConfiguredCollection.do" /> 
+
+<forward name="reLoadPollingObject" path="/ModifyPollingObjects.do" redirect="true"/> 
+
+</global-forwards>
+
+
+<action-mappings>
+
+    <action path="/ConfiguredCollection"
+            type="com.adventnet.nms.webclient.performance.view.PerfViewAction">
+         <forward name="success" path="PerfViewPageDef" contextRelative="true"/>
+         <forward name="failure" path="PerfViewPageDef" contextRelative="true"/>
+    </action>
+
+<!-- newly added for polling objects STARTS HERE -->
+
+    <action path="/AddPollingObjectValues"
+        name="AddPollingObject" 
+		scope="request" 
+        parameter="toPerform" 
+        validate="false"
+        type="com.adventnet.nms.webclient.perf.poll.AddPollingObjectAction">
+		   <forward name="AddPollingObjectForm" path="addPoll" contextRelative="true"/>
+           <forward name="Add" path="success" contextRelative="true"/>
+           <forward name="ErrorPage" path="failure" contextRelative="true"/>
+    </action>
+
+    <action path="/ModifyPollingObjects"
+        name="AddPollingObject" 
+		scope="request" 
+        parameter="toPerform" 
+        validate="false"
+        type="com.adventnet.nms.webclient.perf.poll.ModifyPollingObjects">
+		   <forward name="PollingObjectForm" path="addPoll" contextRelative="true"/>
+           <forward name="Success" path="success" contextRelative="true"/>
+           <forward name="ErrorPage" path="failure" contextRelative="true"/>
+    </action>
+
+
+    <action path="/ShowHelp" 
+            type="org.apache.struts.actions.ForwardAction" 
+            parameter="/webclient/perf/jsp/ShowHelp.jsp">
+	</action>
+
+	<action path="/DeviceTypes" 
+            name="Types" 
+            type="com.adventnet.nms.webclient.perf.poll.DeviceTypes" 
+            scope="request">
+		<forward name="typeList" path="/webclient/perf/jsp/DeviceTypesList.jsp" contextRelative="true"/>
+	</action>	
+
+	<action path="/DeviceOIDs" 
+            name="OIDs" 
+            type="com.adventnet.nms.webclient.perf.poll.DeviceOIDs" 
+            scope="request">
+		<forward name="oidList" path="/webclient/perf/jsp/DeviceOIDsList.jsp" contextRelative="true"/>
+	</action>
+
+	<action path="/DeletePollingObjects"
+         name="DeletePO" 
+         type="com.adventnet.nms.webclient.perf.poll.DeletePollingObjects" 
+         scope="request">
+		<forward name="Delete" path="/webclient/perf/jsp/DeletePollingObjectsForm.jsp" contextRelative="true"/>
+	</action>	
+
+<!-- newly added for polling objects ENDS HERE -->
+
+    <action path="/ThresholdDetails" 
+            name="ThresholdObject" 
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.performance.threshold.ThresholdDetailsAction">
+         <forward name="threshold" path="ThresholdDef" contextRelative="true"/>
+    </action>
+
+    <action path="/StatisticDetails" 
+            name="StatsPropsForm" 
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.performance.details.StatisticDetailsAction">
+         <forward name="statistics" path="StatDetailsDef" contextRelative="true"/>
+        
+    </action>
+
+    <action path="/GetSnmpOid" 
+            type="org.apache.struts.actions.ForwardAction" 
+            parameter="/webclient/perf/jsp/OIDSelector.jsp">	
+	</action>	
+
+    <action name="ReportViewForm" path="/ReportViewAction"
+            type="com.adventnet.nms.webclient.performance.reports.ReportViewAction"
+	        validate="true" 
+	        input="success"
+            scope="request">
+         <forward name="success" path="PerfReportsPage" contextRelative="true"/>
+	 <forward name="failure" path="PerfReportsPage" contextRelative="true"/>
+	 <forward name="scopeError" path="StatsErrorPage" contextRelative="true"/>
+    </action>
+
+  <action path="/reportsIndex"
+          type="org.apache.struts.actions.ForwardAction"
+          parameter="ReportsMainPage">
+  </action>
+
+
+
+</action-mappings>
+
+<controller inputForward="true" />
+
+<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+  <set-property property="pathnames" value="/webclient/perf/conf/perf-validator-rules.xml,/webclient/perf/conf/perf-validation.xml"/>
+ </plug-in>
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/webclient/perf/conf/perf-tiles-defn.xml" />
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

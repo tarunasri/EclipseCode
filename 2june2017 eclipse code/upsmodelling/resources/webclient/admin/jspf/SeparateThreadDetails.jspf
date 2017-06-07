@@ -1,0 +1,30 @@
+<!-- $Id: SeparateThreadDetails.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ -->
+
+<tr id="advancedRow" class="hide" height="22">
+
+    <td colspan="<c:out value="${colspan}"/>"><span class="boldText"><a href="javascript:hideAdvanced()"><fmt:message key='webclient.admin.filters.hideadvanced'/> >></a></span>&nbsp;<br>
+<table class="notificationTable" width="100%" cellpadding="3" cellspacing="0">
+	<tr><td colspan="2"/></tr>
+	<tr height="22" >
+		<td align="left" width="50%"><span class="boldText"><fmt:message key='webclient.admin.notifications.eventHandler'/></span></td>
+		<td align="left"><html:text styleClass="formStyle" property="ThreadImplForEvents" /></td>
+	</tr>	
+	<tr height="22">
+		<td align="left" width="50%"><span class="boldText"><fmt:message key='webclient.admin.notifications.alertHandler'/></span></td>
+		<td align="left" ><html:text styleClass="formStyle" property="ThreadImplForAlerts"/></td>
+	</tr>
+	<tr><td colspan="2"/></tr>
+	<tr><td colspan="2"/></tr>
+	<tr><td colspan="2"><fmt:message key="webclient.admin.notifications.separateThreadHandlerNote"/></td></tr>
+	
+</table>
+</td></tr>
+
+<tr id="hideAdvancedRow" class="<c:out value="${className}"/>" height="22">
+<td colspan="<c:out value="${colspan}"/>"><span class="boldText"><a href="javascript:showAdvanced()"><fmt:message key='webclient.admin.filters.showadvanced'/> >></a></span><br></td>
+</tr>
+
+<tr colspan="<c:out value="${colspan}"/>"><td></td></tr>
+
+<c:remove var="colspan"/>
+<c:remove var="className"/>

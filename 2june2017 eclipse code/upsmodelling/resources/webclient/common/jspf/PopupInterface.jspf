@@ -1,0 +1,13 @@
+<%--$Id: PopupInterface.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+<script language="javascript">
+var obj_caller = window.opener.popups["<c:out value='${param.id}'/>"];
+function setValue(value)
+{
+        obj_caller.setValue(value);
+}
+function getValue()
+{
+        return obj_caller.getValue();
+}
+
+</script>

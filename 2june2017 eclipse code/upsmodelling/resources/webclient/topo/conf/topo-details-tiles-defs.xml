@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+  <!-- $Id: topo-details-tiles-defs.xml,v 1.2 2010/10/29 13:47:15 swaminathap Exp $ -->
+
+  <!-- =======================================================  -->
+  <!-- ManagedObject Details Page 								-->
+  <!-- =======================================================  -->
+
+  <definition name="ManagedObjectDef" path="/webclient/topo/jsp/objectDetails.jsp">
+      <put name="mode"  value="tab" />
+      <put name="initSelectedTab"  value="webclient.topo.details.tabs.general" />
+      <put name="header"   value="/webclient/topo/jsp/objectDetailsHeader.jsp" />
+      <put name="menuController"   value="menu.controller" /> 
+	  <put name="body"   value="topo.managedobjectdetails.tabs" />
+  </definition>
+
+ <definition name="menu.controller" path="/webclient/common/jsp/rightPanelList.jsp" 
+    controllerClass ="com.adventnet.nms.webclient.home.MenuController">
+    </definition>
+
+     <!-- tabs page -->
+  <definition name="topo.managedobjectdetails.tabs" path="/webclient/topo/jsp/tabsLayout.jsp">
+	  <put name="header"   value="/webclient/topo/jsp/tabDetailsHeader.jsp" />
+      <putList name="tabList" >
+       <item value="webclient.topo.details.tabs.general"	  icon="/webclient/topo/images/general_details" tooltip="webclient.topo.details.tabs.general.tooltip" link="generaltab" />
+       <item value="webclient.topo.details.tabs.monitoring"	  icon="/webclient/topo/images/monitoring_details" tooltip="webclient.topo.details.tabs.monitoring.tooltip" link="monitoringtab" />
+       <item value="webclient.topo.details.tabs.relationship"	  icon="/webclient/topo/images/relationship_details" tooltip="webclient.topo.details.tabs.relationship.tooltip" link="relationshiptab" />
+      </putList>
+  </definition>
+
+  <definition name="generaltab" path="/webclient/topo/jsp/tabsBodyLayout.jsp" >
+	  <put name="details1"   value="/webclient/topo/jsp/generalTabDetails.jsp" />
+  </definition>
+
+ <definition name="relationshiptab" path="/webclient/topo/jsp/tabsBodyLayout.jsp" >
+	  <put name="details1"   value="/webclient/topo/jsp/relationshipTabDetails.jsp" />
+  </definition>
+
+  <!-- =======================================================  -->
+  <!-- ManagedObject Details Page 							    -->
+  <!-- =======================================================  -->
+
+  <definition name="ManagedObjectDef1"  extends="ManagedObjectDef">
+	   <put name="body"   value="moBasePage2" />
+   </definition>
+
+  <!-- =======================================================  -->
+  <!-- PortObject Details Page 							    	-->
+  <!-- =======================================================  -->
+
+  <definition name="PortObjectDef"  extends="ManagedObjectDef">
+	<put name="body"   value="moBasePage2" />
+  </definition>
+
+  <!-- =======================================================  -->
+  <!--         TopoObject Details Page							-->
+  <!-- =======================================================  -->
+
+  <definition name="TopoObjectDef" extends="ManagedObjectDef">
+	  <put name="body"   value="topo.topoobjectdetails.tabs" />
+  </definition>
+
+
+    <!-- tabs page -->
+  <definition name="topo.topoobjectdetails.tabs" extends="topo.managedobjectdetails.tabs">
+      <putList name="tabList" >
+       <item value="webclient.topo.details.tabs.general"	  icon="/webclient/topo/images/general_details" tooltip="webclient.topo.details.tabs.general.tooltip" link="addressgeneraltab" />
+       <item value="webclient.topo.details.tabs.monitoring"	  icon="/webclient/topo/images/monitoring_details" tooltip="webclient.topo.details.tabs.monitoring.tooltip" link="monitoringtab" />
+       <item  value="webclient.topo.details.tabs.relationship"	  icon="/webclient/topo/images/relationship_details" tooltip="webclient.topo.details.tabs.relationship.tooltip" link="relationshiptab" />
+       <item value="webclient.topo.details.tabs.protocol"	  icon="/webclient/topo/images/protocol_details" tooltip="webclient.topo.details.tabs.protocol.tooltip" link="devicetab" />
+      </putList>
+  </definition>
+
+
+  <!-- =======================================================  -->
+  <!--         Node Details Page 								-->
+  <!-- =======================================================  -->
+
+
+  <definition name="NodeDef" extends="ManagedObjectDef">
+	  <put name="body"   value="moBasePage2" />
+  </definition>
+
+    
+
+  <!-- =======================================================  -->
+  <!--         SnmpNode Details Page							-->
+  <!-- =======================================================  -->
+
+  <definition name="SnmpNodeDef" extends="ManagedObjectDef">
+	  <put name="body"   value="moBasePage1" />
+  </definition>
+
+ 
+
+
+  <!-- =======================================================  -->
+  <!--         SwitchObject Details Page 						-->
+  <!-- =======================================================  -->
+
+  <definition name="SwitchObjectDef" extends="ManagedObjectDef">
+	<put name="body"   value="moBasePage1" />
+  </definition>
+
+  <!-- =======================================================  -->
+  <!--             Printer Details Page 						-->
+  <!-- =======================================================  -->
+
+  <definition name="PrinterDef" extends="ManagedObjectDef">
+	<put name="body"   value="moBasePage1" />
+  </definition>
+
+
+  <!-- =======================================================  -->
+  <!--         IpAddress Details Page							-->
+  <!-- =======================================================  -->
+
+  <definition name="IpAddressDef" extends="ManagedObjectDef">
+	<put name="body"   value="moBasePage2" />
+  </definition>
+ 
+
+  <!-- =======================================================  -->
+  <!--         SnmpInterface Details Page 						-->
+  <!-- =======================================================  -->
+
+  <definition name="SnmpInterfaceDef" extends="ManagedObjectDef">
+	<put name="body"   value="moBasePage1" />
+  </definition>
+
+  <!-- =======================================================  -->
+  <!--         Network Details Page								-->
+  <!-- =======================================================  -->
+
+  <definition name="NetworkDef" extends="ManagedObjectDef">
+	 <put name="body"   value="moBasePage2" />
+  </definition>
+
+</tiles-definitions>

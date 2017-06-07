@@ -1,0 +1,19 @@
+<!-- $Id: topowebclientconfig.dtd,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<!ELEMENT object-details (icon-config)*>
+
+<!ELEMENT icon-config EMPTY>
+<!ATTLIST icon-config
+    imageName CDATA #IMPLIED
+    status CDATA #IMPLIED
+  >
+
+<!ELEMENT list-view (icon-config)*>
+
+
+<!ELEMENT type-config (object-details|list-view)*>
+<!ATTLIST type-config
+    type CDATA #IMPLIED
+  >
+
+<!ELEMENT topo-web-config (type-config)*>

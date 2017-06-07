@@ -1,0 +1,131 @@
+<!DOCTYPE TOOLBARS SYSTEM "maptoolbar.dtd">
+<TOOLBARS>
+<!--  $Id: maptoolbar.xml,v 1.2 2007/07/19 05:50:34 karanmercy Exp $ -->
+     <TOOLBAR-BUTTON
+
+           tooltip ="Select Mode"
+           action_command ="Select Mode"
+
+           enabledimage = "../images/select.png"
+
+           disabledimage ="../images/select.png">
+
+     </TOOLBAR-BUTTON> 
+
+
+	<TOOLBAR-BUTTON
+
+           tooltip ="Zoom Mode"
+           action_command ="Zoom Mode"
+
+           enabledimage = "../images/zoomselect.png"
+
+           disabledimage ="../images/zoomselect.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Zoom In"
+           action_command ="Zoom In"
+
+           enabledimage = "../images/zoomin.png"
+
+           disabledimage ="../images/zoomin.png">
+
+     </TOOLBAR-BUTTON>
+
+
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Zoom Out"
+           action_command ="Zoom Out"
+
+           enabledimage = "../images/zoomout.png"
+
+           disabledimage ="../images/zoomout.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Cut"
+           action_command ="Cut"
+
+           enabledimage = "../images/cut.png"
+
+           disabledimage ="../images/cut.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Copy"
+           action_command ="Copy"
+
+           enabledimage = "../images/copy.png"
+
+           disabledimage ="../images/copy.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Paste"
+           action_command ="Paste"
+
+           enabledimage = "../images/paste.png"
+
+           disabledimage ="../images/paste.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Undo"
+           action_command ="Undo"
+
+           enabledimage = "../images/undo.png"
+
+           disabledimage ="../images/undo.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Group View"
+           action_command ="Group View"
+
+           enabledimage = "../images/group.png"
+
+           disabledimage ="../images/group.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Expand Selected (Or All) Groups"
+           action_command ="Expand Selected (Or All) Groups"
+
+           enabledimage = "../images/expandgroup.png"
+
+           disabledimage ="../images/expandgroup.png">
+
+     </TOOLBAR-BUTTON>
+
+     <TOOLBAR-BUTTON
+
+           tooltip ="Group Selected Symbols"
+           action_command ="Group Selected Symbols"
+
+           enabledimage = "../images/selectgroup.png"
+
+           disabledimage ="../images/selectgroup.png">
+
+     </TOOLBAR-BUTTON>
+	
+<SHOW-ZOOM-SLIDER Show = "true"/>	     
+</TOOLBARS>
+
+

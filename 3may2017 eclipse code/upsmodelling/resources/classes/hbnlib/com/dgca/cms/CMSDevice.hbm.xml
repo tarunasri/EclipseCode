@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<subclass discriminator-value="CMSDevice" extends="com.adventnet.nms.topodb.SnmpNode" name="com.dgca.cms.CMSDevice">
+<join fetch="select" table="CMSDevice">
+<key on-delete="cascade">
+<column name="MOID"/>
+</key>
+<property column="LOCATION" length="25" name="location" type="string"/>
+</join>
+</subclass>
+</hibernate-mapping>

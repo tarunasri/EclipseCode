@@ -1,0 +1,150 @@
+<%-- $Id: trapParserAdmin.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ --%>
+
+<script language="javascript">
+
+function selectedParser()
+{
+    var parserForm = document.TrapParser;
+    var len = parserForm.elements.length;
+    var selectedParsers = '';
+
+    for ( var i=0; i < len; i++)
+    {
+        formElement = parserForm.elements[i];
+        if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+        {
+            if(selectedParsers == '')
+            {
+                selectedParsers = formElement.value;
+            }
+            else
+            {
+                selectedParsers += ',' + formElement.value;
+            }
+        }
+    }
+    return selectedParsers;
+}
+
+function enable()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.trapparser.operations.notselected.error"/>');
+        return false;
+    }
+    document.TrapParser.toPerform.value='enableTheParser';
+    document.TrapParser.submit();
+}
+
+function disable()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.trapparser.operations.notselected.error"/>');
+        return false;
+    }
+    document.TrapParser.toPerform.value="disableTheParser";
+    document.TrapParser.submit();
+}
+
+function deleteParsers()
+{
+    var selectedParsers = selectedParser();
+    if(selectedParsers == '')
+    {
+        alert('<fmt:message key="webclient.fault.trapparser.operations.notselected.error"/>');
+        return false;
+    }
+    var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+    if(con != true)
+    {
+      return;
+    }
+    else
+    {
+      document.TrapParser.toPerform.value="deleteTheParser";
+      document.TrapParser.submit();
+    }
+}
+
+function saveParsers()
+{
+   if(isEmpty(document.TrapParser.fileName.value))
+   {
+	alert('<fmt:message key="webclient.fault.eventparser.saveparser.provide.filename"/>');
+	document.TrapParser.fileName.focus();
+	return;
+   }
+   document.TrapParser.toPerform.value="saveParsersToFile";
+   document.TrapParser.submit();
+}
+
+function submitTheForm()
+{
+    if (isEmpty(document.TrapParserForm.name.value))
+    {
+        alert('<fmt:message key="webclient.fault.trapparser.form.enterusername"/>');
+        document.TrapParserForm.name.focus();
+        return false;
+    }
+
+    if (document.TrapParserForm.type[0].checked)
+    {
+        if (isEmpty(document.TrapParserForm.enterprise.value))
+        {
+            alert('<fmt:message key="webclient.fault.trapparser.form.enterenterprise"/>'); 
+            document.TrapParserForm.enterprise.focus();
+            return false;
+        }
+        if (isEmpty(document.TrapParserForm.GT.value) || !isPositiveInteger(document.TrapParserForm.GT.value))
+        {
+            alert('<fmt:message key="webclient.fault.trapparser.form.entergt"/>'); 
+            document.TrapParserForm.GT.focus();
+            return false;
+        }
+        if (isEmpty(document.TrapParserForm.ST.value))
+        {
+            alert('<fmt:message key="webclient.fault.trapparser.form.enterst"/>');
+            document.TrapParserForm.ST.focus();
+            return false;
+        }
+    }
+    else
+    {
+        if(document.TrapParserForm.trapOid.value=="")
+        {
+            alert('<fmt:message key="webclient.fault.trapparser.form.enteroid"/>');
+            document.TrapParserForm.trapOid.focus();
+            return false;
+        }
+    }
+    var formAction = window.location.href;
+    if (formAction.indexOf("#userProp") != -1 )
+    {
+        var length = document.TrapParserForm.userPropsName.length;
+        for (i = 0; i<length;i++)
+        {
+            if(isEmpty(document.TrapParserForm.userPropsName[i].value))
+            {
+                alert('<fmt:message key="webclient.fault.trapparser.form.userpropname.errormessage"/>');
+                document.TrapParserForm.userPropsName[i].focus();
+                return false;
+            }
+            if(isEmpty(document.TrapParserForm.userPropsValue[i].value))
+            {
+                alert('<fmt:message key="webclient.fault.trapparser.form.userpropvalue.errormessage"/>');
+                document.TrapParserForm.userPropsValue[i].focus();
+                return false;
+            }
+        }
+    }
+    
+    var val = document.TrapParserForm.actionToPerform.value;
+    document.TrapParserForm.toPerform.value=val;
+    document.TrapParserForm.submit();
+}
+
+</script>

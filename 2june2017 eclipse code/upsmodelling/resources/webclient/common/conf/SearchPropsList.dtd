@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: SearchPropsList.dtd,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<!--
+    Document   : SearchPropsList.dtd.dtd
+    Created on : October 10, 2003, 2:50 PM
+    Author     : baskar
+    Description:
+        Purpose of the document follows.
+-->
+
+<!ELEMENT Search-Props ( view*) >
+
+<!ELEMENT view (property*) >
+<!ATTLIST view name CDATA #REQUIRED >
+
+<!ELEMENT property EMPTY >
+<!ATTLIST property key CDATA #REQUIRED >
+<!ATTLIST property type CDATA #REQUIRED >
+<!ATTLIST property inputaction CDATA #IMPLIED >
+
+

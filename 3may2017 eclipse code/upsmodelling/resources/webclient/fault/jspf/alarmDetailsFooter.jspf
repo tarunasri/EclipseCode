@@ -1,0 +1,10 @@
+<%-- $Id: alarmDetailsFooter.jspf,v 1.2 2007/09/14 10:42:51 gnanasekar Exp $ --%>
+
+     </tr>
+      <!--tr class="propertyBg"> 
+    </table></td>
+    </tr>
+  </table-->
+</form>
+</body>
+</html>

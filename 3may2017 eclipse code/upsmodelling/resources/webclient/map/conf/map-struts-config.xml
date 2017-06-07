@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_0.dtd">
+<struts-config>
+
+ <!-- $Id: map-struts-config.xml,v 1.2 2010/10/29 13:47:10 swaminathap Exp $ -->
+
+ <form-beans>
+  <!-- Object-Details  form bean -->
+
+<form-bean name="MapSymbolForm" type="org.apache.struts.validator.DynaValidatorForm">
+<form-property name="name" type="java.lang.String"/>
+<form-property name="objName" type="java.lang.String"/>
+<form-property name="mapName" type="java.lang.String"/>
+<form-property name="ownerName" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="iconName" type="java.lang.String"/>
+<form-property name="menuName" type="java.lang.String"/>
+<form-property name="width" type="java.lang.String"/>
+<form-property name="height" type="java.lang.String"/>
+<form-property name="x" type="java.lang.String"/>
+<form-property name="y" type="java.lang.String"/>
+<form-property name="objType" type="java.lang.String"/>
+<form-property name="WebNMS" type="java.lang.String"/>
+<form-property name="groupName" type="java.lang.String"/>
+<form-property name="parentName" type="java.lang.String"/>
+<form-property name="anchored" type="java.lang.String"/>
+<!-- ManagedObject Properties -->
+<form-property name="type" type="java.lang.String"/>
+<form-property name="status" type="java.lang.String"/>
+<form-property name="managed" type="java.lang.String"/>
+<form-property name="discover" type="java.lang.String"/>
+<!-- MapContainer Configuration-->
+<form-property name="currentTopology" type="java.lang.String"/>
+<form-property name="topology" type="java.lang.String"/>
+<form-property name="containment" type="java.lang.String"/>
+<!-- View Configuration-->
+<form-property name="isMapContainer" type="java.lang.String"/>
+<form-property name="statusImage" type="java.lang.String"/>
+<form-property name="typeImage" type="java.lang.String"/>
+<form-property name="stringStatus" type="java.lang.String"/>
+</form-bean>
+
+<form-bean name="MapPropsForm" type = "org.apache.struts.action.DynaActionForm">
+<form-property name="name" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="imageName" type="java.lang.String"/>
+<form-property name="helpDoc" type="java.lang.String"/>
+<form-property name="currentTopology" type="java.lang.String"/>
+</form-bean>
+
+<form-bean name="searchForm" type="com.adventnet.nms.webclient.map.cv.AddMapForm">
+<form-property name="selectedKeys" type="java.lang.String[]"/>
+ <!--  <form-property name="selectedConditions" type="java.lang.String[]"/> -->
+<form-property name="criteriaValues" type="java.lang.String[]"/>
+<form-property name="logicalCondition" type="java.lang.String" initial="1"/>
+<form-property name="rows" type="java.lang.String" initial="1"/>
+ <!--  CV Related property  -->
+<form-property name="cvName" type="java.lang.String"/>   
+<form-property name="actionToPerform" type="java.lang.String" initial="create"/>
+
+<form-property name="layouts" type="java.util.List"/>
+<form-property name="name" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="imageName" type="java.lang.String"/>
+<form-property name="menuName" type="java.lang.String"/>
+<form-property name="parentMapKey" type="java.lang.String"/>
+<form-property name="helpDoc" type="java.lang.String"/>
+<form-property name="treeIconFileName" type="java.lang.String"/>
+<form-property name="anchored" type="java.lang.String"/>
+<form-property name="currentTopology" type="java.lang.String"/>
+<form-property name="topology" type="java.lang.String"/>  
+<form-property name="reqlayout" type="java.lang.String" initial="nolayout"/>  
+</form-bean>
+
+<form-bean name="AddMapSymbol" type="org.apache.struts.validator.DynaValidatorForm">
+<form-property name="name" type="java.lang.String"/>
+<form-property name="objName" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="status" type="java.lang.String"/>
+<form-property name="iconName" type="java.lang.String"/>
+<form-property name="objType" type="java.lang.String"/>
+
+<form-property name="width" type="java.lang.String"/>
+<form-property name="height" type="java.lang.String"/>
+<form-property name="x" type="java.lang.String"/>
+<form-property name="y" type="java.lang.String"/>
+<form-property name="menuName" type="java.lang.String"/>
+<form-property name="parentName" type="java.lang.String"/>
+
+<form-property name="mapName" type="java.lang.String"/>
+<form-property name="WebNMS" type="java.lang.String"/>
+<form-property name="anchored" type="java.lang.String"/>
+<form-property name="groupName" type="java.lang.String"/>
+<form-property name="needToSave" type="java.lang.String"/>
+</form-bean>
+
+<form-bean name="AddLink" type="org.apache.struts.validator.DynaValidatorForm">
+<form-property name="name" type="java.lang.String"/>
+
+<form-property name="source" type="java.lang.String"/>
+<form-property name="dest" type="java.lang.String"/>
+<form-property name="thickness" type="java.lang.String"/>
+<form-property name="linkType" type="java.lang.String"/>
+
+<form-property name="objName" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="status" type="java.lang.String"/>
+<form-property name="iconName" type="java.lang.String"/>
+<form-property name="objType" type="java.lang.String"/>
+
+<form-property name="width" type="java.lang.String"/>
+<form-property name="height" type="java.lang.String"/>
+<form-property name="x" type="java.lang.String"/>
+<form-property name="y" type="java.lang.String"/>
+<form-property name="menuName" type="java.lang.String"/>
+<form-property name="parentName" type="java.lang.String"/>
+
+<form-property name="mapName" type="java.lang.String"/>
+<form-property name="WebNMS" type="java.lang.String"/>
+<form-property name="anchored" type="java.lang.String"/>
+<form-property name="groupName" type="java.lang.String"/>
+<form-property name="needToSave" type="java.lang.String"/>
+</form-bean>
+
+<form-bean name="AddContainer" type="org.apache.struts.validator.DynaValidatorForm">
+<form-property name="name" type="java.lang.String"/>
+
+<form-property name="topology" type="java.lang.String"/>
+<form-property name="currentTopology" type="java.lang.String"/>
+<form-property name="containment" type="java.lang.String"/>
+
+<form-property name="objName" type="java.lang.String"/>
+<form-property name="label" type="java.lang.String"/>
+<form-property name="status" type="java.lang.String"/>
+<form-property name="iconName" type="java.lang.String"/>
+<form-property name="objType" type="java.lang.String"/>
+
+<form-property name="width" type="java.lang.String"/>
+<form-property name="height" type="java.lang.String"/>
+<form-property name="x" type="java.lang.String"/>
+<form-property name="y" type="java.lang.String"/>
+<form-property name="menuName" type="java.lang.String"/>
+<form-property name="parentName" type="java.lang.String"/>
+
+<form-property name="mapName" type="java.lang.String"/>
+<form-property name="WebNMS" type="java.lang.String"/>
+<form-property name="anchored" type="java.lang.String"/>
+<form-property name="groupName" type="java.lang.String"/>
+<form-property name="needToSave" type="java.lang.String"/>
+</form-bean>
+<!-- GMaps related -->
+
+
+  <form-bean name="GMapForm" type="org.apache.struts.validator.DynaValidatorForm">
+	  <form-property name="name" type="java.lang.String"/>
+	  <form-property name="label" type="java.lang.String"/>
+	  <form-property name="location" type="java.lang.String"/>
+	  <form-property name="zoom" type="java.lang.String"/>
+	  <form-property name="mapType" type="java.lang.String"/>	  
+  </form-bean>
+ 
+
+</form-beans>
+
+
+<global-forwards>
+  <forward name="messagePage" path="/webclient/common/jsp/MessagePage.jsp" contextRelative="true"/>
+  <forward name="reloadobjectdetails" path="/mapSymbolDetails.do" />
+  <forward  name="mapSymbolDetailsPage" path="MapSymbolDetailsDefWithTab" contextRelative = "true"/>
+  <forward name="reloadview" path="/MapView.do" />
+  <forward name="responsePage"  path="responsePageDef"  contextRelative = "true"/>
+  <forward name="exaMessagePage" path="/webclient/common/jsp/MessagePage.jsp" contextRelative="true"/>
+  <forward name="showgmap" path="GMap" contextRelative="true" />
+ <forward name="setGMapKey" path="GMapFormdef" />
+
+</global-forwards>
+
+<action-mappings>
+    
+    <action path="/MapView"
+            type="com.adventnet.nms.webclient.map.view.MapViewAction"
+            scope="request">
+ 		<forward name="MapView" path="/Map.do" />
+        <forward name="NoLayoutMap" path="NoLayoutMapView" />       
+
+    </action>
+
+    <action path="/Map"
+            type="com.adventnet.nms.webclient.map.MapAction">
+      <forward name="MapView" path="MapViewPage" />
+   	</action>
+
+    <action path="/ExampleLayout"
+            type="com.adventnet.nms.webclient.map.ExampleLayoutAction">
+        <forward name="ExampleView" path="/ExampleMap.do" />
+    </action>
+
+    <action path="/ExampleMap"
+            type="com.adventnet.nms.webclient.map.MapAction">
+      <forward name="MapView" path="ExampleMapViewPage" />
+   	</action>
+
+     <action name="searchForm" 
+             path="/MapCVAction"
+             scope="session" 
+             attribute="searchForm"
+             parameter="method" 
+             validate="false"
+             type="com.adventnet.nms.webclient.map.cv.MapCVAction">
+             <forward name="mapPropsView" path="MapPropsPage" contextRelative = "true"/>
+             <forward name="searchView" path="addMapCVDef" contextRelative = "true"/>
+             <forward name="MapView" path="/MapView.do" />
+
+    </action>
+
+    <action path="/AddSymbolPage" 
+    		type="org.apache.struts.actions.ForwardAction"
+         	parameter="addSymbolPage" >
+    </action>
+
+    <action path="/AddSymbolAction" 
+		name="AddMapSymbol" 
+		scope="request" 
+		validate="false" 
+        	type="com.adventnet.nms.webclient.map.cv.AddSymbolAction" >
+        	<forward name="MapView" path="/MapView.do" />
+    </action>
+
+    <action path="/AddLinkPage" 
+    		type="org.apache.struts.actions.ForwardAction"
+          	parameter="addLinkPage" >
+    </action>
+
+    <action path="/AddLinkAction" 
+		name="AddLink" 
+		scope="request" 
+		validate="false" 
+        	type="com.adventnet.nms.webclient.map.cv.AddLinkAction" >
+        	<forward name="MapView" path="/MapView.do"  />
+    </action>
+
+    <action path="/AddContainerPage" 
+    		type="org.apache.struts.actions.ForwardAction"
+          	parameter="addContainerPage" >
+    </action>
+
+    <action path="/AddContainerAction" 
+		name="AddContainer" 
+		scope="request" 
+		validate="true" 
+        	type="com.adventnet.nms.webclient.map.cv.AddContainerAction" >
+        	<forward name="MapView" path="/MapView.do" />
+    </action>
+
+    <action path="/RemoveSymbol" 
+        	type="com.adventnet.nms.webclient.map.cv.RemoveSymbolAction" >
+        	<forward name="MapView" path="/MapView.do" />
+    </action> 
+
+   <action path="/mapSymbolDetails"
+   name="MapSymbolForm"
+   scope="request"
+   type="com.adventnet.nms.webclient.map.details.MapSymbolDetailsAction" 
+   validate="false">
+  <forward name="details" path="MapSymbolDetailsDefWithTab" contextRelative = "true"/> 
+  </action>
+
+  <action name="MapSymbolForm" path="/mapSymbolDetailsHandler"
+   scope="request"
+   type="com.adventnet.nms.webclient.map.details.MapSymbolDetailsHandlingAction" 
+   parameter="perform"
+   validate="true"
+   input="mapSymbolDetailsPage">
+    <forward name="details" path="MapSymbolDetailsDefWithTab" contextRelative = "true"/> 
+    </action>
+
+        <action 
+            path="/manageUnmanage"
+            type="com.adventnet.nms.webclient.topo.actions.ManageUnmanageAction"
+            scope="request"
+            validate="false">
+        </action>
+
+        <action 
+            path="/startStopDiscovery"
+            type="com.adventnet.nms.webclient.topo.actions.StartStopDiscoveryAction"
+            scope="request"
+            validate="false">
+        </action>
+
+        <action 
+            path="/deleteObject"
+            type="com.adventnet.nms.webclient.topo.actions.DeleteObjectAction"
+            scope="request"
+            validate="false">
+    </action>
+
+    <!-- GMap related !-->
+
+    
+
+    <action path="/ShowGMapKeyForm"
+	    type="org.apache.struts.actions.ForwardAction"
+	    parameter="GMapFormdef">
+    </action>
+
+    <action
+	    path="/GMapAction"
+	    type="com.adventnet.nms.webclient.map.GMapAction"
+	    parameter="parameter"
+	    name="GMapForm"
+	    scope="request"
+	    validate="false">
+	    <forward name="showgmapform" path="showGoogleMapForm" contextRelative = "true"/>
+	    <forward name="success" path="/map/MapView.do" contextRelative="true"/>
+	    <forward name="failure" path="/map/MapView.do" contextRelative="true"/>
+    </action>
+
+</action-mappings>
+
+<controller inputForward="true" />
+
+<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+  <set-property property="pathnames" value="/webclient/map/conf/map-validator-rules.xml,/webclient/map/conf/map-validation.xml"/>
+ </plug-in>
+
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" 
+	                 value="/webclient/map/conf/map-tiles-defs.xml" />
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+
+</struts-config>

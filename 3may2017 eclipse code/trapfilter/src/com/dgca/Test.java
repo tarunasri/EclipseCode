@@ -1,0 +1,32 @@
+package com.dgca;
+
+import java.util.StringTokenizer;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String input1 = ".iso.org.dod.internet.private.enterprises.9.9.712.1.1.2.1.10.0: Rogue AP '00: f4: 6f: 4c: 5a: 7c' with SSID 'AndroidAP' and channel number '1' is detected by AP 'KCMCT67-KLMGMTAP01' Radio type '802.11ac' with RSSI '-97' and SNR '-1'. : ";
+		String input2 = ".1.3.6.1.4.1.9.9.311.1.1.2.1.16.0: dfhfhkkkmkioioioioASMMOImoASMOifdimmgsmnnnn:";
+
+		if (input1.contains(".1.3.6.1.4.1.9.9.311.1.1.2.1.16.0")) {
+			StringTokenizer stTokenizer = new StringTokenizer(input1, ":");
+			if (stTokenizer.hasMoreTokens()) {
+				String s = stTokenizer.nextToken();// it will
+				// print the
+				// first
+				// part
+				// before :
+				String description = stTokenizer.nextToken();// it will
+				// print
+				// after
+				// :
+				System.out.println("Description of Cisco PI:" + description);
+
+			}
+
+		}
+	}
+
+}

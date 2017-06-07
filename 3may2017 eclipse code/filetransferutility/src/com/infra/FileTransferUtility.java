@@ -1,0 +1,27 @@
+package com.infra;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbFile;
+import jcifs.smb.SmbFileOutputStream;
+
+public class FileTransferUtility {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+
+		String user = "KCMC";
+	    String pass ="KCMC";
+
+	    String sharedFolder="\\KCMC\test";
+	    String path="smb://10.192.252.27/"+sharedFolder+"/test.txt";
+	    NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication("",user, pass);
+	    SmbFile smbFile = new SmbFile(path,auth);
+	    SmbFileOutputStream smbfos = new SmbFileOutputStream(smbFile);
+	    smbfos.write("testing....and writing to a file".getBytes());
+	    System.out.println("completed ...nice !");
+	}
+
+}

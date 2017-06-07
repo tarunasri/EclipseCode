@@ -1,0 +1,20 @@
+<%-- $Id: gridLayout.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+        <c:set var="colIndex" value="0"/>
+        <c:set var="rowIndex" value="0"/>
+       <c:forEach var="props" items="${objectsInView}" varStatus="status" >
+        <c:set var="total" value="${status.count}"/>
+         <c:choose>
+           <c:when test='${colIndex <=5}'>
+           <c:if test='${colIndex ==0}'>
+          <TR>
+           </c:if>
+             <c:set var="colIndex" value='${colIndex+1}'/>
+           <%@include file="/webclient/map/jspf/mapSymbolRenderer.jspf"%>
+           <c:if test='${colIndex ==5}'>
+             <c:set var="colIndex" value="0"/>
+             <c:set var="rowIndex" value='${rowIndex+1}'/>
+             </TR>
+           </c:if>
+           </c:when>
+         </c:choose>
+        </c:forEach>

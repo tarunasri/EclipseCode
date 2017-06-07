@@ -1,0 +1,525 @@
+/* $Id: webnms.css,v 1.2 2010/10/29 13:46:58 swaminathap Exp $ */
+body, table, a, em, input, select, textarea, form, p, h1, h2{
+font-family:Arial, Helvetica, sans-serif;color:#000; font-size:12px; font-weight:normal;}
+a:link, a:hover, a:visited, .topLinks a:active{font-size:100%;color:#003eb1;outline:none;text-decoration:none;}
+a:visited {text-decoration:none;}
+a:hover {text-decoration:underline;color:#000}
+img a, a img { border:none;}
+em { font-style:normal; font-weight:normal;}
+form, fieldset { border:none; margin:0px; padding:0px;}
+select{height:17px;font-size:11px;line-height:11px;}
+input{outline:none;}
+textarea, select{border:1px solid #7d7d7d !important}
+hr {height: 1px;color: #9999CC;float: none;width: 100%;}
+th{font-weight: bold;background:#C5D5F7;text-align:left;color:#10286F;padding:3px;border-bottom:1px solid #7EA0E9;}
+body{margin:0px;padding:0px;}
+.cursorPointer{cursor:pointer;}
+.boldTxt{font-weight:bold;}
+.yellowBg{background:#FFF9D8;padding:2px 15px 2px 15px;}
+.greenTxt{color:#0F8C1F;}
+small{font-size:10px;}
+.norTxt small{font-size:10px;}
+.whiteBg{background:#FFF;}
+.mainFrame{padding:2px 17px 7px 17px;width:99%;height:500px;}
+.leftSide{background:#fff url(../../images/OliveGreen/leftSideBg.jpg) no-repeat top;padding:5px;height:500px;width:200px}
+.leftWidth{width:200px !important;height:1px;line-height:1px;}
+.pageHeaderStr{border-bottom:1px solid #adc9be;height:20px;margin-bottom:10px;}
+.pageHeaderStr h1{color:#2e7c61;font-size:15px !important;font-weight:bold;margin:0px;padding:0px;}
+.generalTitle{font-weight:bold;color:#2e7c61;background:#FFF;padding-left:5px;padding-right:5px;font-size:12px;}
+.alarmSummaryFrame{width:190px;height:130px;background:none !important;}
+.popuptl {background: transparent url(../../images/OliveGreen/poptl.png) no-repeat 0 0;width:13px;height:13px;}
+.popuptmain {background: transparent url(../../images/OliveGreen/poptmain.png) repeat-x 0 0;height:13px;}
+.popuptr {background: transparent url(../../images/OliveGreen/poptr.png) no-repeat 0 0;width:13px;height:13px;}
+.popuplmain{background: transparent url(../../images/OliveGreen/poplmain.png) repeat-y ;background-position:left;width:13px;}
+.popuprmain {background: transparent url(../../images/OliveGreen/poprmain.png) repeat-y top right;width:13px;}
+.popupbl {background: transparent url(../../images/OliveGreen/popbl.png) no-repeat 0 0;width:13px;height:13px;}
+.popupbmain{background: transparent url(../../images/OliveGreen/popbmain.png) repeat-x 0 0;height:13px;}
+.popupbr {background: transparent url(../../images/OliveGreen/popbr.png) no-repeat 0 0;width:13px;height:13px;}
+.generalTable td{padding-left:5px;padding-right:10px;}
+.generalTBHeader{font-weight:bold;background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -156px;height:20px;}
+.generalTBHeader td{color:#0F6395;}
+.generalTBPadding{padding-left:3px;padding-right:3px;padding-bottom:3px;}
+.generalOddRow{background:#f7fdf3;height:20px;}
+.generalOddRow td{border-bottom:1px solid #e9ebe5;}
+.generalOddRow td table td{border-bottom:0px solid #E3EAEC;}
+.generalEvenRow{background:#FFF;height:20px;}
+.generalEvenRow td{border-bottom:1px solid #e9ebe5;}
+.generalEvenRow td table td{border-bottom:0px solid #e9ebe5;}
+/*- Tabs Menu--------------------------- */
+#tabsJ {margin: 0;padding: 0;padding-left: 0px;list-style: none;font-weight: bold;text-align:center;}
+#tabsJ ul {margin:0px 0px 0px 0px;padding:0px 0px 0px 0px;list-style:none;width:600px !important;border:0px solid;}
+#tabsJ li {float:left;white-space:nowrap;}
+#tabsJ a {display:block;float:left;background:url(../../images/OliveGreen/Unsel_left.gif) no-repeat left top;margin:0px 0px 0px 3px;padding:0px 0px 0px 4px;text-decoration:none;font-weight:bold;outline:none;}
+#tabsJ a span {background:url(../../images/OliveGreen/Unsel_right.gif) no-repeat right top;display:block;color:#fff;padding:5px 8px 6px 5px;text-decoration: none;text-align:center;}
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#tabsJ a span {float:none;}
+/* End IE5-Mac hack */
+#tabsJ a:hover span {color:#eeff79;}
+#tabsJ #current a {display:block;background:url(../../images/OliveGreen/sel_left.gif) no-repeat left top;margin:0px 0px 0px 3px;padding:0px 0px 0px 10px;text-decoration:none;font-weight:bold;}
+#tabsJ #current a span {background:url(../../images/OliveGreen/sel_right.gif) no-repeat right top;display:block;color:#000;padding:5px 7px 6px 0px;text-decoration: none;text-align:center;}
+.tabParent{padding-left:20px;}
+.strip{background:#deeee3;height:8px;border-bottom:1px solid #deeee3;}
+.headerBg1{background:url(../../images/OliveGreen/header_bg.gif) repeat-x;height:76px;color:#fff;}
+.headerBg1 td{color:#fff;}
+.toplinks{height:42px;}
+.toplinks, .headerBg1 a:active, .headerBg1 a:link, .headerBg1 a:visited{color:#fff;text-decoration:none;}
+.headerBg1 a:hover{color:#eeff79;}
+.headerLogo{background: url(../../images/OliveGreen/logo.gif) no-repeat bottom;width:162px;height:30px;}
+.headerTop{background:url(../../images/OliveGreen/header-top-bg.gif) no-repeat left;margin-bottom:8px;height:28px;}
+.searchBut1{background: url(../../images/OliveGreen/searchBut1.gif) no-repeat;width:25px;height:19px;margin:0px;padding:0px;border:0px solid;}
+.searchBox1{width:100px;height:19px;margin:0px;padding:0px 0px 0px 3px;line-height:18px;background:#fff url(../../images/OliveGreen/searchBoxLeftBg.gif) no-repeat left;border:0px solid #fff;;}
+/*- Tabs Menu end-------------------------- */
+.curve2LeftBot, .areaGraph, .lineGraph, .generalCurveLeftTop, .generalCurveRightTop, .generalCurveRightBot, .generalCurveLeftBot, .curve1LeftTop, .curve1RightTop, .curve1RightBot, .curve1LeftBot, .norTabLeft1, .norTabRight1, .curve2LeftTop, .curve2RightTop, .curve2RightBot, .greenStatus, .selTabLeft1, .selTabRight1, .googleIcon, .addIcon, .helpIcon, .deleteIcon, .editIcon, .searchIcon, .popClose1, .successIcon, .failureIcon, .inventoryBg1, .graphCurveRightTop, .graphCurveRightBot, .navLeft{background: url(../../images/OliveGreen/general-images.gif) no-repeat}
+.curve2LeftBot{background-position:-29px -3px;width:4px;height:4px;}
+.areaGraph{background-position: -3px -58px;width:16px;height:16px;}
+.lineGraph{background-position: -28px -58px;width:16px;height:16px;}
+.generalCurveLeftTop{background-position: -22px -88px;width:5px;}
+.generalCurveRightTop{background-position: -32px -88px;width:5px;}
+.generalCurveRightBot{background-position: -12px -91px;width:5px;height:5px;}
+.generalCurveLeftBot{background-position: -2px -91px;width:5px;height:5px;}
+.curve1LeftTop{background-position: -115px -3px;width:4px;height:4px;}
+.curve1RightTop{background-position:-127px -3px;width:4px;height:4px;}
+.curve1RightBot{background-position:-138px -3px;width:4px;height:4px;}
+.curve1LeftBot{background-position:-150px -3px;width:4px;height:4px;}
+.norTabLeft1{background-position:-87px -3px;width:5px;}
+.norTabRight1{background-position:-102px -3px;width:5px;}
+.curve2LeftTop{background-position:-4px -3px;width:6px;}
+.curve2RightTop{background-position:-15px -3px;width:6px;}
+.curve2RightBot{background-position:-40px -3px;width:4px;height:4px;}
+.greenStatus{background-position:-77px -59px;width:20px;height:20px;}
+.selTabLeft1{background-position:-54px -3px;width:5px;}
+.selTabRight1{background-position:-70px -3px;width:5px;}
+.inventoryBg1{background-position:-376px -5px;width:261px;height:174px;}
+.graphCurveRightTop{background-position:-49px -121px;width:4px;height:4px;}
+.graphCurveRightBot{background-position:-65px -121px;width:4px;height:4px;}
+.navLeft{background-position:-2px -121px;width:9px;height:22px;}
+.addIcon{background-position:-160px -91px;width:10px;height:10px;}
+.helpIcon{background-position:-141px -91px;width:12px;height:12px;}
+.deleteIcon{background-position:-198px -91px;width:8px;height:8px;cursor:pointer;}
+.editIcon{background-position:-178px -91px;width:11px;height:11px;cursor:pointer}
+.searchIcon{background-position:-214px -91px;width:14px;height:14px;}
+.popClose1{background-position:-237px -91px;width:13px;height:12px;cursor:pointer;}
+.successIcon{background-position:-260px -91px;width:13px;height:13px;}
+.failureIcon{background-position:-283px -91px;width:13px;height:13px;}
+.googleIcon{background-position:-304px -91px;width:11px;height:11px;}
+.generalCurveTop, .generalCurveTopLeftBg, .generalCurveBottom, .selTabCenter1, .curve1Top, .curve1Bottom, .norTabCenter1, .norTabBotline{background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x}
+.generalCurveTop{background-position: 0 -135px;height:17px;color:#FFF;}
+.generalCurveTopLeftBg{background-position: 0 -263px;font-weight:bold;color:#FFF;padding-left:7px;}
+.generalCurveBottom{background-position:0 -140px;}
+.selTabCenter1{background-position: 0 -21px;height:32px;cursor:pointer;padding-left:5px;padding-right:5px;text-align:center;}
+.curve1Top{background-position: 0 0px;}
+.curve1Bottom{background-position: 0 -7px;}
+.norTabCenter1{background-position: 0 -54px;height:32px;cursor:pointer;padding-left:5px;padding-right:5px;text-align:center;}
+.norTabBotline{background-position:0 -92px;color:#1713D2;}
+.curve2Bottom2{border-bottom:2px solid #adc9be;}
+.generalCurveLeft{background: url(../../images/OliveGreen/vertical-bg.gif) repeat-y -23px 0px;}
+.generalCurveRight{background: url(../../images/OliveGreen/vertical-bg.gif) repeat-y -35px 0px;}
+.curve1Left{background: url(../../images/OliveGreen/vertical-bg.gif) repeat-y 0 0px;}
+.curve1Right{background: url(../../images/OliveGreen/vertical-bg.gif) repeat-y -11px 0px;}
+.norTabBotline a{color:#1713D2;text-decoration:none;}
+.norTabBotline a:hover{color:#7504D4;}
+.curve2Bottom{border-bottom:2px solid #adc9be;}
+.curve2Left{border-left:2px solid #adc9be;}
+.curve2Right{border-right:2px solid #adc9be;}
+.grayBox1{padding:8px;background:#F8F8F8;border:1px solid #DFDFDF;}
+.tableBdr1{border:1px solid #adc9be;padding:4px;}
+
+.selRow{background:#FFFEE3;padding:4px 10px 4px 10px;}
+.selRowDetails{background:#FFFEE3;padding:10px 10px 4px 10px;border-top:1px solid #ECEBC6;border-bottom:1px solid #ECEBC6;}
+.newEvenRow{background:#ECECEC;padding:4px 10px 4px 10px;}
+.newOddRow{background:#FFF;padding:4px 10px 4px 10px;}
+.blueBand2{background:#A6D0EF;font-weight:bold;}
+.buttonNew{BORDER: #5388DE 1px solid;FONT-WEIGHT: bold;BACKGROUND: #e9f4ec;CURSOR: hand; COLOR: #01155A;HEIGHT: 20px; TEXT-DECORATION: none;cursor: hand;cursor: pointer;}
+/* Logs-Configurator End*/
+.leftMenuSelected{background:#D7F0FF;}
+.headerInclude td{padding-left:3px;padding-right:3px;}
+.headerInclude a{color:#6633FF;}
+.alarmLeftBdrTop{border-top:1px solid #adc9be;background:#FFF;}
+.alarmLeftBdrRight{border-right:1px solid #adc9be;background:#FFF;}
+.alarmLeftBdrBottom{border-bottom:1px solid #adc9be;background:#FFF;}
+.alarmLeftBdrLeft{border-left:1px solid #adc9be;background:#FFF;}
+.navigation2Bg{background:#f2f5fd;}
+.navhide_show_bg{background-image:url(../../images/OliveGreen/Nav_hide_show_bg.gif);background-repeat:repeat-y;width:7px;}
+.shownav{background-image:url(../../images/OliveGreen/hide.gif);padding-top:120px;width:8px;background-repeat:no-repeat;}
+.hidenav{background-image:url(../../images/OliveGreen/show.gif);padding-top:120px;width:8px;background-position:0px 0px;background-repeat:no-repeat;}
+.msgboard {background-color:#f7f5a0;padding:0px;border-top:0px solid #ffeb00;line-height:15px;}
+.tabLeft{width:9px;height:22px;}
+/* Tabs*/
+.tabLeftBg{background:url(../../images/OliveGreen/grpahltnor.gif) no-repeat right;padding-right:10px;padding-left:10px;}
+.tabLeftBgSel{height:21px;border-left:1px solid #adc9be;background-image: url(../../images/OliveGreen/tb_selected_rightbox.gif);background-repeat: no-repeat;background-attachment: scroll;background-position: right top;border-left:1px solid #adc9be;vertical-align:middle;color:#000000;padding-right:10px;padding-left:10px;}
+.tabLeftBgSel a{font-weight:bold;}
+.tabLeftBgnotSel {vertical-align:middle;background-image: url(../../images/OliveGreen/tb_unselected_rightbox.gif);background-repeat: no-repeat;background-position: right top;border-left:1px solid #9EC2F2;color:#00CC00;padding-right:10px;padding-left:10px;}
+.oddRow{background:#f7fdf3;}
+.TreeClass{background:url(/webclient/common/images/leftSideBg.jpg);background-repeat:no-repeat;}
+.AccPanelClass{background-color: #EFF6F3;}
+.MODisplayNameClassCol1{border-bottom:1px solid #adc9be;font-weight:bold;color:0a4685;}
+.tabselected{BACKGROUND-POSITION: left center;BACKGROUND-IMAGE: url(/webclient/common/images/collaps.gif);background-repeat:no-repeat;background-color:#9ec2f2;padding:3px;}
+.tabnotselected{cursor:pointer;BACKGROUND-POSITION: left center;BACKGROUND-IMAGE: url(/webclient/common/images/expand.gif);background-repeat:no-repeat;border-top:1px solid #f5fafe;background-color:#dae8f5;padding:3px;}
+.rightcenter{vertical-align:middle;background-image: url(../../images/OliveGreen/right_shadow.gif);background-repeat:repeat-y;width:6px;}
+.righttop_curve{vertical-align:top;background-image: url(../../images/OliveGreen/top_right_shadow.gif);background-repeat:no-repeat;}
+.bottomleft_curve{vertical-align:top;background-image: url(../../images/OliveGreen/left_bottom_shadow.gif);background-repeat:no-repeat;}
+.bottomcenter{vertical-align:middle;background-image: url(../../images/OliveGreen/bottom_shadow.gif);background-repeat:repeat-x;height:7px;}
+.bottomright_curve{vertical-align:middle;background-image: url(../../images/OliveGreen/bottom_right_shadow.gif);background-repeat:no-repeat;}
+.freezeLayer{width: 100%;position: absolute;top: 0px;left: 0px;background-color: #ffffff;background-image: none;background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;opacity: 0.65;z-index: 20;}
+.listIcon{background-position:5px 5px;background-image: url(/webclient/common/images/arrow.gif);padding:3px;color: #000000;text-indent: 5pt;background-repeat: no-repeat;text-align: left;text-decoration: none;}
+.bulletedpoint {BACKGROUND-POSITION: left center;BACKGROUND-IMAGE: url(/webclient/common/images/bulletin.gif); COLOR: #000000;TEXT-INDENT: 15pt; BACKGROUND-REPEAT: no-repeat;TEXT-ALIGN: left; TEXT-DECORATION: none}
+.rightCloumnMarg{padding:2px 2px 7px 17px;}
+/* Login Start Here*/
+.loginBg1{background:url(../../images/loginbg1.gif) repeat-x;height:338px;}
+.loginBg2{background:url(../../images/loginbg2.gif) no-repeat right;height:338px;}
+.loginBoxBg{background:url(../../images/loginboxbg.gif) repeat-x;}
+.loginTex{color:#FFF;line-height:18px;}
+.loginTex2{color:#FFF;}
+.loginSmallTxt{}
+.loginSmallTxt a{color:#0066FF;text-decoration:underline;}
+.loginSmallTxt a:hover{color:#000;}
+.greenBoldTxt{font-weight:bold;color:#3C8407;}
+.redBoldTxt{font-weight:bold;color:#B71F24;}
+.loginBut{background:url(../../images/loginbutbg.gif) repeat-x bottom;font-weight:bold;border:1px solid #044AA0;height:22px;width:auto;overflow:hidden;padding-left:6px;padding-right:6px;}
+.whiteBoldTxt{font-weight:bold;color:#FFF;}
+/* Login End*/
+.graphBg{background:url(../../images/OliveGreen/graphbg.gif) repeat-x bottom;height:166px;padding-left:5px;padding-right:5px;padding-bottom:5px;}
+.graphCurveLeft{background: url(../../images/OliveGreen/grpahltline.gif) repeat-y right;}
+.navLeftBg{background:url(../../images/OliveGreen/grpahltnor.gif) no-repeat right;padding-right:10px;padding-left:10px;}
+.navLeftBgSel a{font-weight:bold;}
+.alarmsRed, .alarmsOrange, .alarmsYellow, .alarmsCyan, .alarmsGreen{text-align:center;border-right:1px solid #FFF;border-bottom:1px solid #FFF;}
+.alarmsRed{background:#FF6461;}
+.alarmsOrange{background:#FFDC61;}
+.alarmsYellow{background:#FEFF5F;}
+.alarmsCyan{background:#61FEFF;}
+.alarmsGreen{background:#80FE7F;}
+.homeMenuBg{background:#B7DDF3;border-top:1px solid #FFF;height:132px;padding-top:5px;padding-bottom:5px;}
+#homeMenuBg ul{margin:0px 0px 0px 3px;padding:0px 0px 0px 0px;list-style:outside ;list-style:url(../../images/OliveGreen/dot1.gif);}
+#homeMenuBg li{margin:0px 0px 0px 0px;padding:0px 0px 0px 0px;line-height:17px;}
+#homeMenuBg a{color:#000;text-decoration:none;}
+#homeMenuBg a:hover{text-decoration:underline;}
+.adminDiv{float:left;width:190px;}
+.messageStyle{background:#FFFDD0;border-top:2px solid #adc9be;border-bottom:2px solid #adc9be;}
+.logViewerDiv{overflow:auto;height:470px;}
+.logViewerNo{background:#E0DEEB;border-bottom:1px solid #C5C2D3;border-right:1px solid #C5C2D3;border-top:1px solid #FFF;width:35px;}
+.logViewerSelectBox{font-weight:bold;}
+.logViewerHLine{border-bottom:1px solid #adc9be;}
+.tabType1SelBg{background:#FFF;border-top:1px solid #adc9be;padding-left:7px;padding-right:7px;}
+.greyboxStyle1{background:#f5f3f4;border:1px solid #e0e0e0;}
+.blueLink a:link,.blueLink a:visited,.blueLink a:active, .blueLink a:hover{/*font-size:11px;*/font-weight:bold;color:#005ebb;text-decoration:underline;outline:none;} 
+.blueLink a:hover{color:#7044e1;}
+.popupGBg1{background:#fff;}
+.rowSeparator td{background:url(../../images/dotline.gif) repeat-x bottom;padding:5px;}
+.tabType1NorBg{	background:url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -343px;padding-left:7px;padding-right:7px;}
+.selNode{background:#eaf0ee;}
+.graphCurveTop{ background:#FFF	url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -186px;}
+.graphCurveBottom{background:#FFF	url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -183px;}
+.navLeftBgSel, .logViewerHeaderBg, .homeMenuNav{background:url(../../images/OliveGreen/horizontal-bg.gif) repeat-x}
+.navLeftBgSel{background-position:0 -193px;border-right:3px solid #FFF;padding-right:10px;padding-left:10px;}
+.logViewerHeaderBg{background-position:0 -303px;height:32px;border-bottom:1px solid #C5C2D3;}
+.homeMenuNav{background-position:0 -228px;}
+.graphCurveRight{background:#FFF url(../../images/OliveGreen/vertical-bg.gif) repeat-y -44px 0px;}
+.tableBdr2{border:1px solid #adc9be;}
+.tableBdr3{border:3px solid #adc9be;}
+.tableBdr4{border:2px solid #adc9be;}
+.popBdr1{border:3px solid #676767;}
+.generalHover td{background:#ffffe1;height:20px;border-bottom:1px solid #E3EAEC; cursor:default;}
+.vSeparator1{border-right:3px solid #adc9be;}
+.vSeparator2{border-right:2px solid #adc9be;}
+.hSeparator1{border-bottom:2px solid #adc9be !important;}
+.hSeparator2{border-top:2px solid #adc9be !important;}
+.hRule1{border-bottom:1px solid #accae3;}
+.tabNavCurrent2{border:2px solid #adc9be !important;border-right:0px solid #adc9be !important;}
+.tBHeaderStyle2{background:#c6d5e5;}
+.tabNav, .tabNav2, .tabNavHover, .tabNavHover2, .tabNavCurrent2{color:#0d33d4;text-decoration: none;padding:3px 0px 3px 7px;border-bottom:2px solid #fff;border-top:2px solid #fff;cursor:pointer;}
+.tabNavHover, .tabNavHover2{background:#eff5f9;border-bottom:2px solid #d4e1ea;border-top:2px solid #d4e1ea;}
+.tabNavCurrent, .tabNavCurrent2{text-decoration: none;padding:3px 0px 3px 7px;border-bottom:2px solid #c2d2dd;border-top:2px solid #c2d2dd;font-weight:bold;background:#e8eff4;color:#000;}
+.tabNavCurrent2{z-index:10; position:relative; left:4px;_left:0px;background:#fff;}
+.pointer{cursor:pointer;}
+a.blueLink:link, a.blueLink:visited, a.blueLink:active, a.blueLink:hover{color:#6633ff;}
+.suggesDiv{padding:3px;background:#fff;z-index:100;position:absolute;border-left:1px solid #3872C4;border-top:1px solid #3872C4;border-right:2px solid #000;border-bottom:2px solid #000;}
+.menuDivider{border-bottom:1px solid #e9eff3;}
+.menuHoverBg{border-bottom:1px solid #e9eff3;background:#e2efe0;cursor:default;}
+.popFrame{border:none;margin:0px auto;z-index:1;position:absolute;}
+/*satatus*/
+.error, .notice, .success{padding: .8em; margin-bottom: 1em; border: 2px solid #ddd;}
+.error{background: #FBE3E4 !important; color: #8a1f11 !important; border-color: #FBC2C4 !important; }
+.notice{background: #FFF6BF !important; color: #514721 !important; border-color: #FFD324 !important;}
+.success{background: #E6EFC2 !important; color: #264409 !important; border-color: #C6D880 !important;}
+.error a{color: #8a1f11 !important;}
+.notice a{color: #514721 !important;}
+.success a{color: #264409 !important;}
+.brownTxt{color:#9f5e00;}
+.inputFocus, .inputFocusText{background:#FFF8B0;}
+.txtbox, .dateBox, .inputFocus, .inputFocusText{border:1px solid #7992b8;}
+.disabledBg{border:1px solid #7992b8;background:#ebebe4;cursor:default;}
+.searchTbInput{background:#fdffd7;border-bottom:1px solid #8a8a8a;padding:3px 0px 3px 0px;}
+.generalTBHeaderNewSub{background:#e6edf4;}
+.generalTBHeaderNewSub td{border-bottom:1px solid #b0bfc9;}
+.editHeader{font-weight:bold;border-bottom:1px solid #efefef;padding-top:3px;padding-bottom:3px;color:#c4c4c4;background:#FFF;}
+.editFooter{background:#f5f5f5;}
+.editInputBdr{border:1px solid #c4c4c4;height:15px;width:135px;}
+.configParams{background:#FFF3C7;color:#d74500;border:1px dashed #B2AD9A;height:60px;text-align:center;}
+.menuDiv1{background:#FFF;border-left:1px solid #adc9be;border-top:1px solid #adc9be;border-right:2px solid #000;border-bottom:2px solid #000;position:absolute;z-index:100;}	 
+.groupItem .dgeneralTBHeader{font-weight:normal;}
+.groupItem .dgeneralTBHeader{background:#e6e6e6 !important;border-bottom:1px solid #e8eef3}
+.dgeneralTBHeader td{padding:3px;color:#05507f;}
+.dgeneralTBHeader{background:#f1f1f1;font-weight:bold;color:#05507f;}
+/*css jquery drag*/
+.groupWrapper{float: left;min-height: 500px;border:0px solid #cfcfcf;border-collapse:collapse;padding-right:0px;}
+div.groupWrapper{_height: 500px;overflow:visible;background:none;border:0px solid grey;}
+.colomnSpliter{float: left;}
+em.colomnSpliter{display:inline;height:18px;vertical-align:middle;width:10px;}
+.serializer{clear: both;}
+.groupItem{margin-bottom: 13px;border:1px solid #c2d8cf;border-collapse:collapse;background:#fff;}
+.groupItem .itemContent{padding:0px;_width:100%;margin:0px;overflow:visible;overflow-x:hidden;overflow-y:hidden;_padding-bottom:15px;}
+.groupItem .itemHeaderBg{background:url(/webclient/common/images/OliveGreen/table_header.gif) repeat-x bottom;color:#05507f;cursor:move;height:15px;padding: 4px 0px 4px 2px;}
+.groupItem .itemHeader{text-align:left;color: #05507f;cursor: move;font-weight: bold;float:left;width:60%;}
+.groupItem .itemHeader1{float:right;white-space:nowrap;cursor:pointer;text-align:right; padding-right:5px;}
+.sortHelper{position: absolute;border: 1px dashed #ff0c00;border-collapse:collapse;background:#fffef2;display:block;filter:alpha(opacity=70);-moz-opacity:0.7;opacity:0.7;width: 100%;left: 0px;top: 0px;}
+.Arrow {height:17px;padding:10px;cursor: pointer;background-color:#FF3333;background-image: url(/webclient/common/images/pulldown_arrow.gif);background-repeat: repeat-x;width: 17px;}
+.dropdownnTxt{width:90;text-align: center;color:#000;border:1px solid #adc9be;padding:0px; display:block;cursor:pointer;background:url(/webclient/common/images/OliveGreen/horizontal-bg.gif) 0px -459px;}
+.btmBdr { border-bottom: 1px solid #EAEAEA; }
+.selectedRow td{font-weight: bold;color: #000;text-decoration: none;background:#FFF7E5;height: 26px;border-top: 1px solid #FFE8B4;border-bottom: 1px solid #FFE8B4;}
+/*calender start*/
+.calendar {	position: relative;	display: none;	color: #000;	cursor: default;	background: #c8d0d4;}
+.calendar table {border-top: 1px solid #A9C3F6;	border-right: 1px solid #fff;	border-bottom: 1px solid #fff;	border-left: 1px solid #A9C3F6;	color: #000;	cursor: default;	background: #FFFFFF;}
+/* Header part -- contains navigation buttons and day names. */
+.calendar .button { /* "<<", "<", ">", ">>" buttons have this class */	text-align: center;	padding: 1px;border-top: 1px solid #fff;	border-right: 1px solid #000;	border-bottom: 1px solid #000;	border-left: 1px solid #fff;}
+.calendar .nav {background: #2554A6;/*  background: transparent url(menuarrow.gif) no-repeat 100% 100%;*/}
+.calendar thead .title { /* This holds the current "month, year" */	font-weight: bold;	padding: 1px;border: 1px solid #000;	background: #5881D9;color: #fff;text-align: center;}
+.calendar thead .headrow { /* Row <TR> containing navigation buttons */}
+.calendar thead .daynames { /* Row <TR> containing the day names */}
+.calendar thead .name {  /* Cells <TD> containing the day names */	border-bottom: 1px solid #000;	padding: 2px;	text-align: center;	background: #e8f0f4;}
+.calendar thead .weekend {  /* How a weekend day name shows in header */color: #f00;}
+.calendar thead .hilite { /* How do the buttons in header appear when hover */border-top: 1px solid #fff;	border-right: 1px solid #000;	border-bottom: 1px solid #000;	border-left: 1px solid #fff;padding: 1px;background-color: #CEDCFA;}
+.calendar thead .active { /* Active (pressed) buttons in header */padding: 1px;border-top: 1px solid #000;	border-right: 1px solid #fff;border-bottom: 1px solid #fff;	border-left: 1px solid #000;background-color: #b8c0c4;}
+/* The body part -- contains all the days in month. */
+.calendar tbody .day {  /* Cells <TD> containing month days dates */width: 19px;text-align: right;padding: 2px 4px 2px 2px;}
+.calendar tbody .day.othermonth {color: #aaa;}
+.calendar tbody .day.othermonth.oweekend {color: #faa;}
+.calendar table .wn {padding: 2px 3px 2px 2px;border-right: 1px solid #000;background: #ADC7F3;}
+.calendar tbody .rowhilite td {	background: #CBD9FA;}
+.calendar tbody .rowhilite td.wn {background: #DCE6FC;}
+.calendar tbody td.hilite { /* Hovered cells <TD> */padding: 1px 3px 1px 1px;	border: 1px solid;	border-color: #fff #000 #000 #fff;}
+.calendar tbody td.active { /* Active (pressed) cells <TD> */padding: 2px 2px 0px 2px;	border: 1px solid;	border-color: #000 #fff #fff #000;}
+.calendar tbody td.selected {  /* Cell showing selected date */	font-weight: bold;	padding: 2px 2px 0px 2px;	border: 1px solid;	border-color: #000 #fff #fff #000;	background: #CEDCFA;}
+.calendar tbody td.weekend { /* Cells showing weekend days */color: #f00;}
+.calendar tbody td.today { /* Cell showing today date */font-weight: bold;	color: #00f;}
+.calendar tbody .disabled { color: #999; }
+.calendar tbody .emptycell { /* Empty cells (the best is to hide them) */visibility: hidden;}
+.calendar tbody .emptyrow { /* Empty row (some months need less than 6 rows) */	display: none;}
+/* The footer part -- status bar and "Close" button */
+.calendar tfoot .footrow { /* The <TR> in footer (only one right now) */}
+.calendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */background: #D1DFFC;	padding: 1px;border: 1px solid #000;	background: #5881D9;color: #fff;text-align: center;}
+.calendar tfoot .hilite { /* Hover style for buttons in footer */border-top: 1px solid #fff;	border-right: 1px solid #000;border-bottom: 1px solid #000;border-left: 1px solid #fff;padding: 1px;background: #CEDCFA;}
+.calendar tfoot .active { /* Active (pressed) style for buttons in footer */	padding: 2px 0px 0px 2px;	border-top: 1px solid #000;	border-right: 1px solid #fff;	border-bottom: 1px solid #fff;	border-left: 1px solid #000;}
+/* Combo boxes (menus that display months/years for direct selection) */
+.calendar .combo {	position: absolute;	display: none;	width: 4em;	top: 0px;	left: 0px;	cursor: default;	border-top: 1px solid #fff;	border-right: 1px solid #000;	border-bottom: 1px solid #000;	border-left: 1px solid #fff;	background: #CEDCFA;padding: 1px;}
+.calendar .combo .label-IEfix {	text-align: center;	padding: 1px;}
+.calendar .combo .label-IEfix {	width: 4em;}
+.calendar .combo .active {background: #c8d0d4;	padding: 0px;	border-top: 1px solid #000;	border-right: 1px solid #fff;	border-bottom: 1px solid #fff;	border-left: 1px solid #000;}
+.calendar .combo .hilite {	background: #048;	color: #aef;}
+.calendar td.time {	border-top: 1px solid #000;	padding: 1px 0px;	text-align: center;	background-color: #e8f0f4;}
+.calendar td.time .hour,.calendar td.time .minute,.calendar td.time .ampm {	padding: 0px 3px 0px 4px;	border: 1px solid #889;	font-weight: bold;	background-color: #fff;}
+.calendar td.time .ampm {text-align: center;}
+.calendar td.time .colon {	padding: 0px 2px 0px 3px;	font-weight: bold;}
+.calendar td.time span.hilite {	border-color: #000;	background-color: #667;	color: #fff;}
+.calendar td.time span.active {	border-color: #f00;	background-color: #000;color: #0f0;}
+/*calender end*/
+th {font-weight: bold;background-color: #C5D5F7;text-align: left;color: #10286F;padding:2px;border-bottom:1px solid #7EA0E9;}
+/*added below for for show/hide functionality border  */
+.formStyleSmallselect {border: 1px solid #7B94CE;background-color: #FCFCFC;width: 45px;}
+.formStyleSmallselectDisabled {border: 1px #B2BED6 solid;background-color: #E8E8E6;width: 45px;}
+.rowtbborder {font-weight: bold;color: #000000;background-color: #F4F8FE;border-top-width: 1px;border-bottom-width: 1px;border-top-style: solid;border-bottom-style: solid;border-top-color: #DAE6FA;border-bottom-color: #DAE6FA;height:28px;}
+.subHeader {color: #003399;font-weight: bold;}
+/* navigation */
+#nav {width: 700px;margin: 0;padding: 0;list-style: none;background: #fff left center;border: none;letter-spacing: 0.05em;}
+#nav li {float: left;margin: 0;padding: 0;list-style: none;border-right: 1px solid #8E7EC5;border-left: 1px solid #8E7EC5;background-color: #F3F0FF;}
+#nav a {float: left;padding: 4px 8px 2px 8px;text-decoration: none;color: #000000;}
+#nav a.active {float: left;text-decoration: none;color: #FFFFFF;font-weight: bold;background-color: #8E7EC5;}
+#nav a:hover{ text-decoration: underline;}
+.tabBg {background-image: url(tabBg.gif);background-repeat: repeat-x;background-color: #F3F0FF;}
+/* added above for new home page */
+.hide{display: none;}
+.table tr td{height: 25px;}
+.table tr th{font-weight: bold;}
+.tableheader {background: #e9f4ec;color: #0A4687;font-style: normal;font-weight: bold;height: 25px;}
+
+
+
+.tableHeader a:link, .tableHeader a:hover, .tableHeader a:visited{font-weight: normal;text-decoration: underline;height: 22px;color: #0A4687;padding-left: 3px;}
+.tableHeaders, .newHeader{font-weight:bold;background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -156px;height:23px;}
+.tableHeaders a{font-weight:bold;color:#0000FF;color: #002467;text-decoration: none;}
+.newHeader{padding:4px 10px 4px 10px;height:auto;}
+.tableHeaders a:hover{text-decoration:underline;}
+.even {background:#FFF;height:24px;}
+.even td{border-bottom:1px solid #E3EAEC;}
+.odd {background:#f7fdf3;height:24px;}
+.odd td{border-bottom:1px solid #e9ebe5;}
+.boldText {font-weight: bold;text-decoration: none;color: #000000}
+.rowOdd {background:#FFF;height:24px;border-bottom:1px solid #E3EAEC;}
+.rowEven {background:#EFFDFF;height:24px;border-bottom:1px solid #E3EAEC;}
+.rowOddSelected {background-color: #CCDAE3}
+.rowEvenSelected {background-color: #DFE8EE}
+.responseText {font-weight: bold;text-decoration: none;color: #006600;}
+.highlite {color: #F26100;font-weight: bold;}
+.errorText {text-decoration: none;color: #FF0000;font-weight: bold;}
+.formStyleDisabled { border: 1px #B2BED6 solid; background-color: #E8E8E6; width: 160px; }
+/* style used for the red star in forms */
+.mandatory {  text-decoration: none; color: #FF0000}
+/*-- Property sheets ---------------- */
+.popupBg {  background-color: #F0F5FF;    margin: 0px;    padding: 0px;}
+.propertyLeftBg {background-color: #F0F4FD}
+.propertyTabLeftbg {background-color: #FFFFFF;}
+.seperator{background-color: #DBE2FB}
+.propertyHeader {background-color: #FFFFFF;}
+.propertyBg {background-color: #F0F5FF;}
+.fontBlue {font-weight: normal;color: #0A3FA0;	padding-left: 4px;}
+/*-- acc panel styles ---------------- */
+.accGrey {background: #e9f4ec;}
+/* --- Border around the map images --- */
+.symbolBg {background-color: #DCE7F5;}
+.symbolBorder {background-color: #5C8FD4;}
+.mapbg {background-attachment: fixed;background-image: url(/webclient/map/images/OliveGreen/mapbg.jpg); background-repeat: repeat-x;background-position: left top; background-color: #E0E3EE;  margin: 0px; padding: 0px;}
+.calendarText {text-decoration: none;color: #000000}
+.calendarCombo {text-decoration: none; color: #000000 }
+.calTopBorderBg { background-image:  url(/webclient/common/images/OliveGreen/calTopBorder.gif);}
+.calLeftBorderBg {background-image:  url(/webclient/common/images/OliveGreen/calLeftBorder.gif);}
+.calMonthYrBg { background-color: #99b491;}
+.calInBorderBg {background-image:  url(/webclient/common/images/OliveGreen/calInBorder.gif);}
+.calInBorderBg1 {background-image:  url(/webclient/common/images/OliveGreen/calInBorder1.gif);}
+.calDateBg {background-color: #eff5e8;}
+.calMonthBg {background-color: #bbd2b4;}
+.calDayBg {background-color: #cad6c7;}
+.calInBorderBg3 {background-image:  url(/webclient/common/images/OliveGreen/calInBorder3.gif); }
+.calRightBorderBg { background-image:  url(/webclient/common/images/OliveGreen/calRightBorder.gif);}
+.calGreenBg {background-color: #64779B;}
+.calPreBtmLeftBg {background-image:  url(/webclient/common/images/OliveGreen/calPreBtmLeft.gif);}
+.calPreBtmRightBg {background-image:  url(/webclient/common/images/OliveGreen/calPreBtmRight.gif);}
+.calBtmLeftBg {background-image:  url(/webclient/common/images/OliveGreen/calBtmLeft.gif); }
+.calBtmRightBg {background-image:  url(/webclient/common/images/OliveGreen/calBtmRight.gif); }
+.calBtmBg {background-image:  url(/webclient/common/images/OliveGreen/calBtm.gif);}
+.calSelected {text-decoration: none;background-color: #A2B8E4;font-weight: bold;color: #000000}
+.whiteText {text-decoration: none;color: #FFFFFF;}
+.entriesSelect {border: 1px #B2BED6 solid;background-color: #FFFFFF;}
+.tableBorder {margin: 1px;padding: 1px;border: 1px solid #E1E9F9;}
+.opBg {background-color: #ECEDF0;}
+.homeheadBg {background-color: #7B8FB4;}
+.loginBoxBg {background-color: #F9FAFC;}
+.addleftbg {background-color: #E8ECF7;}
+.formStyleSmall {border: 1px solid #7B94CE;background-color: #FCFCFC;width: 100px;}
+.formStyleSmallDisabled {border: 1px #B2BED6 solid;background-color: #E8E8E6;width: 100px;}
+.treeBg {background-color: #EAF4FE;}
+.textSmall {text-decoration: none;color: #000000}
+.greyBg {background-color: #F1F4FB}
+.whiteBg {background-color: #FFFFFF}
+.logFormStyle {border: 1px solid #7B94CE;background-color: #FCFCFC;width: 80px;}
+.mapPropFormStyle {border: 1px solid #7B94CE;background-color: #FCFCFC;width: 220px;}
+.progressMsgTable{background-color: #D0D0D0; border: 1px solid #F1F1F1;width: 150px;height: 60px;font-weight: bold;}
+.bubble {background-color:#C3D9FF;}
+.txtTableHeader {font-weight: bold;COLOR: #00009e}
+.fontBlueBoldLink {FONT-WEIGHT: bold;	COLOR: #0a3fa0;	TEXT-DECORATION: underline;}
+.top {color: #000000;text-decoration: none;}
+.tbborder {border: solid; border-width: 0px 1px 1px;border-color: black #1B55A7 #1B55A7;}
+.dashboard {BACKGROUND: #ffffff}
+.dashTopLeft {BACKGROUND: url(/webclient/common/images/OliveGreen/dashTopLeftBg.gif) #f5f5f5 no-repeat left top;}
+.dashTopRight {BACKGROUND: url(/webclient/common/images/OliveGreen/dashTopRightBg.gif) #f5f5f5 no-repeat right top}
+.dashBottomLeft {BACKGROUND: url(/webclient/common/images/OliveGreen/dashBottomLeftBg.gif) #f5f5f5 no-repeat left bottom}
+.dashBottomRight {BACKGROUND: url(/webclient/common/images/OliveGreen/dashBottomRightBg.gif) #f5f5f5 no-repeat right bottom}
+.dashTop {BACKGROUND: url(/webclient/common/images/OliveGreen/dashTop.gif) repeat-x top}
+.dashLeft {BACKGROUND: url(/webclient/common/images/OliveGreen/dashLeft.gif) repeat-y left}
+.dashRight {BACKGROUND: url(/webclient/common/images/OliveGreen/dashRight.gif) repeat-y right}
+.dashBottom {BACKGROUND: url(/webclient/common/images/OliveGreen/dashBottom.gif) repeat-x bottom}
+.leftLink {BACKGROUND-POSITION: left center;BACKGROUND-IMAGE: url(/webclient/common/images/OliveGreen/dots.gif); COLOR: #000000;TEXT-INDENT: 15pt; BACKGROUND-REPEAT: no-repeat;TEXT-ALIGN: left; TEXT-DECORATION: none}
+.text1 {text-decoration: none;color: #000000;}
+/* Newly Added..................... */
+.tabsBg {background-image: url(/webclient/common/images/OliveGreen/t_selectedbg.gif);margin: 0px;padding: 0px;}
+.whiteTextWithLink{color: #FFFFFF;font-weight: bold;CURSOR: hand;}
+.blackBoldText {color: #000000;font-size: 100%;text-decoration: none;font-weight: bold;}
+.blackText {color: #000000;text-decoration: none;}
+.topStrip {background-color: #F4F8FE;}
+.menuOn {FONT-WEIGHT: bold; TEXT-DECORATION: none;COLOR: #FFFFFF;WIDTH: 85px;cursor: hand;}
+.menuOnBg{BORDER-RIGHT: #333 1px solid; PADDING-RIGHT: 5px;BORDER-TOP: #fff 1px solid; PADDING-LEFT: 5px;PADDING-BOTTOM: 2px;BORDER-LEFT: #fff 1px solid;PADDING-TOP: 1px; HEIGHT: 18px;BACKGROUND-COLOR: #F4F8FE;TEXT-ALIGN: center;text-decoration: none;font-weight: bold}
+.tabTextSel {color: #000000;font-size: 90%;text-decoration: none;CURSOR: hand;}
+.reportsOddRow {background:#f7fdf3;height:24px;}
+.reportsOddRow td{border-bottom:1px solid #e9ebe5;}
+.reportsOddRow td table td{border-bottom:0px solid #e9ebe5;}
+.reportsEvenRow {background:#FFF;height:24px;}
+.reportsEvenRow td{border-bottom:1px solid #e9ebe5;}
+.reportsEvenRow table td{border-bottom:0px solid #e9f1f4;}
+.menuOff{color:white;TEXT-DECORATION:none}
+TABLE.botBorder TD {border-bottom:1px solid #DAE6FA}
+.botBorder{border-bottom:1px solid #DAE6FA;}
+/* ************ SAS Model *************  */
+.original{background-color: #496DB9;}
+.menuHeader {background:#FFF;}
+.menuHeader a{color:#6633FF;}
+.menuText {color: #000000;text-decoration: none;}
+.accHeader {font-weight: bold;text-decoration: none;color: #000000}
+.accBg {background-color: #FFFFFF;}
+.header2 {font-weight: bold;color: #000066}
+.header3 {font-weight: bold;color: #000000;}
+.header1 {border-bottom:1px solid #adc9be;height:20px;margin-bottom:15px;color:#0F6395;font-size:13px;font-weight:bold;}
+.headerBg {font-weight:bold;background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -156px;height:23px;}
+.header2bg{font-weight:bold;background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -156px;height:23px;}
+.propertyTabSelectedText{color: #000000;text-decoration: none;font-weight: bold;}
+.propertyTabUnselectedText{font-weight: bold;color: #000000;text-decoration: none;CURSOR: hand;}
+.propertyTabSelected {background-color: #deeee3;}
+.annotationHeaderBg{background-color: #deeee3;}
+.pageHeader{color: #000000;text-decoration: none;font-weight: bold;}
+.homeHeader {font-weight:bold;background: url(../../images/OliveGreen/horizontal-bg.gif) repeat-x 0 -156px;height:23px;}
+.propFormLink {font-weight: bold;text-decoration: none;CURSOR: hand;}
+.formStyle {border: 1px #7B94CE solid;background-color: #FCFCFC;width: 160px;}
+.button {background: url(../../images/OliveGreen/but-bg.gif) repeat-x bottom;border-left:1px solid #dee6e9;border-top:1px solid #dee6e9;border-right:1px solid #adc9be;border-bottom:1px solid #adc9be;}
+.dropDown {padding-right: 16;background-image: url(../../images/dropdown.gif);background-repeat: no-repeat;background-position: top right;}
+.dropDownLayer {border: 1px solid #000;background: #FFF;}
+.dropDownLayer A {padding-top: 5px;height: 100%;display: block;background: #FFF;}
+.dropDownLayer A:hover {background: #ECF1FF;}
+.buttonDisabled {BORDER-RIGHT: #4E638B 1px solid;BORDER-TOP: #E7EFFF 1px solid;BACKGROUND-COLOR: #DFE1E6;BORDER-LEFT: #E7EFFF 1px solid;BORDER-BOTTOM: #4E638B 1px solid;HEIGHT: 20px;TEXT-DECORATION: none}
+.checkBox{HEIGHT: 18px;}
+.adminLink{CURSOR: hand;}
+.headgGrad {background-repeat: repeat;background-position: right top;height: 18px;font-weight: bold;text-decoration: none;background-color: #D1DFFA;padding: 4px 4px 4px 5px;}
+.simpleSearch {border: 1px #7B94CE inner;background-color: #FCFCFC;width: 140px;}
+.notificationTable {background:#ECF1FF; border: 1px solid #847CBB;}
+.formStyleCheckBox {BORDER-RIGHT: #5388DE 1px solid;BORDER-TOP: #B2BFD8 1px solid;BACKGROUND: #2554A6; BORDER-LEFT: #B2BFD8 1px solid;CURSOR: hand; COLOR: #01155A;BORDER-BOTTOM: #5388DE 1px solid;HEIGHT: 20px;color: #FFFFFF;TEXT-DECORATION: none}
+.spyBorder{margin: 1px;padding: 1px;background-color: #F4F8FE;}
+/* Sortable tables */
+table.sortable a.sortheader {background-color:#496DB9;color: #FFFFFF;font-weight: bold;text-decoration: none;}
+table.sortable span.sortarrow {font-weight: bold;color: white;text-decoration: none;}
+.tabBtmLine {background-image: url(/webclient/common/images/CreamyBlue/tab_behindbg.gif);background-repeat:repeat-x;background-position: left top;height:21px;}
+.tableLightHeader {background : #f5f5f5;padding: 4px;color : #00009e;font-weight : bold;}
+.deviceInfo{font-weight:normal;	color: #0A4687;text-decoration: none;vertical-align: middle;}
+.deviceInfo a:Link, .deviceInfo a:visited{color: #0A4687;text-decoration: underline;}
+.routerFormStyle{/*border: #90C4F6 solid 1px;*/color: #0A4687;text-decoration:none;}
+.deviceButtonTable{min-width: 58px;height: 19px;cursor:pointer;}
+.txtGlobal {font-weight: normal;color:#0A4687;}
+.txtGlobalBold {font-weight : bold;color:#0A4687;}
+.tableFillBorder{background-color: #fff;border: #7d7d7d solid 1px;}
+.deviceButon1{height: 19px;weight: 4px;background-image: url(/webclient/common/images/Device_ButtonBG1.gif);}
+.deviceButon3{height: 19px;weight: 4px;background-image: url(/webclient/common/images/Device_ButtonBG3.gif);}
+.pageTitleBot{margin-bottom:15px;margin-top:6px;}
+/*Inner Tab style*/
+#innerTab1{float:left;width:500px;line-height:normal;}
+#innerTab1 ul {margin:0;padding:10px 10px 0 30px;list-style:none;}
+#innerTab1 li {display:inline;margin:0;padding:0;}
+#innerTab1 a {float:left;background:url(/webclient/common/images/OliveGreen/innerTabLeft.gif) no-repeat left top;margin:0px 0px 0px 2px;padding:0 0 0 4px;text-decoration:none;}
+#innerTab1 a span {float:left;display:block;background:url(/webclient/common/images/OliveGreen/innerTabRight.gif) no-repeat right top;padding:2px 12px 1px 8px;color:#000;}
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#innerTab1 a span {float:none;}
+/* End IE5-Mac hack */
+#innerTab1 a:hover {background-position:0% -42px;}
+#innerTab1 a:hover span {background-position:100% -42px;}
+#innerTab1 #current a {background-position:0% -42px;font-weight:bold;}
+#innerTab1 #current a span {background-position:100% -42px;}
+.tabHRule1{background:url(/webclient/common/images/OliveGreen/tabHRule1.gif) repeat-x bottom}
+/*Vertical Tab style*/
+#verticalTab{margin:20px 0 0 0;padding:0px;list-style:none;position:relative;z-index:10;}
+#verticalTab li {margin:0;padding:0;line-height:18px;white-space:nowrap;width:200px;}
+#verticalTab a {display:block;width:99%;_width:101%;text-decoration:none;padding:0px;padding:3px 0px 3px 0px;}
+#verticalTab a span{padding-left:10px;}
+#verticalTab #current a{border:1px solid #adc9be;border-right:0px solid #adc9be;border-left:3px solid #79af9a;font-weight:bold;background:#fff}
+.graphGreyBg2{background:#D3D3D3;width:100px;}
+.reportLegendBox{margin-top:3px;float:left;width:7px;height:7px;_width:9px;_height:9px;border:1px solid #868686;line-height:1px !important;}
+.greyBg3{background:#f0f0f0;}
+.searchBox2{width:190px;height:20px;margin:0px;padding:0px 0px 0px 3px;line-height:18px;background:#fff;border:1px solid #595959;}
+.graphGreenBg2{width:100px;border:1px solid #94be4a;background:#FFF; }
+.graphRedBg2{width:100px;border:1px solid #bd4d3a;background:#FFF;}   
+.footer{background:url(/webclient/common/images/footerbg.gif) repeat-x top !important; border-top:1px solid #adc9be;color:#b4b4b4;padding:3px 6px;}
+.inventoryBg{background: url(/webclient/common/images/OliveGreen/inventorybg.gif) repeat-x bottom;height:145px;}
+.inventoryFold{background: url(/webclient/common/images/OliveGreen/inventoryfold.gif) no-repeat bottom right;}

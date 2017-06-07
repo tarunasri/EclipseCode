@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<!--$Id: GraphInfo.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $-->
+<Graphs>
+        <Graph name="CPUUtilization?.3">
+        <title>webclient.performance.reports.index.cpuutilization</title>
+        <xaxis-label>webclient.performance.reports.index.cpuutilization.xaxisname</xaxis-label>
+        <yaxis-label>webclient.performance.reports.index.cpuutilization.yaxisname</yaxis-label>
+        <legend-required>false</legend-required>
+        <width>502</width>
+        <height>272</height>
+        <background-color>255,255,255</background-color>
+        <foreground-color>0,0,0</foreground-color>
+        <grid-color>0,255,0</grid-color>
+        <ticker-color>0,255,0</ticker-color>
+        </Graph>
+	<Graph name="InterfaceOutUtilization">
+        <title>webclient.performance.reports.index.txutilization</title>
+        <xaxis-label>webclient.performance.reports.index.txutilization.xaxisname</xaxis-label>
+        <yaxis-label>webclient.performance.reports.index.txutilization.yaxisname</yaxis-label>
+        <legend-required>false</legend-required>
+        <width>502</width>
+        <height>272</height>
+        <background-color>255,255,255</background-color>
+        <foreground-color>0,0,0</foreground-color>
+        <grid-color>0,255,0</grid-color>
+        <ticker-color>0,255,0</ticker-color>
+        </Graph>
+	<Graph name="InterfaceInUtilization">
+	<title>webclient.performance.reports.index.rxutilization</title>
+	<xaxis-label>webclient.performance.reports.index.rxutilization.xaxisname</xaxis-label>
+	<yaxis-label>webclient.performance.reports.index.rxutilization.yaxisname</yaxis-label>
+	<legend-required>false</legend-required>
+	<width>502</width>
+	<height>272</height>
+        <background-color>255,255,255</background-color>
+	<foreground-color>0,0,0</foreground-color>
+	<grid-color>0,255,0</grid-color>
+	<ticker-color>0,255,0</ticker-color>
+	</Graph>
+	<Graph name="INTERFACE_in_octets">
+        <title>webclient.performance.reports.index.receivetraffic</title>
+        <xaxis-label>webclient.performance.reports.index.receivetraffic.xaxisname</xaxis-label>
+        <yaxis-label>webclient.performance.reports.index.receivetraffic.yaxisname</yaxis-label>
+	<legend-required>false</legend-required>
+        <width>502</width>
+        <height>272</height>
+        <background-color>255,255,255</background-color>
+	<foreground-color>0,0,0</foreground-color>
+        <grid-color>0,255,0</grid-color>
+        <ticker-color>0,255,0</ticker-color>
+        </Graph>
+       <Graph name="INTERFACE_out_octets">
+        <title>webclient.performance.reports.index.transmittraffic</title>
+        <xaxis-label>webclient.performance.reports.index.transmittraffic.xaxisname</xaxis-label>
+        <yaxis-label>webclient.performance.reports.index.transmittraffic.yaxisname</yaxis-label>
+	<legend-required>false</legend-required>
+        <width>502</width>
+        <height>272</height>
+        <background-color>255,255,255</background-color>
+	<foreground-color>0,0,0</foreground-color>
+        <grid-color>0,255,0</grid-color>
+        <ticker-color>0,255,0</ticker-color>
+        </Graph>
+</Graphs>

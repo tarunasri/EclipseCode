@@ -1,0 +1,10 @@
+package com.dgca;
+
+import com.adventnet.nms.eventdb.Event;
+import com.adventnet.snmp.snmp2.SnmpPDU;
+
+public interface ExternalSystems {
+	
+	public Event getCiscoEvent(SnmpPDU pdu,Event event);
+
+}

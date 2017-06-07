@@ -1,0 +1,22 @@
+<%-- $Id: mapLayout.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+<c:choose>
+<c:when test='${! empty param.currentTopology}'>
+<c:set var='layout' value='${param.currentTopology}'/>
+</c:when>
+<c:when test='${! empty mapProps.currentTopology}'>
+<c:set var='layout' value='${mapProps.currentTopology}'/>
+</c:when>
+<c:otherwise>
+<c:set var='layout' value="grid"/>
+</c:otherwise>
+</c:choose>
+
+<c:choose>
+<c:when test='${layout == "switch"}'>
+           <%@include file="/webclient/map/jspf/switchLayout.jspf"%>
+</c:when>
+<c:otherwise>
+           <%@include file="/webclient/map/jspf/gridLayout.jspf"%>
+</c:otherwise>
+
+</c:choose>

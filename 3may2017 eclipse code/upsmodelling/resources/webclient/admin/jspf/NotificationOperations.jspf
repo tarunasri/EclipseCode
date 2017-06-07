@@ -1,0 +1,713 @@
+<!-- $Id: NotificationOperations.jspf,v 1.2 2010/10/29 13:46:55 swaminathap Exp $ -->
+
+<script>
+// send Email Action related scripts 
+
+    function appendEMailSubject(selVal)
+    {
+        if((selVal != null) && (selVal != "") && (selVal != "--------"))
+        {
+                document.EMailActionForm.Subject.value=document.EMailActionForm.Subject.value+" $"+selVal;
+        }
+    }
+
+    function appendMessageBody(selVal)
+    {
+        if((selVal != null) && (selVal != "") && (selVal != "--------"))
+        {
+                document.EMailActionForm.Message.value=document.EMailActionForm.Message.value+" $"+selVal;
+        }
+    }
+    function validateEMailForm()
+    {
+        var name = document.EMailActionForm.NotificationName.value;
+        var server = document.EMailActionForm.SMTPAccount.value;
+        if(isEmpty(name))
+        {
+            alert('<fmt:message key="webclient.admin.filter.nullnotification"/>');
+            document.EMailActionForm.NotificationName.focus();
+            return false;
+        }
+        if(isEmpty(server))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptymailservername"/>');
+            document.EMailActionForm.SMTPServer.focus();
+            return false;
+        }
+        return true;
+    }
+
+
+/* Send Trap Relation javascripts */
+
+    function fillProperties()
+    {
+        var varbind = document.SendTrapActionForm.VariableBindings.value;
+        var oidType = varbind.split(" ");
+        document.SendTrapActionForm.OIDValue.value = oidType[0];
+        document.SendTrapActionForm.SNMPType.value = oidType[1];
+        document.SendTrapActionForm.SNMPVal.value = oidType[2];
+    }
+    function addVariableBindings()
+    {
+        var oidVal = document.SendTrapActionForm.OIDValue.value;
+        var type = document.SendTrapActionForm.SNMPType.options[document.SendTrapActionForm.SNMPType.options.selectedIndex].value;
+        var val = document.SendTrapActionForm.SNMPVal.value;
+        if(isEmpty(oidVal))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptyoid"/>');
+            document.SendTrapActionForm.OIDValue.focus();
+            return false;
+        }
+        if(isEmpty(val))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptyoidvalue"/>');
+            document.SendTrapActionForm.SNMPVal.focus();
+            return false;
+        }
+        var varBind = oidVal+" "+type+" "+val;
+        var currentSize = document.SendTrapActionForm.VariableBindings.options.length;
+        var opt = new Option(varBind,varBind);
+        document.SendTrapActionForm.VariableBindings.options[currentSize]=opt;
+        document.SendTrapActionForm.OIDValue.value='';
+        document.SendTrapActionForm.SNMPType.value='';
+        document.SendTrapActionForm.SNMPVal.value='';
+    }
+
+    function modifyVariableBindings()
+    {
+        var oidVal = document.SendTrapActionForm.OIDValue.value;
+        var type = document.SendTrapActionForm.SNMPType.options[document.SendTrapActionForm.SNMPType.options.selectedIndex].value;
+        var val = document.SendTrapActionForm.SNMPVal.value;
+        if(isEmpty(oidVal))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptyoid"/>');
+            document.SendTrapActionForm.OIDValue.focus();
+            return false;
+        }
+        if(isEmpty(val))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptyoidvalue"/>');
+            document.SendTrapActionForm.SNMPVal.focus();
+            return false;
+        }
+        var varBind = oidVal+" "+type+" "+val;
+        var selIndex = document.SendTrapActionForm.VariableBindings.options.selectedIndex;
+        var opt = new Option(varBind,varBind);
+        document.SendTrapActionForm.VariableBindings.options[selIndex]=opt;
+        document.SendTrapActionForm.OIDValue.value='';
+        document.SendTrapActionForm.SNMPType.value='';
+        document.SendTrapActionForm.SNMPVal.value='';
+    } 
+
+    function deleteVariableBindings()
+    {
+        var selIndex = document.SendTrapActionForm.VariableBindings.options.selectedIndex;
+        if(selIndex != -1)
+        {
+                document.SendTrapActionForm.VariableBindings.options[selIndex]=null; 
+        }
+        else
+        {       
+             alert('<fmt:message key="webclient.admin.filter.selectanoid"/>');      
+        }
+    }    
+    function appendSubject(selVal)
+    {
+        document.SendTrapActionForm.Subject.value=document.SendTrapActionForm.Subject.value+" $"+selVal;
+    }
+
+    function appendMessage(selVal)
+    {
+        document.SendTrapActionForm.Message.value=document.SendTrapActionForm.Message.value+" $"+selVal;
+    }
+
+    function validateTrapForm()
+    {
+        checkVarbinds();
+        var name = document.SendTrapActionForm.NotificationName.value;        
+        var dest = document.SendTrapActionForm.TrapDestination.value;
+        var port = document.SendTrapActionForm.Port.value;
+        var sysUpTime = document.SendTrapActionForm.SysUpTime.value;        
+        var enterprise = document.SendTrapActionForm.Enterprise.value;        
+        var generic = document.SendTrapActionForm.GT.value;    
+        var specific = document.SendTrapActionForm.ST.value;    
+        var trapOID = document.SendTrapActionForm.TrapOID.value;
+
+        if(isEmpty(name))
+        {
+            alert('<fmt:message key="webclient.admin.filter.nullnotification"/>');
+            document.SendTrapActionForm.NotificationName.focus();
+            return false;
+        }
+        if(isEmpty(dest))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptydestination"/>');
+            document.SendTrapActionForm.TrapDestination.focus();
+            return false;
+        }
+        if(isEmpty(port))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptytrapport"/>');
+            document.SendTrapActionForm.Port.focus();
+            return false;
+        }
+        var firstChar  = port.charAt(0);
+        if( firstChar != "$" && firstChar != "%")
+        {
+        if(!isPositiveInteger(port))
+        {
+            alert('<fmt:message key="webclient.admin.filter.invalidport"/>');
+            document.SendTrapActionForm.Port.focus();
+            document.SendTrapActionForm.Port.select();
+            return false;
+        }
+        }
+        if(isEmpty(sysUpTime))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptysysuptime"/>');
+            document.SendTrapActionForm.SysUpTime.focus();
+            return false;
+        }
+        var firstChar1  = sysUpTime.charAt(0); 	
+        if( firstChar1 != "$" && firstChar1 != "%")
+        {		
+        if(!isPositiveInteger(sysUpTime))
+        {
+            alert('<fmt:message key="webclient.admin.filter.invalidsysuptime"/>');
+            document.SendTrapActionForm.SysUpTime.focus();
+            document.SendTrapActionForm.SysUpTime.select();
+            return false;
+        }
+	  }
+        if(document.SendTrapActionForm.V1_V2[0].checked)
+        {
+            if(isEmpty(enterprise))
+            {
+                alert('<fmt:message key="webclient.admin.filter.emptyenterprise"/>');
+                document.SendTrapActionForm.Enterprise.focus();
+                return false;
+            }
+
+            if(!validateEnterprise(trimAll(enterprise)))
+            {
+                alert('<fmt:message key="webclient.admin.filter.enterprise.invalid"/>');
+                document.SendTrapActionForm.Enterprise.value="";
+                document.SendTrapActionForm.Enterprise.focus();
+                return false;
+            }            
+
+            if(isEmpty(generic))
+            {
+                alert('<fmt:message key="webclient.admin.filter.emptygenerictype"/>');
+                document.SendTrapActionForm.GT.focus();
+                return false;
+            }
+            var startingChar  = generic.charAt(0);
+            if( startingChar != "$" && startingChar != "%")
+            {
+            if(!isPositiveInteger(generic))
+            {
+                alert('<fmt:message key="webclient.admin.filter.invalidgt"/>');
+                document.SendTrapActionForm.GT.focus();
+                document.SendTrapActionForm.GT.select();
+                return false;
+            }
+            }
+            if(isEmpty(specific))
+            {
+                alert('<fmt:message key="webclient.admin.filter.emptyspecifictype"/>');
+                document.SendTrapActionForm.ST.focus();
+                return false;
+            }
+            var startingChar1  = specific.charAt(0);
+            if( startingChar1 != "$" && startingChar1 != "%")
+            {
+            if(!isPositiveInteger(specific))
+            {
+                alert('<fmt:message key="webclient.admin.filter.invalidst"/>');
+                document.SendTrapActionForm.ST.focus();
+                document.SendTrapActionForm.ST.select();
+                return false;
+            }
+            }
+        }
+        else
+        {
+            if(isEmpty(trapOID))
+            {
+                alert('<fmt:message key="webclient.admin.filter.emptytrapoid"/>');
+                document.SendTrapActionForm.TrapOID.focus();
+                return false;
+            }
+            //if(!isPositiveInteger(trapOID))
+            //{
+            //    alert('<fmt:message key="webclient.admin.filter.invalidtrapoid"/>');
+            //    document.SendTrapActionForm.TrapOID.focus();
+            //    document.SendTrapActionForm.TrapOID.select();
+            //    return false;
+            //}
+        }
+
+        return true;
+    }
+
+    function validateEnterprise(fieldName)
+    {
+        for(var i=0;i<fieldName.length;i++)
+        {
+            var charcode = fieldName.charCodeAt(i);
+            if(charcode !=46 && !(charcode>47 && charcode<58) )
+            {
+                return false;
+            }
+        }     
+        return true
+    }
+
+    function checkVarbinds()
+    {
+        var varbindsSize = document.SendTrapActionForm.VariableBindings.options.length;
+        var selecteditems = "";
+  
+        if(varbindsSize != 0)
+        {
+            for(var i=0; i<varbindsSize; i++)
+            {
+                if(i==0)
+                {
+                    selecteditems = document.SendTrapActionForm.VariableBindings.options[i].value;
+                }
+                else
+                {
+                    selecteditems = selecteditems+","+document.SendTrapActionForm.VariableBindings.options[i].value;
+                }
+            }
+        }
+        document.SendTrapActionForm.varbinds.value = selecteditems;
+    }
+
+    function disableTheFields()
+    {
+        if(document.SendTrapActionForm.V1_V2[1].checked)
+        {
+            document.SendTrapActionForm.Enterprise.disabled=true;
+            document.SendTrapActionForm.Enterprise.className="formStyleDisabled";
+            document.SendTrapActionForm.GT.disabled=true;
+            document.SendTrapActionForm.GT.className="formStyleDisabled";
+            document.SendTrapActionForm.ST.disabled=true;
+            document.SendTrapActionForm.ST.className="formStyleDisabled";
+            
+            document.SendTrapActionForm.TrapOID.disabled=false;
+            document.SendTrapActionForm.TrapOID.className="formStyle";
+            
+        }
+        else
+        {
+            document.SendTrapActionForm.TrapOID.disabled=true;
+            document.SendTrapActionForm.TrapOID.className="formStyleDisabled";
+            
+            document.SendTrapActionForm.Enterprise.disabled=false;
+            document.SendTrapActionForm.Enterprise.className="formStyle";
+            document.SendTrapActionForm.GT.disabled=false;
+            document.SendTrapActionForm.GT.className="formStyle";
+            document.SendTrapActionForm.ST.disabled=false;
+            document.SendTrapActionForm.ST.className="formStyle";
+        }
+    }
+	
+    function hideAdvanced()
+    {
+        document.getElementById('hideAdvancedRow').className = document.getElementById('advancedRow').className;
+	document.getElementById('advancedRow').className='hide';
+    }
+    function showAdvanced()
+    {
+        document.getElementById('advancedRow').className=document.getElementById('hideAdvancedRow').className;
+        document.getElementById('hideAdvancedRow').className='hide';
+    }
+
+    function loadTrapForm()
+    {
+        if (document.SendTrapActionForm.V1_V2[0].checked)
+        {
+            document.SendTrapActionForm.TrapOID.disabled=true;
+            document.SendTrapActionForm.TrapOID.className="formStyleDisabled";
+        }
+        else
+        {
+            document.SendTrapActionForm.Enterprise.disabled=true;
+            document.SendTrapActionForm.Enterprise.className="formStyleDisabled";
+            document.SendTrapActionForm.GT.disabled=true;
+            document.SendTrapActionForm.GT.className="formStyleDisabled";
+            document.SendTrapActionForm.ST.disabled=true;
+            document.SendTrapActionForm.ST.className="formStyleDisabled";
+        }
+    }
+
+
+/* Custom Filter Action related javascripts */
+
+    function validateCFForm()
+    {
+        var name = document.CustomFilterForm.NotificationName.value;
+        var command = document.CustomFilterForm.ClassName.value;
+        if(isEmpty(name))
+        {
+            alert('<fmt:message key="webclient.admin.filter.nullnotification"/>');
+            document.CustomFilterForm.NotificationName.focus();
+            return false;
+        }
+        if(isEmpty(command))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptyclassname"/>');
+            document.CustomFilterForm.ClassName.focus();
+            return false;
+        }
+        return true;
+    }
+
+/* RunCmd Action related javascripts */
+
+    function validateRunCmdForm()
+    {
+        var name = document.RunCmdActionForm.NotificationName.value;
+        var command = document.RunCmdActionForm.SystemCommand.value;
+        var interval = document.RunCmdActionForm.AbortInterval.value;
+        if(isEmpty(name))
+        {
+            alert('<fmt:message key="webclient.admin.filter.nullnotification"/>');
+            document.RunCmdActionForm.NotificationName.focus();
+            return false;
+        }
+        if(isEmpty(command))
+        {
+            alert('<fmt:message key="webclient.admin.filter.emptysystemcommand"/>');
+            document.RunCmdActionForm.SystemCommand.focus();
+            return false;
+        }
+        var startingChar  = interval.charAt(0);
+        if( startingChar != "$" && startingChar != "%")
+        {
+            if(!isPositiveInteger(interval))
+            {
+                alert('<fmt:message key="webclient.admin.filter.invalidinterval"/>');
+                document.RunCmdActionForm.AbortInterval.focus();
+                document.RunCmdActionForm.AbortInterval.select();
+                return false;
+            }
+        }
+        return true;
+    }
+
+/* Suppress Action related Operations */
+
+
+    function disableField()
+    {
+        document.SuppressActionForm.SuppressInterval.disabled=true;
+        document.SuppressActionForm.SuppressInterval.value="0";
+        document.SuppressActionForm.SuppressInterval.className="formStyleDisabled";
+    }
+
+    function enableField()
+    {
+        document.SuppressActionForm.SuppressInterval.disabled=false;
+        document.SuppressActionForm.SuppressInterval.className="formStyle";
+    }
+
+    function loadtheForm()
+    {
+        if (document.SuppressActionForm.SuppressAll[0].checked)
+        {
+            document.SuppressActionForm.SuppressInterval.disabled=true;
+            document.SuppressActionForm.SuppressInterval.className="formStyleDisabled";
+        }
+        else
+        {
+            document.SuppressActionForm.SuppressInterval.disabled=false;
+            document.SuppressActionForm.SuppressInterval.className="formStyle";
+        }
+    }
+
+    function validateSuppressForm()
+    {
+        var name = document.SuppressActionForm.NotificationName.value;
+        var interval = document.SuppressActionForm.SuppressInterval.value;
+        if(isEmpty(name))
+        {
+            alert('<fmt:message key="webclient.admin.filter.nullnotification"/>');
+            document.SuppressActionForm.NotificationName.focus();
+            return false;
+        }
+        var startingChar  = interval.charAt(0);
+        if( startingChar != "$" && startingChar != "%")
+        {
+            if(!isPositiveInteger(interval))
+            {
+                alert('<fmt:message key="webclient.admin.filter.invalidsuppressinterval"/>');
+                document.SuppressActionForm.SuppressInterval.focus();
+                document.SuppressActionForm.SuppressInterval.select();
+                return false;
+            }
+        }
+        return true;
+    }
+
+/* Common Notification related javascripts */
+
+    function listNotifications(val)
+    {
+        if(val=='Available Notifications')
+        {
+        }
+        else
+        {
+            document.getElementById('Suppress Action').className='hide';
+            document.getElementById('Run Command Action').className='hide';
+            document.getElementById('Send Trap Action').className='hide';
+            document.getElementById('Send Email Action').className='hide';
+            document.getElementById('Custom Filter').className='hide';
+            document.getElementById(val).className='';
+        }
+    }
+
+    function suppressAction(operation,actionName)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        if(operation=='delete')
+        { 
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+              return;
+            }
+            else
+            {
+              location.href="/admin/ConfigureSuppressAction.do?toPerform="+operation+"&NotificationName="+actionName; 
+            }
+        }
+        else 
+        {
+            location.href = "/admin/ConfigureSuppressAction.do?toPerform=load&NotificationName="+actionName+"&actionToPerform="+operation+"&openInNewWindow=false";
+        }
+    }
+
+    function runCmdAction(operation,actionName)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        if(operation=='delete')
+        { 
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+               return;
+            }
+            else
+            {
+              location.href="/admin/ConfigureRunCommandAction.do?toPerform="+operation+"&NotificationName="+actionName; 
+            }
+        }
+        else 
+        {
+            location.href="/admin/ConfigureRunCommandAction.do?toPerform=load&NotificationName="+actionName+"&actionToPerform="+operation+"&openInNewWindow=false";
+        }
+    }
+
+    function customFilterAction(operation,actionName)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        if(operation=='delete')
+        { 
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+              return;
+            }
+            else
+            {
+               location.href="/admin/ConfigureCustomFilterAction.do?toPerform="+operation+"&NotificationName="+actionName; 
+            }
+        }
+        else 
+        {
+            location.href="/admin/ConfigureCustomFilterAction.do?toPerform=load&NotificationName="+actionName+"&actionToPerform="+operation+"&openInNewWindow=false";
+        }
+    }
+
+    function sendEmailAction(operation,actionName)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 400) / 2);
+        if(operation=='delete')
+        {   
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+               return;
+            }
+            else
+            {
+              location.href="/admin/ConfigureSendEMailAction.do?toPerform="+operation+"&NotificationName="+actionName; 
+            }
+        }
+        else 
+        {
+            location.href="/admin/ConfigureSendEMailAction.do?toPerform=load&NotificationName="+actionName+"&actionToPerform="+operation+"&openInNewWindow=false";
+        }
+    }
+
+
+    function sendTrapAction(operation,actionName)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 400) / 2);
+        if(operation=='delete')
+        { 
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+              return;
+            }
+            else
+            {
+              location.href="/admin/ConfigureSendTrapAction.do?toPerform="+operation+"&NotificationName="+actionName; 
+            }
+        }
+        else 
+        {
+            location.href="/admin/ConfigureSendTrapAction.do?toPerform=load&NotificationName="+actionName+"&actionToPerform="+operation+"&openInNewWindow=false";
+        }
+    }
+
+
+/* Load/Save Filter related operations */
+    function validateLoadEventForm()
+    {
+        var fileName = document.LoadEventFilterForm.FileName.value;
+        if(fileName == '')
+        {
+            alert('<fmt:message key="webclient.admin.filter.enterloadfilename"/>');
+            return false;
+        }
+        else
+        {
+            document.LoadEventFilterForm.submit();
+        }
+    }
+
+    function validateSaveEventForm()
+    {
+        var fileName = document.SaveEventFilterForm.FileName.value;
+        if(fileName == '')
+        {
+            alert('<fmt:message key="webclient.admin.filter.entersavefilename"/>');
+            return false;
+        }
+        else
+        {
+            document.SaveEventFilterForm.submit();
+        }
+    }
+
+    function validateLoadAlertForm()
+    {
+        var fileName = document.LoadAlertFilterForm.FileName.value;
+        if(fileName == '')
+        {
+            alert('<fmt:message key="webclient.admin.filter.enterloadfilename"/>');
+            return false;
+        }
+        else
+        {
+            document.LoadAlertFilterForm.submit();
+        }
+    }
+
+    function validateSaveAlertForm()
+    {
+        var fileName = document.SaveAlertFilterForm.FileName.value;
+        if(fileName == '')
+        {
+            alert('<fmt:message key="webclient.admin.filter.entersavefilename"/>');
+            return false;
+        }
+        else
+        {
+            document.SaveAlertFilterForm.submit();
+        }
+    }
+
+/* Filters Main Page related javascripts */
+
+function openWin(url,title)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        window.open(url,title,"height=150,width=380,resizable=no,top="+top+",left="+left);
+    }
+
+function openSuppressWindow(url)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        window.open(url,"Configure_Suppress_Action","height=180,width=400,resizable=no,scrollbars=yes,top="+top+",left="+left);
+    }
+
+    function openRunCmdWindow(url)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        window.open(url,"Configure_RunCmd_Action","height=230,width=400,resizable=no,scrollbars=yes,top="+top+",left="+left);
+    }
+    function openSendTrapWindow(url)    
+    {
+        var left = Math.floor( (screen.width - 450) / 2);
+        var top = Math.floor( (screen.height - 530) / 2);
+        window.open(url,"Configure_Send_Trap_Action","height=560,width=520,resizable=no,scrollbars=yes,top="+top+",left="+left);
+    }
+
+    function openSendEmailWindow(url)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 400) / 2);
+        window.open(url,"Configure_Send_Email_Action","height=350,width=450,resizable=no,scrollbars=yes,top="+top+",left="+left);
+    }
+
+    function openCustomFilterWindow(url)
+    {
+        var left = Math.floor( (screen.width - 400) / 2);
+        var top = Math.floor( (screen.height - 200) / 2);
+        window.open(url,"Configure_CustomFilter_Action","height=180,width=400,resizable=no,scrollbars=yes,top="+top+",left="+left);
+    }
+
+    function deleteAlertFilters(filterName)
+    {
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+               return;
+            }
+            else
+            {
+              location.href="/admin/AlertFilterAction.do?toPerform=delete&name="+filterName; 
+            }
+    }
+
+    function deleteEventFilters(filterName)
+    {
+            var con = confirm('<fmt:message key='webclient.admin.operations.delete'/>');
+            if(con != true)
+            {
+               return;
+            }
+            else
+            {
+              location.href="/admin/EventFilterAction.do?toPerform=delete&name="+filterName; 
+            }
+    }
+
+</script>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;pBXCRT1.txt&apos; to &apos;PABX&apos;&#x0A;- Original project: &apos;trapfilter&apos;&#x0A;- Destination element: &apos;PABX&apos;&#x0A;- Original element: &apos;pBXCRT1.txt&apos;" description="Copy file" destination="=PABX" element1="pBXCRT1.txt" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1480680195224" units="0" version="1.0"/>
+</session>

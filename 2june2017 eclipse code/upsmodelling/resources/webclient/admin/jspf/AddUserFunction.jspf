@@ -1,0 +1,228 @@
+<%-- $Id: AddUserFunction.jspf,v 1.2 2010/10/29 13:46:54 swaminathap Exp $ --%>
+
+<script language="javascript">
+
+
+//Function to validate the user-name
+function ValidateUserName()
+{
+    if(trimAll(document.AddUserForm.newUserName.value) == "")
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.username.empty'/>");
+        document.AddUserForm.newUserName.focus();
+        return false;
+    }
+    var username = document.AddUserForm.newUserName.value;
+   
+    var charcode = username.charCodeAt(0);
+    if(charcode <48 || (charcode>58 && charcode<65) || (charcode>90 && charcode<97) || charcode>122)
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.username.notchar'/>");
+        document.AddUserForm.newUserName.focus();
+        return false; 
+    }
+
+    for(var i=0;i<username.length;i++)
+    {
+        var charcode = username.charCodeAt(i);
+        if(charcode <45 || (charcode>45 && charcode<48) || (charcode>58 && charcode<65) || (charcode>90 && charcode<95) || (charcode>95 && charcode<97) || charcode>122)
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.username.invalid'/>");
+            document.AddUserForm.newUserName.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+//Function to validate the pass-word field
+function ValidatePassword()
+{
+    var pass1 = document.AddUserForm.prevpassword.value;
+    var pass2 = document.AddUserForm.retypepassword.value;
+
+    if(trimAll(pass1) == "")
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.password.empty'/>");
+        document.AddUserForm.prevpassword.focus();
+        return false;
+    }
+    if(trimAll(pass2) == "")
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.retypepassword.empty'/>");
+        document.AddUserForm.retypepassword.focus();
+        return false;
+    }
+    if(pass1 != pass2)
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.password.mismatch'/>");
+        document.AddUserForm.prevpassword.focus();
+        return false;
+    }
+
+    var charcode = pass1.charCodeAt(0);
+    if(charcode <48 || (charcode>58 && charcode<65) || (charcode>90 && charcode<97) || charcode>122)
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.password.notchar'/>");
+        document.AddUserForm.prevpassword.focus();
+        return false; 
+    }
+
+    for(var i=0;i<pass1.length;i++)
+    {
+        var charcode = pass1.charCodeAt(i);
+        if(!(charcode >= 33 && charcode <= 126))
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.password.invalid'/>");
+            document.AddUserForm.prevpassword.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+//Function to validate the group fields(existing & new)
+function ValidateGroups()
+{
+    var existingGroupSize = document.AddUserForm.existingGroups.options.length;
+    var selectedsize = 0;
+  
+    if(existingGroupSize != 0)
+    {
+        for(var i=0; i<existingGroupSize; i++)
+        {
+            if(document.AddUserForm.existingGroups.options[i].selected)
+            {
+                selectedsize++;
+            }  
+        }
+    }
+
+    if(document.AddUserForm.ifnewgroup.checked)
+    {
+        return ValidateNewGroup();
+    }
+        
+    if(selectedsize <1)
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.selectgroup'/>");
+        document.AddUserForm.existingGroups.focus();
+        return false;
+    }
+    return true;        
+}
+
+//Function to validate new group field
+function ValidateNewGroup()
+{
+    if(trimAll(document.AddUserForm.newGroup.value) == "")
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.newgroup.empty'/>");
+        document.AddUserForm.newGroup.focus();
+        return false;
+    }
+    return true;
+}
+
+//Function to validate password expiry field
+function ValidatePasswordExpiry()
+{
+    if(document.AddUserForm.ispasswordexpiry.checked)
+    {
+        if(trimAll(document.AddUserForm.passwordExpiryTime.value) == "")
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.passwordexpiry.empty'/>");
+            document.AddUserForm.passwordExpiryTime.focus();
+            return false;
+        }
+        var passexpval = document.AddUserForm.passwordExpiryTime.value;
+        if(isNaN(passexpval))
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.passwordexpiry.isnan'/>");
+            document.AddUserForm.passwordExpiryTime.focus();
+            return false;
+        }
+        if((String(passexpval)).indexOf(".") > -1)       
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.passwordexpiry.integer'/>");
+            document.AddUserForm.passwordExpiryTime.focus();
+            return false;
+        }
+        if(!isPositiveInteger(passexpval))
+        {
+            alert("<fmt:message key='webclient.admin.validation.passwordexpiry.positivevalue'/>");
+            document.AddUserForm.passwordExpiryTime.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+//Function to validate account expiry field
+function ValidateAccountExpiry()
+{
+    if(document.AddUserForm.isaccountexpiry.checked)
+    {
+        if(trimAll(document.AddUserForm.accountExpiryTime.value) == "")
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.accountexpiry.empty'/>");
+            document.AddUserForm.accountExpiryTime.focus();
+            return false;
+        }
+        var accexpval = document.AddUserForm.accountExpiryTime.value;
+        if(isNaN(accexpval))
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.accountexpiry.isnan'/>");
+            document.AddUserForm.accountExpiryTime.focus();
+            return false;
+        }
+        if((String(accexpval)).indexOf(".") > -1)       
+        {
+            alert("<fmt:message key='webclient.admin.adduser.validation.accountexpiry.integer'/>");
+            document.AddUserForm.accountExpiryTime.focus();
+            return false;
+        }
+        if(!isPositiveInteger(accexpval))
+        {
+            alert("<fmt:message key='webclient.admin.validation.accountexpiry.positivevalue'/>");
+            document.AddUserForm.accountExpiryTime.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+//Function to validate the form before submit
+function Validate()
+{
+    if(!ValidateUserName())
+    {
+        return false;
+    }
+
+    if(!ValidatePassword())
+    {
+        return false;
+    }
+
+    if(!ValidateGroups())
+    {
+        return false;
+    }
+
+    if(!ValidatePasswordExpiry())
+    {
+        return false;
+    }
+
+    if(!ValidateAccountExpiry())
+    {
+        return false;
+    }
+    return true;
+}
+
+</script>

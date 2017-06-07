@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: validator-rules.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <global>
+     <validator name="twofieldssame"
+            classname="com.adventnet.nms.webclient.common.CustomValidationRules"
+               method="validateTwoFields"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="webclient.login.samepwds.required.message">
+      </validator>
+    <validator name="validateIfFieldNotNull"
+            classname="com.adventnet.nms.webclient.common.CustomValidationRules"
+               method="validateIfFieldNotNull"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="webclient.login.passwordexpiry.days.requiredmessage">
+      </validator>
+   </global>
+</form-validation>

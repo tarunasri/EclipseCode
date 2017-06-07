@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id: report-struts-config.xml,v 1.2 2010/10/29 13:47:13 swaminathap Exp $ -->
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+ <form-beans>
+  <!-- Object-Details  form bean -->
+
+  <form-bean name="AddReports" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="OID" type="java.lang.String"/>  
+	<form-property name="Type" type="java.lang.String"/>
+	<form-property name="ReportName" type="java.lang.String"/>
+	<form-property name="PollingObject" type="java.lang.String"/>
+	<form-property name="Units" type="java.lang.String"/>
+</form-bean>
+
+<form-bean name="AddPollingObject" type="com.adventnet.nms.webclient.perf.poll.AddPollingObjectForm">
+	<form-property name="oid" type="java.lang.String"/>  
+	<form-property name="selectOption" type="java.lang.String"/>  
+	<form-property name="ReportName" type="java.lang.String"/>
+	<form-property name="PollingObject" type="java.lang.String"/>
+	<form-property name="Units" type="java.lang.String"/>
+	<form-property name="Criteria" type="java.lang.String[]"/>
+	<form-property name="CriteriaVal" type="java.lang.String[]"/>
+	<form-property name="conditions" type="java.lang.String[]"/>
+	<form-property name="Props" type="java.lang.String[]"/>
+	<form-property name="listOfOIDs" type="java.util.Vector"/>
+	<form-property name="rowCount" type="java.lang.String"/>
+	<form-property name="showhelp" type="java.lang.String" initial="false"/>
+	<form-property name="displaySaveOption" type="java.lang.String" initial="false"/>
+	<form-property name="Status" type="java.lang.String"/>
+	<form-property name="Class" type="java.lang.String"/>
+	<form-property name="Prefix" type="java.lang.String"/>
+	<form-property name="PollingPeriod" type="java.lang.String" initial="300"/>
+	<form-property name="oidList" type="java.lang.String"/>
+	<form-property name="name" type="java.lang.String"/>
+	<form-property name="isMultiplePolledData" type="java.lang.String"/>
+	<form-property name="Protocol" type="java.lang.String"/>
+	<form-property name="Interval" type="java.lang.String"/>
+	<form-property name="Community" type="java.lang.String"/>
+	<form-property name="Threshold" type="java.lang.String"/>
+	<form-property name="StoreData" type="java.lang.String"/>
+	<form-property name="StatsData" type="java.lang.String"/>
+	<form-property name="StringData" type="java.lang.String"/>
+	<form-property name="Failure" type="java.lang.String"/>
+	<form-property name="SaveAbsolute" type="java.lang.String" initial="false"/>
+	<form-property name="TimeAverage" type="java.lang.String"/>
+	<form-property name="Active" type="java.lang.String"/>
+	<form-property name="Save" type="java.lang.String"/>
+	<form-property name="SaveThreshold" type="java.lang.String"/>
+	<form-property name="typeSelection" type="java.lang.String"/>
+	<form-property name="ThresholdList" type="java.lang.String[]"/>
+	<form-property name="actionToPerform" type="java.lang.String" initial="property"/>
+</form-bean>
+
+
+<form-bean name="DeletePO" type="org.apache.struts.action.DynaActionForm">
+	<form-property name="POName" type="java.lang.String"/>
+</form-bean>
+
+
+
+</form-beans>
+
+<action-mappings>
+
+	<action path="/ReportsMainPage" type="org.apache.struts.actions.ForwardAction" parameter="reportsIndex">
+	</action>
+
+	<action path="/ReportViewAction" type="com.adventnet.nms.webclient.report.ReportsViewAction" scope="request">
+		<forward name="eventreport"  path="/report/FaultReport.do" contextRelative="true"/>
+		<forward name="CPUView" path="CPUTiles" contextRelative="true"/>
+		<forward name="displayPage" path="/webclient/report/jsp/ReportsPage.jsp" contextRelative="true"/>
+	</action>	
+	
+	<action path="/CustomizeReports" type="com.adventnet.nms.webclient.report.ReportsCustomization" scope="request">
+		<forward name="EditReports" path="Customize" contextRelative="true"/>
+	</action>
+
+        <action path="/Preferences" type="com.adventnet.nms.webclient.report.Preferences" scope="request">
+	      <forward name="Success" path="reportsIndex" contextRelative="true"/>
+	      <forward name="CPUView" path="/report/ReportViewAction.do" contextRelative="true"/>
+	</action>
+	
+	<action path="/PDFReports" type="com.adventnet.nms.webclient.report.PDFReports" scope="request">
+		<forward name="ShowReports" path="/webclient/report/jsp/ShowReports.jsp" contextRelative="true"/>
+	</action>
+
+	
+	
+	<action path="/AddReports" name="AddReportsAction" type="com.adventnet.nms.webclient.report.AddReportAction" scope="request">
+		<forward name="AddReportsPage" path="invokeAddPage" contextRelative="true"/>
+	</action>
+	
+	<action path="/AddReportDetails" name="AddReports" type="com.adventnet.nms.webclient.report.AddReportDetails" scope="request">
+		<forward name="Add" path="/webclient/report/jsp/WindowClose.jsp" contextRelative="true"/>
+	</action>
+
+	<action name="AddPollingObject" path="/AddPollingObjectValues" 
+		type="com.adventnet.nms.webclient.perf.poll.AddPollingObjectAction"
+		scope="request" parameter="toPerform" validate="false">
+		<forward name="AddPollingObjectForm" path="addPoll" contextRelative="true"/>
+		<forward name="Add" path="success" contextRelative="true"/>
+		<forward name="ErrorPage" path="failure" contextRelative="true"/>
+        </action>
+
+	<action path="/DeletePollingObjects" name="DeletePO" type="com.adventnet.nms.webclient.perf.poll.DeletePollingObjects" scope="request">
+		<forward name="Delete" path="/webclient/perf/jsp/DeletePollingObjectsForm.jsp" contextRelative="true"/>
+	</action>	
+
+	<action path="/MatchCriteria" name="criteria" type="com.adventnet.nms.webclient.perf.poll.MatchCriteria" scope="request">
+		<forward name="criteriaList" path="/webclient/perf/jsp/MatchCriteria.jsp" contextRelative="true"/>
+	</action>
+
+	<action path="/GetSnmpOid" type="org.apache.struts.actions.ForwardAction" parameter="/webclient/perf/jsp/OIDSelector.jsp">	
+	</action>	
+	
+	<action path="/SelectOID" type="org.apache.struts.actions.ForwardAction" parameter="/webclient/perf/jsp/OIDSelector.jsp">
+	</action>	
+	
+	<action path="/ShowHelp" type="org.apache.struts.actions.ForwardAction" parameter="/webclient/perf/jsp/ShowHelp.jsp">
+	</action>
+	<action path="/DeviceTypes" name="Types" type="com.adventnet.nms.webclient.perf.poll.DeviceTypes" scope="request">
+		<forward name="typeList" path="/webclient/perf/jsp/DeviceTypesList.jsp" contextRelative="true"/>
+	</action>	
+
+	<action path="/DeviceOIDs" name="OIDs" type="com.adventnet.nms.webclient.perf.poll.DeviceOIDs" scope="request">
+		<forward name="oidList" path="/webclient/perf/jsp/DeviceOIDsList.jsp" contextRelative="true"/>
+	</action>
+	<action path="/FaultReport" type="com.adventnet.nms.webclient.report.EventReportsAction" scope="request">
+		<forward name="CPUView" path="CPUTiles" contextRelative="true"/>
+		<forward name="displayPage" path="/webclient/report/jsp/FaultReportsView.jsp" contextRelative="true"/>
+		<forward name="CatGraph" path="/webclient/report/jsp/CategoryBarChart.jsp" contextRelative="true"/>
+		
+		
+	</action>
+
+	<action path="/ExportPDF" type="com.adventnet.nms.webclient.report.ExportPDFReports" parameter="method">
+		<forward name="ShowReports" path="/webclient/report/jsp/ShowReports.jsp" contextRelative="true"/>
+	</action>
+	<action path="/PrintView" type="com.adventnet.nms.webclient.report.PrintView" parameter="method">
+		<forward name="ShowPrintView" path="/webclient/report/jsp/ShowPrintView.jsp" contextRelative="true"/>
+	</action>
+	
+</action-mappings>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/webclient/report/conf/report-tiles-defns.xml"/>
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+
+</struts-config>

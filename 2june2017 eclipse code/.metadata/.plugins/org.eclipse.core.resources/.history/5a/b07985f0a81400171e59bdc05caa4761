@@ -1,0 +1,28 @@
+package com.dgca;
+
+import java.util.StringTokenizer;
+
+public class Test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		String input1 = ".1.3.6.1.4.1.9.9.311.1.1.2.1.16.0: dfhfhkkkmkioioioioASMMOImoASMOifdimmgsmnnnn:";
+
+		if (input1.contains(".1.3.6.1.4.1.9.9.311.1.1.2.1.16.0")) {
+			StringTokenizer stTokenizer = new StringTokenizer(input1, ":");
+			if (stTokenizer.hasMoreTokens()) {
+				String s = stTokenizer.nextToken();// it will //
+													// print the
+													// // first
+				// part // before : description =
+				// it will // print //
+										// after // :
+				System.out.println("description"+stTokenizer.nextToken().substring(0, 40));
+
+			}
+
+		}
+	}
+
+}

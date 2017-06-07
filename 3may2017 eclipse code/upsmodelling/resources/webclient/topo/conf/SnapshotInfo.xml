@@ -1,0 +1,613 @@
+<SNAPSHOT-INFO>
+	<CATEGORY Name="RouterSnapshot">
+		<CHART>
+			<Name>BufferHits</Name>
+			<Title>Buffer Hits</Title>
+			<Type>STACKEDAREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+				<PolledDataName>SmallBufferHits</PolledDataName>
+				<Color>blue</Color>
+				<YAXISTEXT>Small Buffer Hits( % )</YAXISTEXT>
+				<DISPLAYNAME>Small Buffer Hits</DISPLAYNAME>
+				<name>SmallBufferHits</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.2.1.18.0*100)/(.1.3.6.1.4.1.9.2.1.18.0+.1.3.6.1.4.1.9.2.1.26.0+.1.3.6.1.4.1.9.2.1.34.0+.1.3.6.1.4.1.9.2.1.42.0+.1.3.6.1.4.1.9.2.1.66.0)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+
+			</CHART-INFO>
+			<CHART-INFO>
+				<PolledDataName>MediumBufferHits</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Medium Buffer Hits( % )</YAXISTEXT>
+				<DISPLAYNAME>Medium Buffer Hits</DISPLAYNAME>
+				<name>MediumBufferHits</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.2.1.26.0*100)/(.1.3.6.1.4.1.9.2.1.18.0+.1.3.6.1.4.1.9.2.1.26.0+.1.3.6.1.4.1.9.2.1.34.0+.1.3.6.1.4.1.9.2.1.42.0+.1.3.6.1.4.1.9.2.1.66.0)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+				<CHART-INFO>
+				<PolledDataName>BigBufferHits</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Big Buffer Hits( % )</YAXISTEXT>
+				<DISPLAYNAME>Big Buffer Hits</DISPLAYNAME>
+				<name>BigBufferHits</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.2.1.34.0*100)/(.1.3.6.1.4.1.9.2.1.18.0+.1.3.6.1.4.1.9.2.1.26.0+.1.3.6.1.4.1.9.2.1.34.0+.1.3.6.1.4.1.9.2.1.42.0+.1.3.6.1.4.1.9.2.1.66.0)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+
+			<CHART-INFO>
+				<PolledDataName>LargeBufferHits</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Large Buffer Hits ( % )</YAXISTEXT>
+				<DISPLAYNAME>Large Buffer Hits</DISPLAYNAME>
+				<name>LargeBufferHits</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.2.1.42.0*100)/(.1.3.6.1.4.1.9.2.1.18.0+.1.3.6.1.4.1.9.2.1.26.0+.1.3.6.1.4.1.9.2.1.34.0+.1.3.6.1.4.1.9.2.1.42.0+.1.3.6.1.4.1.9.2.1.66.0)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+			<CHART-INFO>
+				<PolledDataName>HugeBufferHits</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Huge Buffer Hits ( % )</YAXISTEXT>
+				<DISPLAYNAME>Huge Buffer Hits</DISPLAYNAME>
+				<name>HugeBufferHits</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.2.1.66.0*100)/(.1.3.6.1.4.1.9.2.1.18.0+.1.3.6.1.4.1.9.2.1.26.0+.1.3.6.1.4.1.9.2.1.34.0+.1.3.6.1.4.1.9.2.1.42.0+.1.3.6.1.4.1.9.2.1.66.0)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+		<CHART>
+			<Name>BufferMisses</Name>
+			<Type>AREA</Type>
+			<Title>Buffer Misses</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+
+			<CHART-INFO>
+				<PolledDataName>SmallBufferMisses</PolledDataName>
+				<Color>blue</Color>
+				<YAXISTEXT>Small Buffer Misses(Misses/sec)</YAXISTEXT>
+				<DISPLAYNAME>Small Buffer Misses</DISPLAYNAME>
+				<name>SmallBufferMisses</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.19.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+			<CHART-INFO>
+				<PolledDataName>MediumBufferMisses</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Medium Buffer Misses(Misses/sec)</YAXISTEXT>
+				<DISPLAYNAME>Medium Buffer Misses</DISPLAYNAME>
+				<name>MediumBufferMisses</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.27.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+			<CHART-INFO>
+				<PolledDataName>BigBufferMisses</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Big Buffer Misses(Misses/sec)</YAXISTEXT>
+				<DISPLAYNAME>Big Buffer Misses</DISPLAYNAME>
+				<name>BigBufferMisses</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.35.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+
+			<CHART-INFO>
+				<PolledDataName>LargeBufferMisses</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Large Buffer Misses(Misses/sec)</YAXISTEXT>
+				<DISPLAYNAME>Large Buffer Misses</DISPLAYNAME>
+				<name>LargeBufferMisses</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.43.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+
+			</CHART-INFO>
+			<CHART-INFO>
+				<PolledDataName>HugeBufferMisses</PolledDataName>
+				<Color>green</Color>
+				<YAXISTEXT>Huge Buffer Misses(Misses/sec)</YAXISTEXT>
+				<DISPLAYNAME>Huge Buffer Misses</DISPLAYNAME>
+				<name>BufferHgMiss</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.67.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+		<CHART>
+			<Name>BufferFailures</Name>
+			<Title>Buffer Failures</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+				<PolledDataName>BufferNoMemFailures</PolledDataName>
+				<Color>blue</Color>
+				<YAXISTEXT>BufferFailures(Failures/sec) </YAXISTEXT>
+				<DISPLAYNAME> Failures</DISPLAYNAME>
+				<name>BufferFailures</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.47.0</oid>
+				<type>multiple</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+		<CHART>
+			<Name>MemoryUtilization</Name>
+			<Title>Memory Utilization</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+				<PolledDataName>RouterMemoryUtilization</PolledDataName>
+				<Color>blue</Color>
+				<YAXISTEXT>Memory Utilization %</YAXISTEXT>
+				<DISPLAYNAME>Memory Utilization %</DISPLAYNAME>
+				<name>MemoryUtilization</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>(.1.3.6.1.4.1.9.9.48.1.1.1.5.1*100)/(.1.3.6.1.4.1.9.9.48.1.1.1.5.1+.1.3.6.1.4.1.9.9.48.1.1.1.6.1)</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+		<CHART>
+			<Name>CpuUsage</Name>
+			<Title>Cpu Usage</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+				<PolledDataName>RouterCPUUtilization</PolledDataName>
+				<Color>blue</Color>
+				<YAXISTEXT>5 Minute Average Cpu %</YAXISTEXT>
+				<DISPLAYNAME>Cpu Usage %</DISPLAYNAME>
+				<name>5MinuteAverage</name>
+				<Vendor>OtherCISCO</Vendor>
+				<oid>.1.3.6.1.4.1.9.2.1.58.0</oid>
+				<type>node</type>
+				<interval>900</interval>
+				<THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+	<CATEGORY Name="Interface">
+		<CHART>
+			<Name>InterfaceTraffic</Name>
+			<Title>Interface Traffic</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>Device_INTERFACE_in_octets</PolledDataName>
+			    <YAXISTEXT>Rx Traffic (in Kbps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Traffic </DISPLAYNAME>
+			    <name>InterfaceInOctets</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.10*8/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+			</CHART-INFO>
+
+			<CHART-INFO>
+				<PolledDataName>Device_INTERFACE_out_octets</PolledDataName>
+				<YAXISTEXT>Tx Traffic (in Kbps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Tx Traffic</DISPLAYNAME>
+				<name>InterfaceOutOctets</name>
+				<Vendor>General</Vendor>
+				<oid>.1.3.6.1.2.1.2.2.1.16*8/$DELTA_TIME</oid>
+				<type>multiplenode</type>
+				<interval>900</interval>
+				<timeAvg>false</timeAvg>
+				<Index>.1.3.6.1.2.1.2.2.1.1</Index>
+				<DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+
+		<CHART>
+			<Name>InterfaceUtilization</Name>
+			<Title>Interface Utilization</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>InterfaceInUtilization</PolledDataName>
+			    <YAXISTEXT>Rx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Utilization</DISPLAYNAME>
+			    <name>InterfaceInUtilization</name>
+			    <Vendor>General</Vendor>
+			    <oid>(.1.3.6.1.2.1.2.2.1.10*8*100)/(.1.3.6.1.2.1.2.2.1.5*$DELTA_TIME)</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>InterfaceOutUtilization</PolledDataName>
+			    <YAXISTEXT>Tx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Utilization</DISPLAYNAME>
+			    <name>InterfaceOutUtilization</name>
+			    <Vendor>General</Vendor>
+			    <oid>(.1.3.6.1.2.1.2.2.1.16*8*100)/(.1.3.6.1.2.1.2.2.1.5*$DELTA_TIME)</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+
+		<CHART>
+			<Name>InterfaceErrors</Name>
+			<Title>Interface Errors</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>ReceiveErrors</PolledDataName>
+				<YAXISTEXT>Rx Errors (in Bps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Rx Errors</DISPLAYNAME>
+				<name>ReceiveErrors</name>
+				<Vendor>General</Vendor>
+				<oid>.1.3.6.1.2.1.2.2.1.14/$DELTA_TIME</oid>
+				<type>multiplenode</type>
+				<interval>3600</interval>
+				<timeAvg>false</timeAvg>
+				<Index>.1.3.6.1.2.1.2.2.1.1</Index>
+				<DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>TransmitErrors</PolledDataName>
+			    <YAXISTEXT>Tx Errors (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Errors</DISPLAYNAME>
+			    <name>TransmitErrors</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.20/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>300</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>InDiscards</PolledDataName>
+			    <YAXISTEXT>Rx Discards (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Discards</DISPLAYNAME>
+			    <name>InDiscards</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.13/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>3600</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>OutDiscards</PolledDataName>
+			    <YAXISTEXT>Tx Discards (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Discards</DISPLAYNAME>
+			    <name>OutDiscards</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.19/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>3600</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+
+    <CATEGORY Name="Switch">
+        <CHART>
+			<Name>InterfaceTraffic</Name>
+			<Title>Interface Traffic</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitch_in_octets</PolledDataName>
+			    <YAXISTEXT>Rx Traffic (in Kbps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Traffic </DISPLAYNAME>
+			    <name>InterfaceInOctets</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.10*8/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+			</CHART-INFO>
+
+			<CHART-INFO>
+				<PolledDataName>CiscoSwitch_out_octets</PolledDataName>
+				<YAXISTEXT>Tx Traffic (in Kbps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Tx Traffic</DISPLAYNAME>
+				<name>InterfaceOutOctets</name>
+				<Vendor>General</Vendor>
+				<oid>.1.3.6.1.2.1.2.2.1.16*8/$DELTA_TIME</oid>
+				<type>multiplenode</type>
+				<interval>900</interval>
+				<timeAvg>false</timeAvg>
+				<Index>.1.3.6.1.2.1.2.2.1.1</Index>
+				<DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+
+        <CHART>
+			<Name>InterfaceUtilization</Name>
+			<Title>Interface Utilization</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchInterfaceInUtilization</PolledDataName>
+			    <YAXISTEXT>Rx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Utilization</DISPLAYNAME>
+			    <name>InterfaceInUtilization</name>
+			    <Vendor>General</Vendor>
+			    <oid>(.1.3.6.1.2.1.2.2.1.10*8*100)/(.1.3.6.1.2.1.2.2.1.5*$DELTA_TIME)</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchInterfaceOutUtilization</PolledDataName>
+			    <YAXISTEXT>Tx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Utilization</DISPLAYNAME>
+			    <name>InterfaceOutUtilization</name>
+			    <Vendor>General</Vendor>
+			    <oid>(.1.3.6.1.2.1.2.2.1.16*8*100)/(.1.3.6.1.2.1.2.2.1.5*$DELTA_TIME)</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+                			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+
+		<CHART>
+			<Name>InterfaceErrors</Name>
+			<Title>Interface Errors</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchReceiveErrors</PolledDataName>
+				<YAXISTEXT>Rx Errors (in Bps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Rx Errors</DISPLAYNAME>
+				<name>ReceiveErrors</name>
+				<Vendor>General</Vendor>
+				<oid>.1.3.6.1.2.1.2.2.1.14/$DELTA_TIME</oid>
+				<type>multiplenode</type>
+				<interval>3600</interval>
+				<timeAvg>false</timeAvg>
+				<Index>.1.3.6.1.2.1.2.2.1.1</Index>
+				<DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchTransmitErrors</PolledDataName>
+			    <YAXISTEXT>Tx Errors (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Errors</DISPLAYNAME>
+			    <name>TransmitErrors</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.20/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>300</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchInDiscards</PolledDataName>
+			    <YAXISTEXT>Rx Discards (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Discards</DISPLAYNAME>
+			    <name>InDiscards</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.13/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>3600</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>CiscoSwitchOutDiscards</PolledDataName>
+			    <YAXISTEXT>Tx Discards (in Bps)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Discards</DISPLAYNAME>
+			    <name>OutDiscards</name>
+			    <Vendor>General</Vendor>
+			    <oid>.1.3.6.1.2.1.2.2.1.19/$DELTA_TIME</oid>
+			    <type>multiplenode</type>
+			    <interval>3600</interval>
+			    <timeAvg>false</timeAvg>
+			    <Index>.1.3.6.1.2.1.2.2.1.1</Index>
+			    <DisplayColumn>.1.3.6.1.2.1.2.2.1.2</DisplayColumn>
+
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+
+<!--
+	<CATEGORY Name="InterfaceTraffic">
+		<CHART>
+			<Name>InterfaceTraffic</Name>
+			<Title>Interface Traffic</Title>
+			<Type>AREA</Type>
+			<Height>350</Height>
+			<Width>600</Width>
+			<CHART-INFO>
+				<PolledDataName>InterfaceInOctets</PolledDataName>
+				<YAXISTEXT>Rx Traffic (in Bps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Rx Traffic </DISPLAYNAME>
+				<name>InterfaceInOctets</name>
+				<oid>2.2.1.10</oid>
+				<type>multiple</type>
+				<interval>900</interval>
+			</CHART-INFO>
+
+			<CHART-INFO>
+				<PolledDataName>InterfaceOutOctets</PolledDataName>
+				<YAXISTEXT>Tx Traffic (in Bps)</YAXISTEXT>
+				<DISPLAYNAME>Interface Tx Traffic</DISPLAYNAME>
+				<name>InterfaceOutOctets</name>
+				<oid>2.2.1.16</oid>
+				<type>multiple</type>
+				<interval>900</interval>
+			</CHART-INFO>
+		</CHART>
+
+	</CATEGORY>
+
+	<CATEGORY Name="InterfaceUtilization">
+		<CHART>
+			<Name>InterfaceUtilization</Name>
+			<Title>Interface Utilization</Title>
+			<Type>AREA</Type>
+			<Height>350</Height>
+			<Width>600</Width>
+			<CHART-INFO>
+			    <PolledDataName>InterfaceInUtilization</PolledDataName>
+			    <YAXISTEXT>Rx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Rx Utilization</DISPLAYNAME>
+			    <name>InterfaceInUtilization</name>
+			    <oid>(2.2.1.10*8*100)/(2.2.1.5)</oid>
+			    <type>multiple</type>
+			    <interval>900</interval>
+			</CHART-INFO>
+			<CHART-INFO>
+			    <PolledDataName>InterfaceOutUtilization</PolledDataName>
+			    <YAXISTEXT>Tx Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Interface Tx Utilization</DISPLAYNAME>
+			    <name>InterfaceOutUtilization</name>
+			    <oid>(2.2.1.16*8*100)/(2.2.1.5)</oid>
+			    <type>multiplenode</type>
+			    <interval>900</interval>
+			</CHART-INFO>
+		</CHART>
+
+	</CATEGORY>
+	-->
+	<CATEGORY Name="ResponseTime">
+	
+		<CHART>
+			<Name>ResponseTime</Name>
+			<Title>Response Time</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>stat</PolledDataName>
+			    <YAXISTEXT>Response Time ms</YAXISTEXT>
+			    <DISPLAYNAME>Response Time</DISPLAYNAME>
+			    <name>stat</name>
+			    <Vendor>General</Vendor>
+			</CHART-INFO>
+		</CHART>
+
+	</CATEGORY>
+	<CATEGORY Name="CPUUtilization">
+		<CHART>
+			<Name>CPUUtilization</Name>
+			<Title>CPU Utilization(%)</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>CPUUtilization</PolledDataName>
+			    <YAXISTEXT>CPU Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>CPU Utilization</DISPLAYNAME>
+			    <name>CPUUtilization</name>
+			    <oid>.1.3.6.1.2.1.25.3.3.1.2</oid>
+			    <type>multiple</type>
+			    <interval>900</interval>
+			    <THRESHOLDENABLED>false</THRESHOLDENABLED>
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+	<CATEGORY Name="MemoryUtilization">
+		<CHART>
+			<Name>MemoryUtilization</Name>
+			<Title>Memory Utilization(%)</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			   <PolledDataName>MemoryUtilization</PolledDataName>
+			   <YAXISTEXT>Memory Utilization(%)</YAXISTEXT>
+			   <DISPLAYNAME>Memory Utilization</DISPLAYNAME>
+			   <name>MemoryUtilization</name>
+			   <oid>.1.3.6.1.2.1.25.5.1.1.2</oid>
+			   <type>multiple</type>
+			   <interval>900</interval>
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+	<CATEGORY Name="DiskUtilization">
+		<CHART>
+			<Name>DiskUtilization</Name>
+			<Title>Disk Utilization(%)</Title>
+			<Type>AREA</Type>
+			<Height>250</Height>
+			<Width>525</Width>
+			<CHART-INFO>
+			    <PolledDataName>DiskUtilization</PolledDataName>
+			    <YAXISTEXT>Disk Utilization(%)</YAXISTEXT>
+			    <DISPLAYNAME>Disk Utilization</DISPLAYNAME>
+			    <name>DiskUtilization</name>
+			    <oid>.1.3.6.1.2.1.25.2.3.1.6</oid>
+			    <type>multiple</type>
+			    <interval>900</interval>
+			</CHART-INFO>
+		</CHART>
+	</CATEGORY>
+
+
+</SNAPSHOT-INFO>
+

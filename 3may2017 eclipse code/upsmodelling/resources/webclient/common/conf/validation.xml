@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: validation.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <formset>
+        <form name="PasswordExpiryFormBean">
+	         <field property="newpassword"
+        	        depends="twofieldssame">
+					<arg0 key="typeForm.password.displayname"/>
+	          		<var>
+    	         		<var-name>secondProperty</var-name>
+		        	    <var-value>confirmpassword</var-value>
+		            </var>
+              </field>
+              <field property="pwdExpiryStatus"
+                  depends="validateIfFieldNotNull">
+					<arg0 key="typeForm.password.displayname"/>
+		          	<var>
+		   	         	<var-name>secondProperty</var-name>
+	        	     	<var-value>days</var-value>
+		          	</var>
+	           </field>
+		</form>
+   </formset>
+</form-validation>

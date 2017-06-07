@@ -1,0 +1,479 @@
+<%--$Id: DateHTML.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+<script language="javascript">
+var DAY_NAMES=new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+// week day titles as they appear on the calendar
+var ARR_WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
+// day week starts from (normally 0-Su or 1-Mo)
+var NUM_WEEKSTART = 0;
+
+
+<c:out value="var MONTH_NAMES=new Array("/>
+<c:forEach var="month" items="${monthNames}" varStatus="status">
+    <c:choose>
+       <c:when test="${ status.last }">'<c:out value="${month}"/>') </c:when>
+       <c:otherwise> '<c:out value="${month}"/>', </c:otherwise>
+    </c:choose>
+</c:forEach>
+
+<c:out value="var ARR_MONTHS=new Array("/>
+<c:forEach var="longmonth" items="${longNames}" varStatus="status">
+    <c:choose>
+       <c:when test="${ status.last }"> '<c:out value="${longmonth}"/>')</c:when>
+       <c:otherwise> '<c:out value="${longmonth}"/>',</c:otherwise>
+    </c:choose>
+</c:forEach>
+
+var form = "<c:out value='${format}'/>";
+var prevdate = "<c:out value='${param.date}'/>";
+if (prevdate == "")
+{
+ prevdate = getValue();
+}
+
+var dt_current = new Date(<c:out value='${param.date}'/>);
+        if(prevdate != "")
+        {
+                var temp = parseDate(prevdate,form);
+                if(temp != null)
+                {
+                        dt_current = temp;
+                }
+        }
+// get same date in the previous month
+var dt_prev_month = new Date(dt_current);
+dt_prev_month.setMonth(dt_prev_month.getMonth() - 1);
+if (dt_prev_month.getDate() != dt_current.getDate())
+	dt_prev_month.setDate(0);
+
+// get same date in the next month
+var dt_next_month = new Date(dt_current);
+dt_next_month.setMonth(dt_next_month.getMonth() + 1);
+if (dt_next_month.getDate() != dt_current.getDate())
+	dt_next_month.setDate(0);
+
+// get first day to display in the grid for current month
+var dt_firstday = new Date(dt_current);
+
+dt_firstday.setDate(1);
+dt_firstday.setDate(1 - (7 + dt_firstday.getDay() - NUM_WEEKSTART) % 7);
+//---------------------------------------------------------------------------------------------------------
+
+//timestamp generating function
+function formats()
+{	
+	//Supported YEAR formats
+	this.y="";
+	this.yy="";
+	this.yyyy="";
+	
+	//Supported MONTH formats
+	this.M="";
+	this.MM="";
+	this.MMM="";
+	
+	//Supported DATE formats
+	this.d=""
+	this.dd="";
+	
+	//Supported HOUR formats
+	this.h="";
+	this.hh="";
+	
+	//Supported MINUTE formats
+	this.mm="";
+	this.m=""
+	
+	//Supported SECONDS formats
+	this.ss="";
+	this.s="";
+	
+	//Supported AM/PM formats
+	this.a="";
+	
+
+	this.HH="";
+	this.H="";
+	this.KK="";
+	this.kk="";
+	this.k="";
+}
+function LZ(x) 
+{
+	return ((x<0||x>9?"":"0")+x);
+}
+function formatDate()
+{
+        var date = new Date(dt_current);
+	format=form+"";
+	var result="";
+	var i_format=0;;
+	var c="";
+	var token="";
+	var y=date.getYear()+"";
+	var M=date.getMonth()+1;
+	var d=date.getDate();
+	var E=date.getDay();
+	var H=date.getHours();
+	var m=date.getMinutes();
+	var s=date.getSeconds();
+	var yyyy,yy,MMM,MM,dd,hh,h,mm,ss,ampm,HH,H,KK,K,kk,k;
+	// Convert real date parts into formatted versions
+	var value=new formats();
+	if (y.length < 4) {y=""+(y-0+1900);}
+	value["y"]=""+y;
+	value["yyyy"]=y;
+	value["yy"]=y.substring(2,4);
+	value["M"]=M;
+	value["MM"]=LZ(M);
+	value["MMM"]=MONTH_NAMES[M-1];
+	value["NNN"]=MONTH_NAMES[M+11];
+	value["d"]=d;
+	value["dd"]=LZ(d);
+	value["E"]=DAY_NAMES[E+7];
+	value["EE"]=DAY_NAMES[E];
+	value["H"]=H;
+	value["HH"]=LZ(H);
+	
+	if (H==0){value["h"]=12;}
+	else if (H>12){value["h"]=H-12;}
+	else {value["h"]=H;}
+	value["hh"]=LZ(value["h"]);
+	if (H>11)
+	{
+		value["K"]=H-12;
+	}
+	else 
+	{
+		value["K"]=H;
+	}
+	value["k"]=H+1;
+	value["KK"]=LZ(value["K"]);
+	value["kk"]=LZ(value["k"]);
+	
+	if (H > 11) { value["a"]='<c:out value="${PmString}"/>'; }
+	else { value["a"]='<c:out value="${AmString}"/>'; }
+	value["m"]=m;
+	value["mm"]=LZ(m);
+	value["s"]=s;
+	value["ss"]=LZ(s);
+	//MILLI-SECOND FORMAT[S] not supported
+	while (i_format < format.length) {
+		c=format.charAt(i_format);
+		token="";
+		while ((format.charAt(i_format)==c) && (i_format < format.length)) {
+			token += format.charAt(i_format++);
+			}
+		if (value[token] != null) { result=result + value[token]; }
+		else {
+		result=result + token; 
+		}
+		}
+	return result;
+}
+
+// Generates the time from "dt_current" in 12 hr format to display in Calendar
+function gen_time(dt_datetime)
+{
+var hrf=dt_datetime.getHours() < 10 ? '0' : '';
+if(dt_datetime.getHours()%12 == 0 )
+{
+	if(dt_datetime.getHours() < 12)
+	{
+		hr = dt_datetime.getHours()+12;
+	}
+	else
+	{
+		hr = dt_datetime.getHours();
+	}
+}
+else
+{
+	hr= hrf + dt_datetime.getHours()%12;
+}
+
+minf = dt_datetime.getMinutes() < 10 ? '0' : '';
+min= minf + dt_datetime.getMinutes();
+//time=hr+":"+min;
+s=dt_datetime.getSeconds();
+time=hr+":"+min+":"+s;
+return (time);
+}
+
+// Generates AM/PM from "dt_current" to display in Calendar
+function gen_am(dt_datetime)
+{
+    var am=dt_datetime.getHours() / 12;
+    return am;
+}
+
+// function passing selected date & time in specified format to calling window
+function set_datetime(close) 
+{
+                var datestr = formatDate();	
+	        if (close) 
+	        {
+                        setValue(datestr);
+		        window.close();
+	        }
+}
+
+
+//Reflects changes in MONTH inputs on the dt_current object
+function selected_month(selected_month_idx)
+{
+    dt_current.setMonth(selected_month_idx);
+    window.location = obj_caller.action+ "?date="+dt_current.valueOf()+"&id="+obj_caller.id
+}
+
+//Reflects changes in YEAR inputs on the dt_current object
+function selected_year(selected_year_idx)
+{
+    dt_current.setFullYear(selected_year_idx);
+    window.location = obj_caller.action+ "?date="+dt_current.valueOf()+"&id="+obj_caller.id
+}
+
+//Reflects changes in AMPM inputs on the dt_current object
+function selected_ampm(ampm)
+{
+	var hours = dt_current.getHours();
+
+	if(ampm=="AM")
+	{
+		if(hours>=12)	
+		{
+			hours=hours-12;
+			dt_current.setHours(hours);
+		}
+	}
+	else if(ampm=="PM")
+	{
+		if(hours<12)	
+		{
+			hours=hours+12;
+			dt_current.setHours(hours);
+		}
+	}
+}
+
+//Reflects changes in TIME inputs on the dt_current object
+function selected_time(time)
+{
+        var ampm = document.cal.ampm.value;
+	    var arr_time = time.split(':');
+
+        if(arr_time.length != 3)
+        {
+                alert("<fmt:message key='webclient.common.date.invalidfmt.message'/>");
+        }
+	    else if ((arr_time[0]<0) || (arr_time[0]>11))
+	    {
+                alert("<fmt:message key='webclient.common.date.invalidhour.message'/>");
+        }
+        else if((arr_time[1]<0) || (arr_time[1]>59))
+        {
+                alert("<fmt:message key='webclient.common.date.invalidmin.message'/>");
+        }
+        else if((arr_time[2]<0) || (arr_time[2]>59))
+        {
+                alert("<fmt:message key='webclient.common.date.invalidsec.message'/>");
+        }
+	else
+	{
+		dt_current.setHours(arr_time[0]);
+		dt_current.setMinutes(arr_time[1]);
+        dt_current.setSeconds(arr_time[2]); 
+	}
+}
+
+//Reflects changes in DATE inputs on the dt_current object
+function selected_date(date)
+{
+        dt_current.setDate(date);  
+}
+
+// BELOW : UTIL FUNCTIONS
+// Utility functions for parsing in getDateFromFormat()
+function _isInteger(val)
+ {
+	var digits="1234567890";
+	for (var i=0; i < val.length; i++) {
+		if (digits.indexOf(val.charAt(i))==-1) { return false; }
+		}
+	return true;
+}
+function _getInt(str,i,minlength,maxlength)
+{
+	for (var x=maxlength; x>=minlength; x--) {
+		var token=str.substring(i,i+x);
+		if (token.length < minlength) { return null; }
+		if (_isInteger(token)) { return token; }
+		}
+	return null;
+}
+	
+// ------------------------------------------------------------------
+// getDateFromFormat( date_string , format_string )
+//
+// This function takes a date string and a format string. It matches
+// If the date string matches the format string, it returns the 
+// getTime() of the date. If it does not match, it returns 0.
+// ------------------------------------------------------------------
+function getDateFromFormat(val,format)
+{
+
+	val=val+"";
+	format=format+"";
+	var i_val=0;
+	var i_format=0;
+	var c="";
+	var token="";
+	var token2="";
+	var x,y;
+	var now=new Date();
+	var year=now.getYear();
+	var month=now.getMonth()+1;
+	var date=1;
+	var hh=now.getHours();
+	var mm=now.getMinutes();
+	var ss=now.getSeconds();
+	var ampm="";
+	while (i_format < format.length) {
+		// Get next token from format string
+		c=format.charAt(i_format);
+		token="";
+		while ((format.charAt(i_format)==c) && (i_format < format.length)) {
+			token += format.charAt(i_format++);
+			}
+		// Extract contents of value based on format token
+		if (token=="yyyy" || token=="yy" || token=="y") {
+			if (token=="yyyy") { x=4;y=4; }
+			if (token=="yy")   { x=2;y=2; }
+			if (token=="y")    { x=2;y=4; }
+			year=_getInt(val,i_val,x,y);
+			if (year==null) { return 0; }
+			i_val += year.length;
+			if (year.length==2) {
+				if (year > 70) { year=1900+(year-0); }
+				else { year=2000+(year-0); }
+				}
+			}
+		else if (token=="MMM"||token=="NNN"){
+			month=0;
+			for (var i=0; i<MONTH_NAMES.length; i++) {
+				var month_name=MONTH_NAMES[i];
+				if (val.substring(i_val,i_val+month_name.length).toLowerCase()==month_name.toLowerCase()) {
+					if (token=="MMM"||(token=="NNN"&&i>11)) {
+						month=i+1;
+						if (month>12) { month -= 12; }
+						i_val += month_name.length;
+						break;
+						}
+					}
+				}
+			if ((month < 1)||(month>12)){return 0;}
+			}
+		else if (token=="EE"||token=="E"){
+			for (var i=0; i<DAY_NAMES.length; i++) {
+				var day_name=DAY_NAMES[i];
+				if (val.substring(i_val,i_val+day_name.length).toLowerCase()==day_name.toLowerCase()) {
+					i_val += day_name.length;
+					break;
+					}
+				}
+			}
+		else if (token=="MM"||token=="M") {
+			month=_getInt(val,i_val,token.length,2);
+			if(month==null||(month<1)||(month>12)){return 0;}
+			i_val+=month.length;}
+		else if (token=="dd"||token=="d") {
+			date=_getInt(val,i_val,token.length,2);
+			if(date==null||(date<1)||(date>31)){return 0;}
+			i_val+=date.length;}
+		else if (token=="hh"||token=="h") {
+			hh=_getInt(val,i_val,token.length,2);
+			if(hh==null||(hh<1)||(hh>12)){return 0;}
+			i_val+=hh.length;}
+		else if (token=="HH"||token=="H") {
+			hh=_getInt(val,i_val,token.length,2);
+			if(hh==null||(hh<0)||(hh>23)){return 0;}
+			i_val+=hh.length;}
+		else if (token=="KK"||token=="K") {
+			hh=_getInt(val,i_val,token.length,2);
+			if(hh==null||(hh<0)||(hh>11)){return 0;}
+			i_val+=hh.length;}
+		else if (token=="kk"||token=="k") {
+			hh=_getInt(val,i_val,token.length,2);
+			if(hh==null||(hh<1)||(hh>24)){return 0;}
+			i_val+=hh.length;hh--;}
+		else if (token=="mm"||token=="m") {
+			mm=_getInt(val,i_val,token.length,2);
+			if(mm==null||(mm<0)||(mm>59)){return 0;}
+			i_val+=mm.length;}
+		else if (token=="ss"||token=="s") {
+			ss=_getInt(val,i_val,token.length,2);
+			if(ss==null||(ss<0)||(ss>59)){return 0;}
+			i_val+=ss.length;}
+		else if (token=="a") {
+			if (val.substring(i_val,i_val+2)=='<c:out value="${AmString}"/>') {ampm="AM";}
+			else if (val.substring(i_val,i_val+2)=='<c:out value="${PmString}"/>') {ampm="PM";}
+			else {return 0;}
+			i_val+=2;}
+		else {
+			if (val.substring(i_val,i_val+token.length)!=token) {return 0;}
+			else {i_val+=token.length;}
+			}
+		}
+	// If there are any trailing characters left in the value, it doesn't match
+	if (i_val != val.length) { return 0; }
+	// Is date valid for month?selectedampm.valueOf()
+	if (month==2) {
+		// Check for leap year
+		if ( ( (year%4==0)&&(year%100 != 0) ) || (year%400==0) ) { // leap year
+			if (date > 29){ return 0; }
+			}
+		else { if (date > 28) { return 0; } }
+		}
+	if ((month==4)||(month==6)||(month==9)||(month==11)) {
+		if (date > 30) { return 0; }
+		}
+	// Correct hours value
+	if (hh<12 && ampm=="PM") { hh=hh-0+12; }
+	else if (hh>11 && ampm=="AM") { hh-=12; }
+	var newdate=new Date(year,month-1,date,hh,mm,ss);
+	return newdate.getTime();
+	}
+
+// ------------------------------------------------------------------
+// parseDate( date_string [, prefer_euro_format] )
+//
+// This function takes a date string and tries to match it to a
+// number of possible date formats to get the value. It will try to
+// match against the following international formats, in this order:
+// y-M-d   MMM d, y   MMM d,y   y-MMM-d   d-MMM-y  MMM d
+// M/d/y   M-d-y      M.d.y     MMM-d     M/d      M-d
+// d/M/y   d-M-y      d.M.y     d-MMM     d/M      d-M
+// A second argument may be passed to instruct the method to search
+// for formats like d/M/y (european format) before M/d/y (American).
+// Returns a Date object("popup"+this.dt_current); or null if no patterns match.
+// ------------------------------------------------------------------
+function parseDate(val,format) 
+{
+		d=getDateFromFormat(val,format);
+		if (d != 0) 
+		{
+			return new Date(d);
+		}
+                return null;
+}
+
+
+function cal_error (str_message)
+{
+	alert (str_message);
+	return null;
+}
+
+</script> 
+
+
+

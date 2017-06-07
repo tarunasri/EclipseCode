@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: admin-tiles-defns.xml,v 1.7 2010/10/29 13:46:53 swaminathap Exp $ -->
+
+<!DOCTYPE tiles-definitions  PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="admin" path="/webclient/common/jsp/MainLayout.jsp">
+   	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+	 <put name="AccPanel" value=".accPanel.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+     <!--     <put name="Right" value=".right.controller"/> -->
+    </definition>
+
+    <definition name="adminPage" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/CompleteAdminPanel.jsp"/>
+    </definition>
+
+     <definition name="MibBrowserDef" extends="admin">
+    <put name="MainPage" value="/webclient/admin/jsp/MibBrowser.jsp"/>
+    </definition>
+
+   <definition name="adminpanel" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/AdminPanel.jsp"/>
+    </definition>
+
+ <definition name="auditTrailsPage" extends="admin">
+      <put name="MainPage" value="AuditTrailsPageDef"/>
+    </definition>
+
+    <definition name="AuditTrailsPageDef" path="/webclient/admin/jsp/listViewLayout.jsp">
+    <put name="PageIncludes"    value="/webclient/fault/jsp/listViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/admin/jsp/authAuditHeaderIncludes.jsp"/>
+    <put name="Toolbar" value="/webclient/admin/jsp/authAuditListHeader.jsp"/>
+    <put name="PageTraversal" value=".audit.pagetraversal"/>
+    <put name="StatusMessage" value="/webclient/admin/jsp/auditOperationStatus.jsp"/>
+    <put name="ListView" value="/webclient/admin/jsp/auditTrailsView.jsp"/>
+        </definition>
+
+	<definition name="auditDetailsPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/auditDetails.jsp"/>
+	</definition>
+<!-- ################################################# -->
+    <definition name="searchDef" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/fault/jsp/searchHeader.jsp"/>
+         <put name="Body" value=""/>
+         <put name="Core" value="searchComponentDef"/>
+         <put name="Footer" value="/webclient/admin/jsp/searchResults.jsp"/>
+    </definition>
+
+    <definition name="authAuditSearchDef" extends="admin">
+         <put name="MainPage" value="searchDef"/>
+    </definition>
+
+    <definition name="searchComponentDef" path="/webclient/common/jsp/SearchComponent.jsp">
+         <put name="Footer" value="/webclient/common/jsp/searchFooter.jsp"/>
+    </definition>
+<!-- ################################################# -->
+    <definition name=".audit.pagetraversal"  path="/webclient/common/jsp/PageNavigation.jsp" 
+               controllerClass="com.adventnet.nms.webclient.common.PageTraversalController">
+    </definition>
+
+    <definition name="error" extends="admin">
+         <put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+    </definition>
+
+    <definition name="message" extends="admin">
+         <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/>
+    </definition>
+
+    <definition name="commonredirect" extends="admin">
+         <put name="MainPage" value="/webclient/common/jsp/redirectPage.jsp"/>
+    </definition>
+
+    <definition name="adduser" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/AddUser.jsp"/>
+    </definition>
+
+    <definition name="addgroupDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/AddGroup.jsp"/>
+    </definition>
+
+    <definition name="modifyGroupDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/ModifyGroup.jsp"/>
+    </definition>
+
+    <definition name="usertomodify" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/UserToModify.jsp"/>
+    </definition>
+
+    <definition name="modifyprofile" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/ModifyUserProfile.jsp"/>
+    </definition>
+
+     <definition name="addmultiuser" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/AddMultiUser.jsp"/>
+    </definition>
+
+
+    <definition name="removeuser" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/RemoveUser.jsp"/>
+    </definition>
+
+   <definition name="groupAdminPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/groupAdmin.jsp"/>
+    </definition>
+
+      <definition name="customViewScopeDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/customViewScope.jsp"/>
+    </definition>
+
+    <definition name="sysAdminPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/sysAdmin.jsp"/>
+    </definition>
+    <definition name="MailServerConfig" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/MailServerSettings.jsp"/>
+    </definition>
+<!--
+    <definition name="groupsListdef" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/assignGroup.jsp"/>
+    </definition>
+-->
+    <!--    added above is for NMS4.7 SP2    -->
+
+   <definition name="serverDetailPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/serverDetails.jsp"/>
+   </definition>
+
+   <definition name="moduleDetailPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/moduleDetails.jsp"/>
+   </definition>
+
+	<definition name="backEndPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/backEndStatus.jsp"/>
+	</definition>
+
+        <definition name="webnmsDetailsPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/webnmsDetails.jsp"/>
+	</definition>
+
+
+   	<definition name="schedulerPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/schedulerStatus.jsp"/>
+	</definition>
+
+	<definition name="portPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/portStatus.jsp"/>
+	</definition>
+
+	<definition name="frontEndPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/frontEndStatus.jsp"/>
+	</definition>
+
+	<definition name="clientPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/clientStatus.jsp"/>
+	</definition>
+
+	<definition name="discPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/discStatus.jsp"/>
+	</definition>
+
+	<definition name="faultPage" extends="admin">
+		<put name="MainPage" value="/webclient/admin/jsp/faultStatus.jsp"/>
+	</definition>
+
+    <definition name="perfmodule" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/perfInput.jsp"/>
+    </definition>
+
+   	<definition name="perfStatsPage" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/perfStatistics.jsp"/>
+     </definition>
+	
+	<definition name="shutDownPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/shutDown.jsp"/>
+    </definition>
+
+	<definition name="resyncne" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/resyncne.jsp"/>
+    </definition>
+
+	<definition name="resyncnewithbackup" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/resyncnebackup.jsp"/>
+    </definition>
+
+ 	<definition name="backup" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/backupdata.jsp"/>
+    </definition>
+
+   <definition name="logFiles" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/serverLogs.jsp"/>
+    </definition>
+
+    <definition name="userAdminPage" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/userAdmin.jsp"/>
+    </definition>
+
+    <!-- MulitThread EA Processing -->
+    <definition name="ViewMTAPPage" extends="admin">
+	    <put name="MainPage" value="/webclient/admin/jsp/RTAMultiThreadEAProcessing.jsp"/>
+    </definition>
+    <!-- End of  MulitThread EA Processing -->
+
+    <definition name="trapParsers" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/trapParserConfig.jsp"/>
+    </definition>
+
+    <definition name="loadParsers" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/loadTrapParsers.jsp"/>
+    </definition>
+
+    <definition name="trapParsersForm" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/trapParserForm.jsp"/>
+    </definition>
+    <!-- Event Parser related mappings Start -->
+    <definition name="eventParserList" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/EventParserList.jsp"/>
+    </definition>
+                                              
+    <definition name="eventParserConfiguration" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/EventParserConfigurationForm.jsp"/>
+    </definition>
+
+    <definition name="eventParserFromFile" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/EventParserFileLoading.jsp"/>
+    </definition>
+
+<!-- Event Parser related mappings End -->
+
+
+    <definition name="SuppressActionForm" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/suppressActionForm.jsp"/>
+    </definition>
+
+    <definition name="DisplayEventFiltersList" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/EventFilterMainUI.jsp"/>
+    </definition>
+
+    <definition name="DisplayAlertFiltersList" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/AlertFilterMainUI.jsp"/>
+    </definition>
+
+    <definition name="DisplayNotificationsList" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/DisplayNotificationMainUI.jsp"/>
+    </definition>
+
+    <definition name="EventFilter" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/eventfilter.jsp"/>
+    </definition>
+
+    <definition name="AlertFilter" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/alertfilter.jsp"/>
+    </definition>
+
+    <definition name="SuppressActionDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/suppressActionForm.jsp"/>
+    </definition>
+    
+    <definition name="RunCmdActionDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/runCommandActionForm.jsp"/>
+    </definition>
+
+    <definition name="CustomFilterActionDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/customFilterActionForm.jsp"/>
+    </definition>
+
+    <definition name="SendTrapActionDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/sendTrapActionForm.jsp"/>
+    </definition>
+
+    <definition name="SendEMailActionDef" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/sendEmailActionForm.jsp"/>
+    </definition>
+
+    <definition name="EventFilterForm" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/InvokeEventFilterForm.jsp"/>
+    </definition>
+
+    <definition name="AlertFilterForm" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/InvokeAlertFilterForm.jsp"/>
+    </definition>
+
+    <definition name="SaveEventFilter" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/SaveEventFilterForm.jsp"/>
+    </definition>
+
+    <definition name="SaveAlertFilter" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/SaveAlertFilterForm.jsp"/>
+    </definition>
+
+    <definition name="LoadEventFilter" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/LoadEventFilterForm.jsp"/>
+    </definition>
+
+    <definition name="filterActionResult" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/operationResult.jsp"/>
+    </definition>
+	
+    <definition name="runtimeAdmin" extends="admin">
+         <put name="MainPage" value="/webclient/admin/jsp/runtimeAdmin.jsp"/>
+    </definition>
+	
+	<definition name="loggingForm" extends="admin">
+    	<put name="MainPage" value="/webclient/admin/jsp/loggingForm.jsp"/>
+	</definition>
+
+	<definition name="spyLogForm" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/LogsMonitor.jsp"/>
+        </definition>
+
+	<definition name="loggingConfig" extends="admin">
+    	<put name="MainPage" value="/webclient/admin/jsp/loggingConfig.jsp"/>
+        </definition>
+	
+	<definition name="log4jForm" extends="admin">
+	<put name="MainPage" value="/webclient/admin/jsp/Log4JLoggingForm.jsp"/>
+	</definition>
+	
+    <definition name="configParams" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/configureDiscParams.jsp"/>
+    </definition>
+ 
+    <definition name="rediscconfig" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/rediscoveryschedular.jsp"/>
+    </definition>
+
+
+    <definition name="criteriaBasedDiscovery" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/criteriaBasedDiscovery.jsp"/>
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>
+
+    <definition name="DisplayTaskManager" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/WebNMSManagementUI.jsp"/>
+    </definition>
+
+    <definition name="DisplayAvailableList" extends="admin">
+        <put name="MainPage" value="/webclient/admin/jsp/TerminateClient.jsp"/>
+    </definition>
+
+</tiles-definitions>
+

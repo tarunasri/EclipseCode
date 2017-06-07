@@ -1,0 +1,18 @@
+# snmp datatypes
+
+INTEGER=integer
+Integer32=integer
+Unsigned32=long
+Gauge=long
+Gauge32=long
+Counter=long
+Counter32=long
+Counter64=long
+TimeTicks=long
+OCTET STRING=string
+BITS=string
+OBJECT IDENTIFIER=string
+IpAddress=string
+Opaque=string
+DisplayString=string
+UINTEGER32=string

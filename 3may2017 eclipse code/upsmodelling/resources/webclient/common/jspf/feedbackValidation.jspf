@@ -1,0 +1,92 @@
+<%--$Id: feedbackValidation.jspf,v 1.1.2.1.4.1 2006/04/03 19:04:18 gnanasekar Exp $ --%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
+<script language="javascript">
+
+function isEmpty(text)
+{
+	if(text==null || text=="")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function checkValidation()
+{ 
+     //var email=document.instantForm.from-email.value;
+
+    var email=document.getElementById("from-email").value; 
+
+  var commentTemp = document.instantForm.Description.value;
+    
+  if(!emailCheck(email))
+   {
+        //document.instantForm.from-email.focus();
+        document.getElementById("from-email").focus();
+        return false;
+   }
+
+   var subj = document.instantForm.subject.value;
+  if(isEmpty(trimAll(subj)))
+  {
+      alert("<fmt:message key='webclient.common.feedback.subjectnull'/>");
+      document.instantForm.subject.value="";
+      document.instantForm.subject.focus();
+      return(false);
+  }
+
+  if(isEmpty(trimAll(commentTemp)))
+  {
+      alert("<fmt:message key='webclient.common.feedback.messagenull'/>");
+      document.instantForm.Description.value="";
+      document.instantForm.Description.focus();
+      return(false);
+  }
+  return(true);
+}
+
+function emailCheck (email) {
+var emailStr = email;
+var emailPat=/^(.+)@(.+)$/;
+
+var matchArray=emailStr.match(emailPat);
+
+if (matchArray==null) {
+alert("<fmt:message key='webclient.common.feedback.emailnull'/>");
+return false;
+}
+return true
+}
+
+
+function clearFields()
+{
+  document.instantForm.reset();
+}
+
+function focusTitle()
+{
+    document.instantForm.pageURIText.value=window.opener.location.href;
+    if(isEmpty(document.instantForm.About.value))
+    {
+        //document.instantForm.from-email.focus();
+        document.getElementById("from-email").focus();
+    }
+    else 
+    {
+        if(isEmpty(document.instantForm.Description.value))
+        {
+            document.instantForm.About.focus();
+        }
+        else 
+        { 
+            document.instantForm.Description.focus(); 
+        }
+    }
+}
+</script>

@@ -1,0 +1,115 @@
+<%-- $Id: alarmDetailsHeader.jspf,v 1.2 2007/09/14 10:43:06 gnanasekar Exp $ --%>
+<%--
+<table width="100%" class="pageHeaderStr" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+                <td width="15%" nowrap><h1>
+        <c:choose>
+        <c:when test='${empty mapProps.label}'>
+                <fmt:message key='webclient.map.view.header'><fmt:param value="${displayName}"/></fmt:message>
+        </c:when>
+        <c:otherwise>
+                <fmt:message key='webclient.map.view.header'><fmt:param value="${mapProps.label}"/></fmt:message>
+        </c:otherwise>
+        </c:choose></h1></td>
+
+        <td width="50%" align="left" nowrap class="boldText">[&nbsp;<fmt:message key='webclient.map.view.header.count'><fmt:param value="${objectsInViewCount}"/></fmt:message>&nbsp;]</td>  
+
+        <td>
+        <table class="headerInclude" width="10%" border="0" cellpadding="0" cellspacing="3">
+        <tr>
+            
+        <c:if test="${mapOperations == 'true'}">
+                <td align="left" nowrap><a class="menuText" href = "/map/MapCVAction.do?selectedTab=Maps&viewId=<c:out value='${selectedNode}'/>&ComplexSearchView=Map&searchAction=MapCVAction&actionToPerform=addMap&displayName=<c:out value='${displayName}'/>"/><fmt:message key='webclient.map.href.addmap' /></a></td>
+                <td width="10" align="center" class="textSmall">&nbsp;|</td>
+                <td nowrap>
+        </c:if>
+
+        <c:if test="${mapOperations == 'false'}">
+                <td nowrap align="center">
+        </c:if>
+
+        <a class="menuText" href = "/map/MapCVAction.do?selectedTab=Maps&ComplexSearchView=Map&OrNotSupported=true&searchAction=MapCVAction&actionToPerform=modifyMap&viewId=<c:out value='${selectedNode}'/>" ><fmt:message key='webclient.map.propsconfig.configure.map' /></a>
+
+        </td>
+
+        <c:if test="${mapOperations == 'true'}">
+                <td width="10" align="left" class="textSmall"> &nbsp;|</td>
+                <td nowrap><a class="menuText" href = "javascript:removeMapCV('<c:out value="${selectedNode}"/>')"><fmt:message key='webclient.map.href.deletemap' /></a></td>
+                <td width="10" align="left" class="textSmall"> &nbsp;|</td>
+                <td nowrap><a class="menuText" href = "/map/AddSymbolPage.do?selectedTab=Maps&mapName=<c:out value='${selectedNode}'/>"><fmt:message key='webclient.map.href.addsymbol' /></a></td>
+        </c:if>
+
+        <c:choose>
+        <c:when test="${linkRequired eq 'true'}">
+                <td width="10" align="left" class="textSmall"> &nbsp;|</td>
+                <td  nowrap><a class="menuText" href = "/map/AddLinkPage.do?selectedTab=Maps&mapName=<c:out value='${selectedNode}'/>"><fmt:message key='webclient.map.href.addlink' /></a></td>
+                <td nowrap class="menuText"> </td>
+        </c:when>
+        <c:otherwise>
+                <td nowrap class="menuText"> </td>
+        </c:otherwise>
+        </c:choose>	
+        </tr>
+        </table>
+        </td>
+        </tr>
+        </table>
+
+--%>
+
+<table width="100%" class="pageHeaderStr" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="15%" nowrap><h1>
+    <c:if test="${showTabOne == 'true'}">
+        <fmt:message key='webclient.fault.alarmdetails.tab.general.header'><fmt:param value="${entity}"/></fmt:message>
+    </c:if>
+
+    <c:if test="${showTabTwo == 'true'}">
+        <fmt:message key='webclient.fault.alarmdetails.tab.viewannotationandhistory.header'><fmt:param value="${entity}"/></fmt:message>
+    </c:if>
+
+    <c:if test="${showTabThree == 'true'}">
+        <fmt:message key='webclient.fault.alarmdetails.tab.relatedfailures.header'><fmt:param value="${entity}"/></fmt:message>
+    </c:if>
+    </td>
+
+    <td align="right">
+        <table class="headerInclude" width="10%" border="0" cellpadding="0" cellspacing="3">
+        <tr>
+        <td align="left" nowrap> 
+        <a class="class="menuText" " href="javascript:eventsFromAlarmDetails('<c:out value="${entity}"/>')"><fmt:message key='webclient.fault.alarmdetails.operations.events'/></a> </td> <td width="10" align="left" class="textSmall"> &nbsp;|</td> <td>
+        <c:choose>
+           <c:when test="${isUserPermittedToPickUp == true}">
+              <c:choose>
+                <c:when test="${ownerName == '-'}">
+                  <c:choose>
+                     <c:when test="${isAssign == 'true'}">
+                       <a href="javascript:openWindow('/fault/AlarmDetails.do?method=toAssignAlert&entity=<c:out value="${entity}"/>&userName=root','annotate','460','185')"><fmt:message key='webclient.fault.alarmdetails.operations.assign'/></a> </td> <td width="10" align="left" class="textSmall"> &nbsp;|</td> <td>
+                     </c:when>
+                     <c:otherwise>
+                        <a href="/fault/AlarmDetails.do?method=alertPickUp&entity=<c:out value='${entity}'/>"><fmt:message key='webclient.fault.alarmdetails.operations.pickup'/></a> </td> <td width="10" align="left" class="textSmall"> &nbsp;|</td> <td>
+                     </c:otherwise>
+                  </c:choose>
+                </c:when>
+                <c:otherwise>
+                   <a href="/fault/AlarmDetails.do?method=alertUnPick&entity=<c:out value='${entity}'/>"><fmt:message key='webclient.fault.alarmdetails.operations.unpick'/></a> </td> <td width="10" align="left" class="textSmall"> &nbsp;|</td> <td>
+                </c:otherwise>
+              </c:choose>
+           </c:when>
+        </c:choose>
+
+        <c:if test="${isUserPermittedToClearAlert == true}">
+           <c:if test="${severity != 'Clear'}"> 
+              <a href="/fault/AlarmDetails.do?method=clearAlert&entity=<c:out value='${entity}'/>"><fmt:message key='webclient.fault.alarmdetails.operations.clear'/></a> </td> <td width="10" align="left" class="textSmall"> &nbsp;|</td> <td>
+           </c:if>
+        </c:if>
+
+        <c:if test="${isUserPermittedToSetAnnotation == true}">
+           <a href="javascript:openWindow('/fault/AlarmDetails.do?method=doAnnotate&entity=<c:out value="${entity}"/>&userName=root','annotate','450','188')"><fmt:message key='webclient.fault.alarmdetails.operations.annotate'/></a> </td>
+        </c:if>
+      </td>
+   </tr>
+</table>
+
+
+</td></tr></table>

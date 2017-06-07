@@ -1,0 +1,18 @@
+<%-- $Id: classicMapSymbolRenderer.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+
+        <td BGCOLOR=RED><table border=0  CELLPADING=0 CELLSPACING=0 WIDTH=100% bgcolor=#ffffff>
+<tr> <td WIDTH=60 HEIGHT=60 VALIGN=CENTER><CENTER>
+
+         <c:choose>
+        	<c:when test="${props.link != null}"> 
+           <A HREF="<c:out value='${props.link}'/>"><IMG SRC="../images/<c:out value='${props.iconName}'/>" BORDER="NO"></A>
+           </c:when>  
+
+           <c:otherwise>
+                <IMG SRC="../images/<c:out value='${props.iconName}'/>" BORDER="NO">
+          </c:otherwise>
+         </c:choose>
+        </td><td><A HREF=javascript:void(0) onClick=popUp('arMenu"+menuNameCount+"',event)><IMG SRC=../images/tri.png hspace=2 align=right BORDER=NO></A></td></tr>
+<tr><td colspan =2 BGCOLOR="<c:out value='${props.bgColor}'/>" class="text"><A HREF="/map/mapSymbolDetails.do?name=<c:out value='${props.name}'/>&mapName=<c:out value='${props.mapName}'/>"><CENTER> <c:out value='${props["label"]}'/></CENTER></A></td></tr>
+
+</table></td>		

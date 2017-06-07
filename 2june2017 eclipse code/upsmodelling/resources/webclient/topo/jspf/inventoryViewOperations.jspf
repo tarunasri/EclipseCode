@@ -1,0 +1,656 @@
+<%-- $Id: inventoryViewOperations.jspf,v 1.3 2010/10/29 13:47:16 swaminathap Exp $ --%>
+
+<script language="javascript">
+
+
+function performOperation1(url)
+{
+      
+    if((url.indexOf("<fmt:message key='webclient.topo.actions.delete.check'/>")!=-1) || (url.indexOf("<fmt:message key='webclient.topo.actions.symbol.delete.check'/>")!=-1) || (url.indexOf("<fmt:message key='webclient.topo.actions.symbolobject.delete.check'/>")!=-1))
+    {
+       var con = confirm('<fmt:message key='webclient.topo.operations.deleteobject.confirmation'/>');
+       if(con != true)
+       {
+         return;
+       }
+       else
+       {
+          location.href = url;
+       } 
+    }
+    else
+    {
+  	  location.href = url;
+  	}
+}
+
+function selected(index,element)
+{    
+    var url =element.options[index].value;
+    var textval = element.options[index].text; 
+    //var eid = document.getElementById('menulist');
+
+    if(textval.indexOf("<fmt:message key='webclient.common.menulist.option.delete'/>")!=-1)
+    {
+     var con = confirm('<fmt:message key="webclient.common.menulist.confirm.delete"/> ');
+      if ( con != true)
+      {
+          element.value="select";
+          return;
+      }
+    }
+    if(url != 'select' && url !='separator')
+    {
+         location.href = element.options[index].value;
+         element.value="select";
+    }
+    else
+    {
+        if(index != '0')
+        {
+            element.value="select";
+            return;
+        }
+        //element.value="select";
+    }
+}
+
+function showAlarms(url)
+{
+	var listViewForm = document.listView;
+	var len = listViewForm.elements.length;
+	var selectedObjects = '';
+	for ( var i=0; i < len; i++)
+		{
+			formElement = listViewForm.elements[i];
+			if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+				{
+					if(selectedObjects == '')
+						{
+							selectedObjects = formElement.value;
+						}
+					else
+						{
+							selectedObjects += ',' + formElement.value;
+						}
+				}
+		}
+	if(selectedObjects == '')
+	{
+		alert('<fmt:message key="webclient.topo.operations.viewalarms.selectobject"/>');
+		return;
+	}
+ url = url + "&objName=" + selectedObjects;
+window.open(url,"_top");
+}
+
+function showEvents(url)
+{
+	var listViewForm = document.listView;
+	var len = listViewForm.elements.length;
+	var selectedEntity = '';
+	for ( var i=0; i < len; i++)
+		{
+			formElement = listViewForm.elements[i];
+			if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+				{
+					if(selectedEntity == '')
+						{
+							selectedEntity = formElement.value;
+						}
+					else
+						{
+							selectedEntity += ',' + formElement.value;
+						}
+				}
+		}
+	
+	if(selectedEntity == '')
+		{
+			alert('<fmt:message key="webclient.topo.operations.viewevents.selectobject"/>');
+			return;
+		}
+ url = url + "&objName=" + selectedEntity;
+window.open(url,"_top");
+}
+
+
+function performOperation(url)
+{
+  var listViewForm = document.listView;
+	var len = listViewForm.elements.length;
+	var selectedEntity = '';
+	for ( var i=0; i < len; i++)
+		{
+			formElement = listViewForm.elements[i];
+			if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+				{
+					if(selectedEntity == '')
+						{
+							selectedEntity = formElement.value;
+						}
+					else
+						{
+							selectedEntity += ',' + formElement.value;
+						}
+				}
+		}
+	
+	if(selectedEntity == '')
+		{
+			alert('<fmt:message key="webclient.topo.operations.performoperation.selectobject"/>');
+			return;
+		}
+
+ url = url + "&keys=" + selectedEntity;
+ var viewId=document.pagexform.viewId.value;
+ var displayName= document.pagexform.encodedDispName.value;
+ var isAscending= document.pagexform.isAscending.value;
+ var from= document.pagexform.FROM_INDEX.value; 
+ var page= document.pagexform.PAGE_NUMBER.value;
+
+ url=url+"&viewId="+viewId+"&displayName="+ displayName+"&isAscending="+isAscending+"&FROM_INDEX="+from+"&PAGE_NUMBER="+page;
+
+if(document.pagexform.orderByColumn.value!="")
+{
+ var orderByColumn= document.pagexform.orderByColumn.value;
+	url = url + "&orderByColumn=" + orderByColumn;
+} 
+	location.href = url;
+}
+
+
+function deleteObject(url)
+{
+    var listViewForm = document.listView;
+	var len = listViewForm.elements.length;
+	var selectedEntity = '';
+	for ( var i=0; i < len; i++)
+		{
+			formElement = listViewForm.elements[i];
+			if (formElement.type == "checkbox" && formElement.name == 'rowSelection' && formElement.checked == true)
+				{
+					if(selectedEntity == '')
+						{
+							selectedEntity = formElement.value;
+						}
+					else
+						{
+							selectedEntity += ',' + formElement.value;
+						}
+				}
+		}
+	
+	if(selectedEntity == '')
+		{
+			alert('<fmt:message key="webclient.topo.operations.performoperation.selectobject"/>');
+			return;
+		}
+
+	var con = confirm('<fmt:message key="webclient.topo.operations.deleteobject.confirmation"/>');
+	if ( con != true)
+		{
+			return;
+		}
+	else
+		{
+
+            url = url + "&keys=" + selectedEntity;
+            var viewId=document.pagexform.viewId.value;
+            var displayName= document.pagexform.encodedDispName.value;
+            var isAscending= document.pagexform.isAscending.value;
+            var from= document.pagexform.FROM_INDEX.value; 
+            var page= document.pagexform.PAGE_NUMBER.value;
+
+            url=url+"&viewId="+viewId+"&displayName="+ displayName+"&isAscending="+isAscending+"&FROM_INDEX="+from+"&PAGE_NUMBER="+page;
+
+            if(document.pagexform.orderByColumn.value!="")
+                {
+                    var orderByColumn= document.pagexform.orderByColumn.value;
+                    url = url + "&orderByColumn=" + orderByColumn;
+                } 
+            location.href = url;
+        }
+}
+
+
+
+
+function reloadInventoryList(wndHndl)
+{
+	document.pagexform.submit();
+	//	wndHndl.close();
+}
+
+function removeTopoCV(viewId)
+{
+  if (viewId == 'Network Database')
+  {
+      alert("<fmt:message key='webclient.topo.customview.delete.message'/>");
+  }
+  else
+  {
+      var con = confirm('<fmt:message key="webclient.topo.customview.delete.confirmation"/>');
+      if ( con != true)
+      {
+          return;
+      }
+      else
+      {
+          url = "/topo/removeTopoCV.do?viewId=" +viewId;
+          location.href = url;
+      }
+  }
+}
+
+function deleteObjectForMO(obj_id)
+{
+ 
+  var con = confirm('<fmt:message key='webclient.topo.operations.deleteobject.confirmation'/>');
+  if(con != true)
+  {
+    return;
+  }
+  else
+  {
+    location.href="/topo/deleteObject.do?keys="+obj_id;
+  } 
+}
+
+function sendDataForUpdateMO()
+{
+  
+  document.getElementById("devicedetail").innerHTML="<div style='text-align:center;padding:10px;height:180px'><img src='/webclient/common/images/LoadingTC.gif' style='margin-top:74px'/></div>";
+  
+  var name = document.getElementById("moName").value;
+  var netmask = document.getElementById("netmask").value;
+  var displayName = document.getElementById("displayName").value;
+  var uClass = document.getElementById("uClass").value;
+  var tester = document.getElementById("tester").value;
+  var failureThreshold = document.getElementById("failureThreshold").value;
+  var pollInterval = document.getElementById("pollInterval").value;
+  var type = document.getElementById("motype").value;
+  var classname = document.getElementById("className1").value;
+
+  var xmlHttp;
+  var id=5;
+  var managed_var;
+  var managed_val;
+  
+  var discover_var;
+  var discover_val;
+  
+  var element2 = document.getElementById("discover");
+  if (element2 == null)
+  {
+      discover_var = "discover";
+  }
+  else
+  {
+      discover_var = element2.name;
+  }
+  
+  var radios_discover = document.getElementsByTagName('input');
+     for (var i=0; i<radios_discover.length; i++) 
+     {
+                var input = radios_discover[i];    
+                if (input.type == 'radio' && input.name == discover_var && input.checked) {                          
+                        discover_val = input.value;
+                        break;
+                }
+      }
+      
+      
+  var element = document.getElementById("managed");
+  
+   if (element == null) 
+   {
+        managed_var = "managed";
+   } 
+   else 
+   {
+        managed_var = element.name;     
+   }
+  
+    var radios_managed = document.getElementsByTagName('input');
+     for (var i=0; i<radios_managed.length; i++) 
+     {
+                var input = radios_managed[i];    
+                if (input.type == 'radio' && input.name == managed_var && input.checked) {                          
+                        managed_val = input.value;
+                        break;
+                }
+      }
+      
+   var statusPollEnabled_var;
+   var statusPollEnabled_val;
+   var element1 = document.getElementById("statusPollEnabled");
+   
+   if (element1 == null) 
+   {
+        statusPollEnabled_var = "statusPollEnabled";
+   } 
+   else 
+   {
+        statusPollEnabled_var = element1.name;     
+   }
+   
+   var radios_statusPollEnabled = document.getElementsByTagName('input');
+     for (var i=0; i<radios_statusPollEnabled.length; i++) 
+     {
+                var input = radios_statusPollEnabled[i];    
+                if (input.type == 'radio' && input.name == statusPollEnabled_var && input.checked) {                          
+                        statusPollEnabled_val = input.value;
+                        break;
+                }
+      }
+   
+  
+  try
+  {
+     
+    // Firefox, Opera 8.0+, Safari
+    xmlHttp=new XMLHttpRequest();    
+  }
+  catch (e)
+  {
+    // Internet Explorer
+    try
+    {
+      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+    try
+      {
+      xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    catch (e)
+      {
+      alert('<fmt:message key='webclient.browser.ajax.notsupported'/>');
+      return false;
+      }
+    }
+  }
+    
+  if(displayName == "")
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.check.displayname'/>');
+     return;
+  }
+  if(uClass == "")
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.check.uclass'/>');
+     return;
+  }
+  if(tester == "")
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.check.tester'/>');
+     return;
+  }
+  
+  if(failureThreshold == "")
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.check.failurethreshold'/>');
+     return;
+  }
+  if(pollInterval == "")
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.check.pollinterval'/>');
+     return;
+  }
+    
+  
+  if(failureThreshold < 0)
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.checkforzero.failurethreshold'/>');
+     return;
+  }
+  
+  if(pollInterval < 0)
+  {
+     alert('<fmt:message key='webclient.topo.objectdetails.update.checkforzero.pollinterval'/>');
+     return;
+  }
+  
+  xmlHttp.onreadystatechange=function()
+  {
+    if(xmlHttp.readyState==4)
+    {
+      
+      
+       if(classname == 'Network')
+       {
+          if(discover_val == 'true')
+          {
+             document.getElementById("discover_default").innerHTML = document.getElementById("discover_true").innerHTML;
+          }
+          else
+          {
+             document.getElementById("discover_default").innerHTML = document.getElementById("discover_false").innerHTML;
+          }
+       }
+       
+       if(managed_val == 'true')
+       {
+          
+          document.getElementById("managed_default").innerHTML = document.getElementById("managed_true").innerHTML;
+       }
+       else
+       {
+         
+          document.getElementById("managed_default").innerHTML = document.getElementById("managed_false").innerHTML;
+       }
+       
+        document.getElementById("devicedetail").innerHTML = xmlHttp.responseText;
+        document.getElementById('edittoggle').innerHTML = document.getElementById('edittoggle1').innerHTML;
+    }
+  };
+  
+  var url="/topo/MOUpdateAction.do?moName="+name+"&displayName="+displayName+"&managed="+managed_val+"&userclass="+uClass+"&tester="+tester+"&pollEnabled="+statusPollEnabled_val+"&failurethreshold="+failureThreshold+"&pollinterval="+pollInterval+"&netmask="+netmask+"&moType="+type+"&discover="+discover_val+"&className="+classname+"&requestId="+id;
+  xmlHttp.open("POST",url,true);
+  xmlHttp.send(null);
+  
+  var edit_id = document.getElementById("devicedetail_edit");
+  var detail_id = document.getElementById("devicedetail");
+  
+ 
+  edit_id.style.display="none";
+  detail_id.style.display="";
+ 
+}
+
+
+
+function performanceMonitorsRequest(name,classname,category,type,snmpcheck,routercheck,instance,refreshperfmonitors)
+{
+  if(refreshperfmonitors == 'true')
+  {
+    document.getElementById("cpuUtil").innerHTML="<img src='/webclient/common/images/LoadingTC.gif'/>";
+    document.getElementById("memUtil").innerHTML="<img src='/webclient/common/images/LoadingTC.gif'/>";
+    document.getElementById("diskUtil").innerHTML="<img src='/webclient/common/images/LoadingTC.gif'/>";
+  }
+  var xmlHttp;
+  var requestId=216;
+  
+  if(category == "")
+  {
+    
+    category = null;
+  }
+  
+  if(classname == 'Node' || classname == 'Network' || (type == 'Interface' && snmpcheck =='false'))
+  {
+     
+     return;
+  }
+   
+  if( ((type == 'Interface' && snmpcheck =='true') || type == 'Port') && refreshperfmonitors == 'false' )
+  {
+    moGraphsRequest(name,type,snmpcheck,category,classname,requestId,routercheck,instance);
+  } 
+  
+  try
+  {
+     
+    // Firefox, Opera 8.0+, Safari
+    xmlHttp=new XMLHttpRequest();    
+  }
+  catch (e)
+  {
+    // Internet Explorer
+    try
+    {
+      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+    try
+      {
+        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    catch (e)
+      {
+        alert('<fmt:message key='webclient.browser.ajax.notsupported'/>');
+      return false;
+      }
+    }
+  }
+  
+  xmlHttp.onreadystatechange=function()
+  {
+    if(xmlHttp.readyState==4)
+    {
+       if(document.getElementById("perfmonitors") != null)
+       { 
+         document.getElementById("perfmonitors").innerHTML = xmlHttp.responseText;
+       }
+       if(refreshperfmonitors == 'false')
+       {
+         moGraphsRequest(name,type,snmpcheck,category,classname,requestId,routercheck,instance);
+       }
+
+    }
+  };
+  
+  var url="/topo/objectdetails.do?method=getPerformanceMonitors"+"&name="+name+"&classname="+classname+"&category="+category+"&requestId="+requestId;
+  xmlHttp.open("POST",url,true);
+  
+  xmlHttp.send(null);
+    
+}
+
+function moGraphsRequest(name,type,snmpcheck,category,classname,requestId,routercheck,instance)
+{
+  
+  var xmlHttp;
+   
+  try
+  {
+     
+    // Firefox, Opera 8.0+, Safari
+    xmlHttp=new XMLHttpRequest();    
+  }
+  catch (e)
+  {
+    // Internet Explorer
+    try
+    {
+      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+    try
+      {
+        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    catch (e)
+      {
+        alert('<fmt:message key='webclient.browser.ajax.notsupported'/>');
+      return false;
+      }
+    }
+  }
+  
+  xmlHttp.onreadystatechange=function()
+  {
+    if(xmlHttp.readyState==4)
+    {
+       if(routercheck == 'true')
+       {
+         document.getElementById("routgrphs").innerHTML = xmlHttp.responseText;
+       }
+       else if(type == 'Port')
+       {
+         document.getElementById("prtgrphs").innerHTML = xmlHttp.responseText;
+       }
+       else
+       {
+         if(document.getElementById("mogrphs") != null)
+         {
+           document.getElementById("mogrphs").innerHTML = xmlHttp.responseText;
+         }
+       }
+       if(type != 'Interface' && type != 'Port')
+       {
+         interfaceTableRequest(name,type,snmpcheck,category,classname,requestId,routercheck,instance);
+       }
+    }
+  };
+
+  var url="/topo/objectdetails.do?method=getMOGraphs"+"&name="+name+"&type="+type+"&isRouter="+routercheck+"&classname="+classname+"&category="+category+"&requestId="+requestId+"&instance="+instance;
+  xmlHttp.open("POST",url,true);
+  xmlHttp.send(null); 
+}
+
+function interfaceTableRequest(name,type,snmpcheck,category,classname,requestId,routercheck,instance)
+{
+  
+  var xmlHttp;
+  
+  
+  try
+  {
+     
+    // Firefox, Opera 8.0+, Safari
+    xmlHttp=new XMLHttpRequest();    
+  }
+  catch (e)
+  {
+    // Internet Explorer
+    try
+    {
+      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+    catch (e)
+    {
+    try
+      {
+        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    catch (e)
+      {
+        alert('<fmt:message key='webclient.browser.ajax.notsupported'/>');
+      return false;
+      }
+    }
+  }
+  
+  xmlHttp.onreadystatechange=function()
+  {
+    if(xmlHttp.readyState==4)
+    {
+       document.getElementById("interfacetable").innerHTML = xmlHttp.responseText;
+       
+    }
+  };
+
+  var url="/topo/objectdetails.do?method=getInterfaceTableList"+"&name="+name+"&type="+type+"&isSnmp="+snmpcheck+"&classname="+classname+"&category="+category+"&requestId="+requestId;
+  xmlHttp.open("POST",url,true);
+  xmlHttp.send(null); 
+}
+
+
+
+
+</script>

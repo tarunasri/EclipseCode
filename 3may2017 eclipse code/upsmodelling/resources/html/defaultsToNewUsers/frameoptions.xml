@@ -1,0 +1,37 @@
+<!DOCTYPE PANELMENUBAR SYSTEM "panelmenubar.dtd">
+<PANELMENUBAR name="ALERTMENU">
+	<MENU name = "Frame Options"
+		shortcut_key = "O">
+		<MENU-ITEM name = "Back"
+			     action_command = "Back"
+			     shortcut_key = "B"
+      	         accelerator_modifier="ALT"
+            	 accelerator_key="B">
+		</MENU-ITEM>
+		<MENU-ITEM name = "Forward"
+			     action_command = "Forward"
+			     shortcut_key = "F"
+      	         accelerator_modifier="ALT"
+            	 accelerator_key="F">
+		</MENU-ITEM>
+		<MENU-ITEM name = "Detach"
+			     action_command = "Detach"
+			     shortcut_key = "D"
+      	         accelerator_modifier="ALT"
+            	 accelerator_key="D">
+		</MENU-ITEM>
+
+		<MENU-ITEM name = "Close Frame"
+			     action_command = "CloseFrame"
+			     shortcut_key = "c"
+      	         accelerator_modifier="ALT"
+            	 accelerator_key="c">
+		</MENU-ITEM>
+
+
+	</MENU>
+
+</PANELMENUBAR>
+
+
+

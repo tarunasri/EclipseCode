@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: fault-tiles-defn.xml,v 1.2 2010/10/29 13:47:07 swaminathap Exp $ -->
+
+ <!DOCTYPE tiles-definitions  PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="fault" path="/webclient/common/jsp/MainLayout.jsp">
+	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+	 <put name="AccPanel" value=".accPanel.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+     <!--    <put name="Right" value=".right.controller"/> -->
+    </definition>
+
+    <definition name="NetworkEventPage" extends="fault">
+      <put name="MainPage" value="EventPageDef"/>
+    </definition>
+
+    <definition name="EventPageDef" path="/webclient/common/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/fault/jsp/listViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/fault/jsp/eventHeaderInclude.jsp"/>
+    <put name="Toolbar" value="/webclient/fault/jsp/eventListHeader.jsp"/>
+    <put name="PageTraversal" value=".component.pagetraversal"/>
+    <put name="StatusMessage" value="/webclient/fault/jsp/listViewStatus.jsp"/>
+    <put name="ListView" value="/webclient/fault/jsp/eventList.jsp"/>
+    </definition>
+
+
+    <definition name="NetworkAlarmPage" extends="fault">
+      <put name="MainPage" value="AlarmPageDef"/>
+    </definition>
+
+    <definition name="AlarmPageDef" path="/webclient/common/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/fault/jsp/listViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/fault/jsp/alarmHeaderInclude.jsp"/>
+    <put name="Toolbar" value="/webclient/fault/jsp/alarmListHeader.jsp"/>
+    <put name="PageTraversal" value=".component.pagetraversal"/>
+    <put name="StatusMessage" value="/webclient/fault/jsp/listViewStatus.jsp"/>
+    <put name="ListView" value="/webclient/fault/jsp/alarmList.jsp"/>
+    </definition>
+
+    <definition name=".component.pagetraversal" path="/webclient/common/jsp/PageNavigation.jsp" controllerClass="com.adventnet.nms.webclient.common.PageTraversalController">
+    </definition>
+
+    <definition name="eventPage" extends="fault">
+         <put name="MainPage" value="/webclient/fault/jsp/networkEvent.jsp"/>
+    </definition>
+
+    <definition name="alarmPage" extends="fault">
+         <put name="MainPage" value="/webclient/fault/jsp/networkAlarm.jsp"/>
+    </definition>
+
+    <definition name="eventCVForm" extends="fault">
+         <put name="MainPage" value="/webclient/fault/jsp/eventCvForm.jsp"/>
+    </definition>
+
+    <definition name="alarmCVForm" extends="fault">
+         <put name="MainPage" value="/webclient/fault/jsp/alarmCvForm.jsp"/>
+    </definition>
+
+    <definition name="eventdetailsPage" extends="fault">
+        <put name="MainPage" value="/webclient/fault/jsp/eventDetails.jsp"/>
+    </definition>
+
+    <definition name="alarmdetailsPage" extends="fault">
+        <put name="MainPage" value="/webclient/fault/jsp/alarmDetails.jsp"/>
+    </definition>
+
+    <definition name="responsePageDef" extends="fault">
+       <put name="MainPage" value="/webclient/fault/jsp/operationResponse.jsp"/>
+    </definition>
+
+    <definition name="error" extends="fault">
+        <put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+    </definition>
+
+    <definition name="message" extends="fault">
+        <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/>
+    </definition>
+
+    <definition name="searchDef" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/fault/jsp/searchHeader.jsp"/>
+         <put name="Body" value=""/>
+         <put name="Core" value="searchComponentDef"/>
+         <put name="Footer" value="/webclient/fault/jsp/searchResults.jsp"/>
+    </definition>
+
+    <definition name="searchComponentDef" path="/webclient/common/jsp/SearchComponent.jsp">
+         <put name="Footer" value="/webclient/common/jsp/searchFooter.jsp"/>
+    </definition>
+
+    <definition name="faultSearchDef" extends="fault">
+         <put name="MainPage" value="searchDef"/>
+    </definition>
+          <definition name="fwdoperation" extends="fault">
+ 	         <put name="MainPage" value="/webclient/fault/jsp/reDirect.jsp"/>
+ 	         </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>
+
+    <definition name=".right.controller" path="/webclient/common/jsp/rightPanelList.jsp" 
+    controllerClass ="com.adventnet.nms.webclient.home.RightPanelController">
+    </definition>
+
+</tiles-definitions>

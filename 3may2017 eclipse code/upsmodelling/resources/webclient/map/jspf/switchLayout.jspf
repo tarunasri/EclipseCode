@@ -1,0 +1,7 @@
+<%-- $Id: switchLayout.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+
+       <c:forEach var="props" items="${objectsInView}" varStatus="status" >
+          <TR>
+           <%@include file="/webclient/map/jspf/mapSymbolRenderer.jspf"%>
+          </TR>
+        </c:forEach>

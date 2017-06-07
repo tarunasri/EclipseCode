@@ -1,0 +1,39 @@
+<%--  $Id: UserToModifyFunctions.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<script language="javascript">
+
+//Function to validate user name
+function ValidateUserName()
+{
+    if(document.UserToModifyForm.userName.value == "")
+    {
+        alert("<fmt:message key='webclient.admin.adduser.validation.username.empty'/>");
+        document.UserToModifyForm.userName.focus();
+        return false;
+    }
+    var username = document.UserToModifyForm.userName.value;
+    for(var i=0;i<username.length;i++)
+    {
+        var charcode = username.charCodeAt(i);
+        if(charcode <33 || charcode>126)
+        {
+            alert("Invalid character(s) present in username");
+            document.UserToModifyForm.userName.focus();
+            return false;
+        }
+    }
+    return true;
+
+}
+
+//Function to validate the form before submit
+function Validate()
+{
+    if(!ValidateUserName())
+    {
+        return false;
+    }
+    return true;
+}
+
+</script>

@@ -1,0 +1,807 @@
+<!-- $Id: addPollingObjects.jspf,v 1.2 2010/10/29 13:47:13 swaminathap Exp $ -->
+
+<script>
+
+
+
+function addpolledData()
+{
+    var returnType = false;
+    var oidData = trimAll(document.AddPollingObject.oid.value);
+    if(oidData == "")
+    {
+         alert('<fmt:message key="webclient.perf.pollingobj.oid.error"/>');
+         return returnType;
+    }
+    document.AddPollingObject.oid.value = oidData;
+
+    var polledDataName = trimAll(document.AddPollingObject.name.value);
+    if(polledDataName == "")
+    {
+         alert('<fmt:message key="webclient.perf.pollingobj.name.error"/>');
+         return returnType;
+    }
+    document.AddPollingObject.name.value = polledDataName;
+
+    var isExist = daob.containsTable(oidData);
+    if(isExist)
+    {
+        alert('<fmt:message key="webclient.perf.pollingobj.oid.exists"/>');
+        return returnType;
+    }
+    
+     var num = trimAll(document.AddPollingObject.interval.value);
+        if(num != "")
+        {        
+            checkNum = parseInt(num);
+            if(isNaN(checkNum) || checkNum != num )
+            {
+                alert('<fmt:message key="webclient.perf.pollingobj.interval.error"/>');
+                document.AddPollingObject.interval.focus();
+                return returnType;
+            }   
+            document.AddPollingObject.interval.value = num;
+        }
+    
+    var pdElements = new Array( "oid", "isMultiplePolledData", "protocol", 
+                                "interval", "Threshold", "StoreData", "statsDataTableName", 
+                                "stringDataTableName", "failureThreshold", "saveAbsolutes", 
+                                "timeAvg", "Active","savePollCount", "saveOnThreshold","name");
+
+    var pdLen = pdElements.length;
+
+    //var i=0;
+    var polledDataArray=new Array(pdLen+1);
+    for (var j=0; j <=pdElements.length; j++)
+    {
+        polledDataArray[j]=new Array(2);
+    }
+
+    var len = document.AddPollingObject.ThresholdList.options.length;
+    var thresNames = "";
+    for(var k=0; k<len; k++)
+    {
+        if(document.AddPollingObject.ThresholdList.options[k].selected == true)
+        {
+             thresNames = thresNames + document.AddPollingObject.ThresholdList.options[k].value + "|";
+        }
+    }
+
+    for (var i=0; i < pdElements.length; i++)
+    {
+        var tempName = eval("document.AddPollingObject."+pdElements[i]);
+        polledDataArray[i][0] = tempName.name;
+        polledDataArray[i][1] = tempName.value;
+    }
+    polledDataArray[pdLen][0] = document.AddPollingObject.ThresholdList.name;
+    polledDataArray[pdLen][1] = thresNames;
+
+   //daob.addRowsForTable(polledDataName,polledDataArray);
+   daob.addRowsForTable(oidData,polledDataArray);
+    returnType = true;
+   //get the rows of a table and display
+   //var rows = daob.getRowsForTable(oidData);
+    return returnType;
+}
+
+
+
+function addPD()
+{
+    var resultStr = addpolledData();
+    if(!resultStr)
+    {
+        return;
+    }
+    //var polledDataName = document.AddPollingObject.name.value;
+    var oidData = document.AddPollingObject.oid.value;
+
+    var selectSize = document.AddPollingObject.listOfOIDs.options.length;
+    if(selectSize >0)
+    {
+        document.AddPollingObject.listOfOIDs.options[document.AddPollingObject.listOfOIDs.selectedIndex].selected = false;
+    }
+    //var add = new Option(polledDataName, polledDataName);
+
+    var add = new Option(oidData, oidData);   
+    document.AddPollingObject.listOfOIDs.options[selectSize] = add;
+    document.AddPollingObject.listOfOIDs.options[selectSize].selected = true;
+  
+    //document.AddPollingObject.listOfOIDs.options.add(anOption); 
+
+}
+
+
+
+function loadPD()
+{
+    var pdElementsAsString = document.AddPollingObject.polledDataAsString.value;
+    if(pdElementsAsString == "")
+    {
+        return;
+    }
+    var tokeniz = pdElementsAsString.split(":");
+        
+    for(var i=0;i<tokeniz.length; i+=2)
+    {
+        var oidData = tokeniz[i];
+        if(oidData != '') 
+        {
+            var keypair = tokeniz[i+1].split(";");
+            var len = keypair.length;
+            var pdElements = new Array(len);
+            for (var k=0; k <len; k++)
+            {
+                pdElements[k]=new Array(2);
+            }
+            for(var j=0;j<len; j++)
+            {
+                var elementVal = keypair[j].split(",");
+                pdElements[j][0] = elementVal[0];
+                pdElements[j][1] = elementVal[1];
+            }
+            daob.addRowsForTable(tokeniz[i],pdElements); 
+        }
+    }
+       
+}
+
+function viewPD()
+{
+    
+    var len = document.AddPollingObject.ThresholdList.options.length;
+    for(var i=0; i<len; i++)
+    {
+       document.AddPollingObject.ThresholdList.options[i].selected = false;
+    }
+    var selectedOID = document.AddPollingObject.listOfOIDs.value;
+    
+    var rows = daob.getRowsForTable(selectedOID);
+    for(var index in rows)
+    {
+        for(var name in rows[index]) // iterate the columns
+        {
+            var elementName  = eval("document.AddPollingObject."+name);  
+            elementName.value = rows[index][name];
+            if(name == "ThresholdList")
+            {
+//                var len = document.AddPollingObject.ThresholdList.options.length;
+                var thresNames = rows[index][name];
+
+                var tokenizer = thresNames.split("|");
+                  
+   	            for(i=0; i<tokenizer.length; i++)
+   	            {
+                    
+                    for(var j=0; j<len; j++)
+                    {
+                        if(document.AddPollingObject.ThresholdList.options[j].value == tokenizer[i] )
+                        {
+                            document.AddPollingObject.ThresholdList.options[j].selected = true;
+                        }
+                    }
+                }
+                //elementVal = thresNames;
+            }
+        }
+    }
+    var toperform = document.AddPollingObject.toPerform.value
+    if(toperform == 'fillUpDetails')
+    {
+        document.AddPollingObject.mibBrowser.style.visibility="hidden";  
+        document.AddPollingObject.oid.readonly="true";
+        document.AddPollingObject.name.readonly="true";
+    }
+}
+
+function modifyPD()
+{
+    var selectedOID = document.AddPollingObject.listOfOIDs.value;
+    var rows = daob.getRowsForTable(selectedOID);
+
+    for(var index in rows)
+    {
+        for(var elementName in rows[index]) // iterate the columns
+        {
+            var elementN = eval("document.AddPollingObject."+elementName);
+            var elementVal  = elementN.value;
+            if(elementN.name == 'ThresholdList')
+            { 
+                var len = document.AddPollingObject.ThresholdList.options.length;
+                var thresNames = "";
+                for(var i=0; i<len; i++)
+                {
+                    if(document.AddPollingObject.ThresholdList.options[i].selected == true)
+                    {
+                        if(thresNames != "")
+                        {
+                           thresNames = thresNames+"|";
+                        }
+                        thresNames = thresNames + document.AddPollingObject.ThresholdList.options[i].value;
+                    }
+                }
+                elementVal = thresNames;
+            }
+            if(elementVal != rows[index][elementName])
+            {
+                daob.setColumn(selectedOID, elementName ,elementVal) ;
+            }
+            //elementName.value = rows[index][name];
+        }
+    }
+
+}
+
+function deletePD()
+{
+    var oidData = document.AddPollingObject.listOfOIDs.value; 
+    var con = confirm('<fmt:message key="webclient.perf.pollingobj.oid.delete"/> '+ oidData );
+    if ( con != true)
+    {
+        return;
+    }
+  
+    var index = document.AddPollingObject.listOfOIDs.selectedIndex;
+    daob.tableToRowList[oidData] = null;
+
+    var tableIndex = daob.getTableIndex(oidData);
+    if(tableIndex != -1)
+    {
+        daob.tableArray[tableIndex] = null; 
+    }
+
+    document.AddPollingObject.listOfOIDs.options[index] = null;
+   
+    var len = document.AddPollingObject.listOfOIDs.options.length;
+
+    if(index > 0)
+    {
+        document.AddPollingObject.listOfOIDs.options[index-1].selected = true;
+    }
+    else
+    {
+        if(len >0)
+        {
+            document.AddPollingObject.listOfOIDs.options[0].selected = true;
+        }
+        else
+        {
+            resetPD();
+            return;
+        }
+    }
+   
+    viewPD();
+}
+
+function resetPD()
+{
+
+    var pdElements = new Array("oid", "isMultiplePolledData", "protocol", "interval",
+                                "Threshold", "StoreData", "statsDataTableName", 
+                                "stringDataTableName", "failureThreshold", "saveAbsolutes",
+                                "timeAvg", "Active","savePollCount", "saveOnThreshold",
+                                "ThresholdList", "name");
+
+    var oidData = document.AddPollingObject.oid.value;
+     document.AddPollingObject.mibBrowser.style.visibility="visible";  
+     document.AddPollingObject.oid.readonly="false";
+     document.AddPollingObject.name.readonly="false";
+    for (i=0; i <16; i++)
+    {
+        var tempName = eval("document.AddPollingObject."+pdElements[i]);
+        if(tempName.type == 'text')
+        {
+             tempName.value = "";
+        }
+        else if(tempName.type.indexOf('select-one') != -1)
+        {
+          tempName.options[0].selected = true; 
+        }
+         
+    }
+}
+
+
+function forTesting()
+{
+
+    var tables = daob.getTables();
+    for(var k in tables)
+    {
+        //var selectedPD = document.AddPollingObject.listOfOIDs.value;
+        //get the rows of a table and display
+        var rows = daob.getRowsForTable(tables[k]);
+
+        //document.write("<B>Initial values</B><br>"); 
+        //iterate the rows
+        document.write(daob.displayDO());
+    }
+}
+
+
+
+function showPollingObject(poName)
+{
+   var url = "/perf/ModifyPollingObjects.do?toPerform=fillUpDetails&PollingObject="+poName;
+   location.href=url;
+
+}
+
+
+function initialize()
+{
+    var types = new Array();
+    var conditionFillers = new Array();
+    var rowindex= 0;
+
+    <c:forEach begin="0" end="${AddPollingObject.map.rowCount-1}" var="rowindex" varStatus="status">
+        conditionFillers[rowindex] = "<c:out value='${AddPollingObject.map.conditions[status.index]}'/>";
+        rowindex++;
+    </c:forEach>
+
+        var numrows = document.AddPollingObject.rowCount.value;
+        var toperform = document.AddPollingObject.toPerform.value; 
+        for(i=0;i<numrows;i++)
+        {            
+            //var selindex = document.AddPollingObject.elements["AddPollingObject["+i+"].Criteria"].options.selectedIndex;
+            var selindex = 3;
+            
+            var row = i;
+            fillElement = document.AddPollingObject.elements["AddPollingObject["+i+"].conditions"];
+            typeElement = document.AddPollingObject.elements["AddPollingObject["+i+"].Criteria"];
+            var selVal = typeElement.value;            
+            var type = types[selindex];    
+
+            //document.AddPollingObject.elements["AddPollingObject["+i+"].CriteriaVal"].value="type";
+            fillStringElements(fillElement);
+            
+            //if(selindex == "1")
+            if(selVal == "type" || selVal=="sysOID")
+            {
+                fillStringElements(fillElement);
+                //document.AddPollingObject.elements["AddPollingObject["+i+"].CriteriaVal"].disabled="true";
+                //document.AddPollingObject.elements["AddPollingObject["+i+"].CriteriaVal"].value="sysOID";
+                 if(toperform != 'fillUpDetails')
+                {
+                    document.AddPollingObject.elements["selectOption"+i].style.visibility="visible";
+                }
+            }
+            else
+            {
+                fillStringElements(fillElement);
+                //document.AddPollingObject.elements["AddPollingObject["+i+"].CriteriaVal"].disabled="";
+                //document.AddPollingObject.elements["AddPollingObject["+i+"].CriteriaVal"].value="";
+                
+                if(toperform != 'fillUpDetails')
+                {
+                    document.AddPollingObject.elements["selectOption"+i].style.visibility="hidden";
+                }
+            }
+            
+            fillElement.value = conditionFillers[i];
+            var flag = true;
+
+            for(var j = 0; j < fillElement.options.length; j++)
+            {
+              var item = fillElement.options[j].value;
+              if(item == conditionFillers[i])
+              {
+                  flag=false;
+                  fillElement.options[j].selected = true;
+                  break;
+              }
+            }
+
+            if(flag)
+            {
+                fillElement.options[0].selected = true;
+            }
+        }
+
+        //var toperform = document.AddPollingObject.toPerform.value;
+
+        var pageTwoB = document.getElementById("pageTwoB"); 
+        var pageThreeB = document.getElementById("pageThreeB"); 
+        var PDbutton = document.getElementById("PDbutton");
+
+        if(toperform != 'userProperties')
+        {
+            var pdElementsAsString = document.AddPollingObject.polledDataAsString.value;
+            if(pdElementsAsString == "")
+            {
+                if(pageThreeB.style.display == 'none' && pageTwoB.style.display=='none')
+                { 
+           	  eval("PDbutton.style.display = 'none';");
+                }
+                else if(pageThreeB.style.display == 'block' || pageTwoB.style.display=='block')
+                {  
+           	 eval("PDbutton.style.display = 'block';");
+                }
+                return;
+            }
+            loadPD();
+            //document.AddPollingObject.mibBrowser.style.visibility="hidden"; 
+            document.AddPollingObject.listOfOIDs.options[0].selected = true;
+            viewPD();
+        }
+
+        if(pageThreeB.style.display == 'none' && pageTwoB.style.display=='none')
+        { 
+           	eval("PDbutton.style.display = 'none';");
+        }
+         else if(pageThreeB.style.display == 'block' || pageTwoB.style.display=='block')
+        {  
+           	eval("PDbutton.style.display = 'block';");
+        }
+       
+}
+
+function ShowReqTab1(divIdToShow)
+{
+	var idToShow = document.getElementById(divIdToShow);
+	if(divIdToShow=="pageOneA")
+	{
+		var idToHide = document.getElementById("pageOneB");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageOneB","none");
+	}
+    else if(divIdToShow=="pageOneB")
+    {
+        var idToHide = document.getElementById("pageOneA");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageOneA","none");
+    }
+    eval("idToShow.style.display = 'block';");	
+	set_cookie(divIdToShow,"block");	
+}
+
+function ShowReqTab2(divIdToShow)
+{
+	var idToShow = document.getElementById(divIdToShow);
+	if(divIdToShow=="pageTwoA")
+	{
+		var idToHide = document.getElementById("pageTwoB");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageTwoB","none");
+		
+        var testId = document.getElementById("pageThreeB");
+        if(testId.style.display == 'none')
+        {  
+            var idToHid = document.getElementById("PDbutton");
+           	eval("idToHid.style.display = 'none';");
+        }
+	}
+    else if (divIdToShow=="pageTwoB")
+    {
+        var idToHide = document.getElementById("pageTwoA");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageTwoA","none");
+		
+        var idToHid = document.getElementById("PDbutton");
+		eval("idToHid.style.display = 'block';");
+		set_cookie(idToHide,"none");
+    }
+    eval("idToShow.style.display = 'block';");
+	set_cookie(divIdToShow,"block");	
+}
+
+function ShowReqTab3(divIdToShow)
+{
+	var idToShow = document.getElementById(divIdToShow);
+	if(divIdToShow=="pageThreeA")
+	{
+		var idToHide = document.getElementById("pageThreeB");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageThreeB","none");
+
+        var testId = document.getElementById("pageTwoB");
+        if(testId.style.display == 'none')
+        {  
+            var idToHid = document.getElementById("PDbutton");
+           	eval("idToHid.style.display = 'none';");
+        }
+	}
+    else if(divIdToShow=="pageThreeB")
+    {
+        var idToHide = document.getElementById("pageThreeA");
+		eval("idToHide.style.display = 'none';");
+		set_cookie("pageThreeA","none");
+
+        var idToHid = document.getElementById("PDbutton");
+		eval("idToHid.style.display = 'block';");
+    }
+    eval("idToShow.style.display = 'block';");
+	set_cookie(divIdToShow,"block");
+}
+
+
+function formSubmit()
+{
+    if(document.AddPollingObject.PollingObject.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.pollingobj.poname.error'/>");
+        ShowReqTab1("pageOneB"); 
+        document.AddPollingObject.PollingObject.focus();
+        return false;
+    }
+
+    if(document.AddPollingObject.oid.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.addpo.validation.oid.empty'/>");
+        ShowReqTab2("pageTwoB");   
+        ShowReqTab1("pageOneA");  
+        document.AddPollingObject.oid.focus();
+        return false;
+    }
+    if(document.AddPollingObject.name.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.addpo.validation.name.empty'/>");
+        ShowReqTab2("pageTwoB");   
+        ShowReqTab1("pageOneA");  
+        document.AddPollingObject.name.focus();
+        return false;
+    }
+
+    if(document.AddPollingObject.pollingPeriod.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.addpo.validation.period.empty'/>");
+        document.AddPollingObject.pollingPeriod.focus();
+        return false;
+    }
+    
+    if(document.AddPollingObject.pollingPeriod.value != "")
+    {
+        var str = document.AddPollingObject.pollingPeriod.value;
+        for(var j=0;j<str.length;j++)
+        {
+            var charcode = str.charCodeAt(j);
+            if(!(charcode>47 && charcode<=57))
+            {
+                alert("<fmt:message key='webclient.perf.addpo.validation.period.numericvaluesonly'/>");
+                document.AddPollingObject.pollingPeriod.focus();
+                return false;
+            }
+        }
+    }
+
+
+    var numrows = parseInt(document.AddPollingObject.rowCount.value);
+    for(ci=0;ci<numrows;ci++)
+    {
+        critVal = document.AddPollingObject.elements["AddPollingObject["+ci+"].Criteria"];
+        props = document.AddPollingObject.elements["AddPollingObject["+ci+"].Props"];
+        if(critVal.value == "")
+        {
+            alert("<fmt:message key='webclient.perf.addpo.validation.type.fillcriteria'/>");
+            critVal.focus();
+            return false;
+        }
+        if(props.value== "")
+        {
+            alert("<fmt:message key='webclient.perf.addpo.validation.type.fillvalue'/>");
+            props.focus();
+            return false;
+        }
+    }
+
+    var oidData = trimAll(document.AddPollingObject.oid.value);
+    var isExist = daob.containsTable(oidData);
+    if(!isExist)
+    {
+        alert('<fmt:message key="webclient.perf.pollingobj.pdsumbit.error"/>');
+        return false;
+    }
+
+    //var tables = doab.getTables(); // returns an array of tables
+
+    changeNames();
+   
+    var toperform = document.AddPollingObject.toPerform.value;
+    if(toperform == 'fillUpDetails')
+    {
+        //var url = document.AddPollingObject.action + "?toPerform=modifyPO";
+        //document.AddPollingObject.action = url;
+        //document.AddPollingObject.submit();
+        document.AddPollingObject.toPerform.value="modifyPO";  
+    }
+    else {
+
+    document.AddPollingObject.toPerform.value="addPO";
+    var url = document.AddPollingObject.action + "?toPerform=addPO";
+    document.AddPollingObject.action.value = url;
+    }
+    document.AddPollingObject.polledDataAsString.value = daob.constructXML();
+
+    //    var url = document.AddPollingObject.action + "?actionToPerform=addPO";
+    //    document.AddPollingObject.action = url;
+    //document.AddPollingObject.submit();
+}
+
+function changeDetails(index)
+{
+    changeNames();
+    document.AddPollingObject.toPerform.value="changeDetails";
+    var url = document.AddPollingObject.action + "?actionToPerform=changeDetails&dataIdentifier="+index;
+    document.AddPollingObject.action = url;
+    document.AddPollingObject.submit();
+}
+function selected(index,element)
+{
+    var temp = element.split(".");
+    var rowElement = temp[0]+"."+"conditions";
+    var fillElement = document.AddPollingObject.elements[rowElement];
+
+    var temp1 = element.split("[");
+    var temp2 = temp1[1].split("]");
+
+    if(index=='0')
+    {
+        removeElements(fillElement);
+        fillStringElements(fillElement);
+        document.AddPollingObject.elements["selectOption"+temp2[0]].style.visibility="visible";
+    }
+    else if(index=='1')
+    {
+        removeElements(fillElement);
+        fillStringElements(fillElement);
+        document.AddPollingObject.elements["selectOption"+temp2[0]].style.visibility="visible";
+    }
+    else
+    {
+        var selVal = document.AddPollingObject.elements[temp[0]+"."+"Criteria"].value;
+        if(selVal == 'Others')
+        {
+            var userCriteria = prompt("Enter Your Criteria");
+            if(userCriteria!=null)
+            {
+                removeElements(document.AddPollingObject.elements[temp[0]+"."+"Criteria"]);
+                fillCriteriaElements(document.AddPollingObject.elements[temp[0]+"."+"Criteria"],userCriteria);
+            }
+        }
+        removeElements(fillElement);
+        fillStringElements(fillElement);
+        document.AddPollingObject.elements["selectOption"+temp2[0]].style.visibility="hidden";
+    }
+}
+
+function removeElements(fillElement)
+{
+    numprevconditions = fillElement.options.length;
+    for(ri=(numprevconditions-1);ri>=0;ri--)
+    {
+        fillElement.options[ri] = null;
+    }
+}
+
+function fillCriteriaElements(fillElement,newEntry)
+{
+    critOptions = new Array(new Option("type","type"),new Option("sysOID","sysOID"),new Option(newEntry,newEntry));
+    for(co=0;co<critOptions.length;co++)
+    {
+        fillElement.options[co]=critOptions[co];
+    }
+}
+
+function fillStringElements(fillElement)
+{
+            strCondOptions = new Array(new Option("<fmt:message key='webclient.perf.addpo.equals'/>","equals"),new Option("<fmt:message key='webclient.perf.addpo.notequals'/>","notequals"),new Option("<fmt:message key='webclient.perf.addpo.startswith'/>","startsWith"),new Option("<fmt:message key='webclient.perf.addpo.doesnotstartswith'/>","doesNotStartsWith"),new Option("<fmt:message key='webclient.perf.addpo.endswith'/>","endsWith"),new Option("<fmt:message key='webclient.perf.addpo.doesnotendswith'/>","doesNotEndWith"),new Option("<fmt:message key='webclient.perf.addpo.contains'/>","contains"),new Option("<fmt:message key='webclient.perf.addpo.equalsignorecase'/>","equalsIgnoreCase"));
+        for(sc=0;sc<strCondOptions.length;sc++)
+        {
+                fillElement.options[sc]=strCondOptions[sc];
+        }             
+}
+function fillNumericElements(fillElement)
+{
+            numCondOptions = new Array(new Option("<fmt:message key='webclient.common.pollingobject.condition.equalto'/>","eq"),new Option("<fmt:message key='webclient.common.pollingobject.condition.notequalto'/>","neq"),new Option("<fmt:message key='webclient.common.pollingobject.condition.greaterthan'/>","gt"),new Option("<fmt:message key='webclient.common.pollingobject.condition.lessthan'/>","lt"),new Option("<fmt:message key='webclient.common.pollingobject.condition.greaterthanorequalto'/>","ge"),new Option("<fmt:message key='webclient.common.pollingobject.condition.lessthanorequalto'/>","le"));
+        for(sc=0;sc<numCondOptions.length;sc++)
+        {
+                fillElement.options[sc]=numCondOptions[sc];
+        }             
+}
+
+function userProperties()
+{
+    document.AddPollingObject.toPerform.value="userProperties";
+    document.AddPollingObject.rowCount.value="0";
+    var url = document.AddPollingObject.action + "?actionToPerform=userProperties";
+    document.AddPollingObject.action = url;
+    document.AddPollingObject.submit();
+}
+
+function changeNames()
+{
+        var numrows = parseInt(document.AddPollingObject.rowCount.value);
+        for(ci=0;ci<numrows;ci++)
+        {
+            crit = document.AddPollingObject.elements["AddPollingObject["+ci+"].Criteria"];
+            conditions = document.AddPollingObject.elements["AddPollingObject["+ci+"].conditions"];
+            props = document.AddPollingObject.elements["AddPollingObject["+ci+"].Props"];
+            crit.name = "Criteria";
+            conditions.name = "conditions";
+            props.name = "Props";
+        }
+}
+
+function more()
+{
+    document.AddPollingObject.polledDataAsString.value = daob.constructXML();   
+    changeNames();
+    if(document.AddPollingObject.rowCount.value=='')
+    {
+        document.AddPollingObject.rowCount.value="1";
+    }
+    document.AddPollingObject.toPerform.value="more";
+    var url = document.AddPollingObject.action + "?actionToPerform=more";
+    document.AddPollingObject.action = url;
+    document.AddPollingObject.submit();
+/*
+    if(document.AddPollingObject.displaySaveOption.value == "true")
+    {
+        document.getElementById('saveRow').style.visibility="visible";
+    }   
+    else
+    {
+        document.getElementById('saveRow').style.visibility="hidden";
+    }
+*/
+}
+
+
+function fewer()
+{
+   
+     if(document.AddPollingObject.rowCount.value != 1)
+     {
+         document.AddPollingObject.polledDataAsString.value = daob.constructXML();   
+         changeNames();
+
+         document.AddPollingObject.toPerform.value="fewer";
+         var url = document.AddPollingObject.action + "#userProp";
+         document.AddPollingObject.action = url;
+         document.AddPollingObject.submit();
+     }
+}
+
+
+function selectValue(buttonObj)
+{
+    var btnName = buttonObj.name;
+    var btnIdx  = btnName.substring(btnName.length-1,btnName.length);
+    var critObj = document.AddPollingObject.elements["AddPollingObject["+btnIdx+"].Criteria"];
+    var selVal = critObj.value;
+    var url = null;
+
+    var left = Math.floor( (screen.width - 550) / 2);
+    var top = Math.floor( (screen.height - 320) / 2);
+
+
+    if(selVal == "type")
+    {
+        url = "/report/DeviceTypes.do?selectedIndex="+btnIdx;
+    }
+    else
+    {
+        url = "/report/DeviceOIDs.do?selectedIndex="+btnIdx;
+    }
+    window.open(url, "MatchCriteria", "scrollbars=yes,width=550,height=320,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes,top="+top+",left="+left );
+}
+
+function selectCriteria(buttonObj)
+{
+    var btnName = buttonObj.name;
+    var btnIdx  = btnName.substring(btnName.length-1,btnName.length);
+    var left = Math.floor( (screen.width - 400) / 2);
+    var top = Math.floor( (screen.height - 220) / 2);
+
+    window.open("/report/MatchCriteria.do?selectedIndex="+btnIdx, "SelectCriteria", "scrollbars=yes,width=400,height=220,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes,top="+top+",left="+left);
+}
+
+  function showHelp()
+    {
+        var left = Math.floor( (screen.width - 650) / 2);
+        var top = Math.floor( (screen.height - 250) / 2);
+
+        window.open("/report/ShowHelp.do", "ExpressionOID", "scrollbars=yes,width=650,height=250,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes,top="+top+",left="+left);
+    }
+</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE PANELMENUBAR SYSTEM "panelmenubar.dtd">
+<!--/$Id: TreeOperations.xml,v 1.2 2008/12/08 13:40:58 johnpaul Exp $-->
+<PANELMENUBAR name="FRAMEMENU">
+<MENU name = "Node Operations">
+      
+                <MENU-ITEM name = "Add Node">
+                        <JAVA-UI
+                               action_type="openframe"
+                               action_value="com.adventnet.nms.util.ModifyTreeNode?Operation=Add"
+                               
+                               shortcut_key = "N"
+			       accelerator_modifier="CNTRL-SHIFT"
+			       accelerator_key="N">
+                        </JAVA-UI>
+                </MENU-ITEM>
+                <MENU-ITEM name = "Modify Node">
+                        <JAVA-UI
+                        action_type="openframe"
+                        action_value="com.adventnet.nms.util.ModifyTreeNode?Operation=Modify"
+                        shortcut_key = "F"
+			accelerator_modifier="CNTRL-SHIFT"
+			accelerator_key="Y">
+                        </JAVA-UI>
+                </MENU-ITEM> 
+                <MENU-ITEM name = "Delete Node">
+                        <JAVA-UI
+                        action_type="openframe"
+                        action_value="com.adventnet.nms.util.ModifyTreeNode?Operation=Delete"
+                        shortcut_key = "L"
+                        accelerator_modifier="CNTRL-SHIFT"
+			accelerator_key="X">
+                        </JAVA-UI>
+                </MENU-ITEM>
+                <MENU-ITEM name = "Move Node">
+                        <JAVA-UI
+                        action_type="openframe"
+                        action_value="com.adventnet.nms.util.ModifyTreeNode?Operation=Move"
+                        shortcut_key = "V"
+                        accelerator_modifier="CNTRL-SHIFT"
+			accelerator_key="V">
+                        
+                        </JAVA-UI>
+                </MENU-ITEM> 
+</MENU>
+</PANELMENUBAR>

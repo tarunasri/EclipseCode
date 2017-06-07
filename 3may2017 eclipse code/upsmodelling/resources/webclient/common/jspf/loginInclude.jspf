@@ -1,0 +1,49 @@
+<%-- $Id: loginInclude.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+<script language="JavaScript">
+isIE = "false";
+if (navigator.mimeTypes && navigator.mimeTypes.length)
+{
+	x = navigator.mimeTypes['application/x-java-jnlp-file'];
+	if (x)
+	{
+		document.webstartform.webstart.value = "installed";
+	}
+	else
+	{
+		document.webstartform.webstart.value = "notinstalled";
+	}
+}
+else
+{
+	isIE = "true";
+}
+
+function validateUser()
+{
+        var userName = trimAll(document.loginForm.userName.value);
+        var password = trimAll(document.loginForm.password.value);
+        if(userName == "")
+        {
+                alert('<fmt:message key="webclient.login.username.required.message"/>');
+                document.loginForm.userName.focus();
+                return false;
+        }
+        if(password == "")
+        {
+                alert('<fmt:message key="webclient.login.password.required.message"/>');
+                document.loginForm.password.focus();
+                return false;
+        }
+        return true;
+}
+</script>
+<script language="VBScript">
+	on error resume next
+	If isIE = "true" Then
+		If Not(IsObject(CreateObject("JavaWebStart.IsInstalled"))) Then
+		 document.webstartform.webstart.value = "notinstalled"
+		Else
+		 document.webstartform.webstart.value = "installed"
+		End If
+	End If
+</script>

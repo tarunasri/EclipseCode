@@ -1,0 +1,93 @@
+package com.dgca;
+
+import java.rmi.Naming;
+import java.util.Properties;
+import com.adventnet.nms.topodb.ManagedObject;
+import com.adventnet.nms.topodb.Node;
+import com.adventnet.nms.topodb.TopoAPI;
+
+/**
+ * 
+ * @author TestMO1 contains methods for handling Topology operations
+ *
+ */
+public class DgcaManagedObjetsOperations {
+	
+	/**
+	 * 
+	 * @param name
+	 * @throws Exception
+	 */
+	static void AddObject(String name) throws Exception {
+		System.out.println("Inside Add Object" + name);
+		TopoAPI api = (TopoAPI) com.adventnet.nms.util.NmsUtil.getAPI("TopoAPI");
+		System.out.println("Inside add Object" + name + "is present" + api.isManagedObjectPresent(name));
+		if (!api.isManagedObjectPresent(name)) {
+			ManagedObject managedObject = new ManagedObject();
+			managedObject.setName(name);
+			managedObject.setStatus(3);
+			managedObject.setType("node");
+			System.out.println("Result of add Object : " + api.addObject(managedObject, true, false));
+		} else {
+			System.err.println(name + " is already present");
+		}
+
+	}
+/**
+ * 
+ * @param reportingEntityAddress
+ * @param displayname
+ * @throws Exception
+ */
+	static void AddNode(String reportingEntityAddress, String displayname) throws Exception {
+		System.out.println("Inside addnode" + displayname);
+		TopoAPI api = (TopoAPI) com.adventnet.nms.util.NmsUtil.getAPI("TopoAPI");
+		System.out.println("Inside add node" + displayname + "is present" + api.isManagedObjectPresent(displayname));
+		if (!api.isManagedObjectPresent(displayname)) {
+			System.err.println("displayName, reportingAddress: " + displayname + ", " + reportingEntityAddress);
+			Node node = new Node(reportingEntityAddress, "255.255.255.0");
+
+			node.setDisplayName(displayname);
+			node.setName(displayname);
+			node.setStatus(3);
+			System.out.println("Result of addNode : " + api.addNode(node, true, true, true));
+		} else {
+			System.err.println(reportingEntityAddress + " is already present");
+		}
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	static void UpdateObject() throws Exception {
+		TopoAPI api = (TopoAPI) Naming.lookup("//localhost/TopoAPI");
+		ManagedObject mo1 = api.getByName("abbas.india.adventnet.com");
+		mo1.setStatus(4);
+		// mo1.setUserProperty("prop1","group1");
+		// mo1.setType("node");
+		System.out.println("Result of UpdateObject() : " + api.updateObject(mo1, true, false));
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	static void DeleteMO() throws Exception {
+		TopoAPI api = (TopoAPI) Naming.lookup("//localhost/TopoAPI");
+		ManagedObject mo1 = api.getByName("192.168.9.0");
+		System.out.println("Result of deleteObject : " + api.deleteObject(mo1, true, false));
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	static void DeleteMOs() throws Exception {
+		TopoAPI api = (TopoAPI) Naming.lookup("//localhost/TopoAPI");
+		Properties prop = new Properties();
+		prop.put("name", "*");
+		api.deleteObjects(null, prop);
+	}
+
+}

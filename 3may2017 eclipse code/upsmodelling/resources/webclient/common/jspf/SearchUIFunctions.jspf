@@ -1,0 +1,714 @@
+<%-- $Id: SearchUIFunctions.jspf,v 1.3 2010/10/29 13:47:02 swaminathap Exp $ --%>
+
+<script language="javascript">
+var conditionFillers = new Array();
+var rowindex= 0;
+
+<c:forEach begin="0" end="${searchForm.map.rows-1}" var="rowindex" varStatus="status">
+        conditionFillers[rowindex] = "<c:out value='${searchForm.map.selectedConditions[status.index]}'/>";
+        rowindex++;
+</c:forEach>
+var types = new Array();
+var actions = new Array();
+var itemindex=0;
+
+<c:forEach items="${keys}" var="x">
+     types[itemindex]="<c:out value="${x.type}"/>";
+     actions[itemindex]="<c:out value="${x.action}"/>";
+     itemindex++;
+</c:forEach>
+
+//Constructor Function - representing a POPUP WINDOW
+var popups = [];
+function PopupObject(obj_target,action)
+{
+	// validate input parameters
+	if (!obj_target)alert("Target control not specified !");
+		
+	if (obj_target.value == null)alert("Error calling the input popup: parameter specified is not valid target control");
+        
+	this.target = obj_target;
+        this.action = action;
+        this.popup = winpopup;
+	this.id = popups.length;
+        this.setValue=setValue;
+        this.getValue=getValue;
+	popups[this.id] = this;
+       
+}
+function setValue(value)
+{
+        this.target.value = value;
+}
+function getValue()
+{
+        return (this.target.value);
+}
+
+function winpopup()
+{
+        var obj_window = window.open(this.action+"?id="+this.id,'ValueEntryUI','width=220,height=240,status=no,resizable=no,top=190,left=190,dependent=yes,alwaysRaised=yes'
+	);
+	obj_window.opener = window;
+	obj_window.focus();
+}
+
+
+function popupWin(row,ind)
+{
+        var obj = new PopupObject(document.searchForm.elements["searchForm["+row+"].criteriaValues"],actions[ind]);
+        obj.popup();
+}
+
+function showHelper(textElementIndex)
+{
+        var selindex = document.searchForm.elements["searchForm["+textElementIndex+"].selectedKeys"].options.selectedIndex;
+        if(actions[selindex] != "NULL")
+        {        
+                popupWin(textElementIndex,selindex);
+        }
+        else
+        {
+                alert("Please enter the criteria value directly into the appropriate value field");
+        }
+}
+
+function changeNames(searchType)
+{
+        var numrows = parseInt(document.searchForm.rows.value);
+        for(ci=0;ci<numrows;ci++)
+        {
+                selKeys = document.searchForm.elements["searchForm["+ci+"].selectedKeys"];
+                selConditions = document.searchForm.elements["searchForm["+ci+"].selectedConditions"];
+                criteriaValues = document.searchForm.elements["searchForm["+ci+"].criteriaValues"];
+		if(selKeys == null || selConditions == null || criteriaValues == null)
+		{
+			return;
+		}
+		if(searchType!=undefined && !isEmpty(searchType))
+		{
+			selKeys.name = "selectedKeys"+ci;
+			selConditions.name = "selectedConditions"+ci;
+			criteriaValues.name = "criteriaValues"+ci
+		}
+		else
+		{
+			selKeys.name = "selectedKeys";
+			selConditions.name = "selectedConditions";
+			criteriaValues.name = "criteriaValues";
+		}
+        }
+}
+
+function changeBackNames()
+{
+        var numrows = parseInt(document.searchForm.rows.value);
+        for(ci=0;ci<numrows;ci++)
+        {
+                selKeys = document.searchForm.elements["selectedKeys"+ci];
+                selConditions = document.searchForm.elements["selectedConditions"+ci];
+              criteriaValues = document.searchForm.elements["criteriaValues"+ci];
+
+		if(selKeys !=null)
+		{
+			selKeys.name="searchForm["+ci+"].selectedKeys";
+			criteriaValues.name="searchForm["+ci+"].criteriaValues";
+			selConditions.name ="searchForm["+ci+"].selectedConditions";
+		}
+        }
+}
+
+
+function removePrevConditions(fillElement)
+{
+        numprevconditions = fillElement.options.length;
+        for(ri=(numprevconditions-1);ri>=0;ri--)
+        {
+                fillElement.options[ri] = null;
+        }
+}
+function fillStringConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        strCondOptions = new Array(new Option("<fmt:message key='webclient.common.searchcomponent.condition.startswith'/>","startswith"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.equals'/>","equals"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.notequals'/>","notequals"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.endswith'/>","endswith"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.contains'/>","contains"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.dosentcontain'/>","doesntcontain"));
+        for(sc=0;sc<strCondOptions.length;sc++)
+        {
+                fillElement.options[sc]=strCondOptions[sc];
+        }             
+}
+function fillBooleanConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        booleanCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.equals'/>","equals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.notequals'/>","notequals"));
+        for(bc=0;bc<booleanCondOptions.length;bc++)
+        {
+                fillElement.options[bc]=booleanCondOptions[bc];
+        }             
+
+}
+function fillDateConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        dateCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.isafter'/>","isafter"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.isbefore'/>","isbefore"));
+        for(dc=0;dc<dateCondOptions.length;dc++)
+        {
+                fillElement.options[dc]=dateCondOptions[dc];
+        }             
+
+}
+function fillNumberConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        numCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.equals'/>","equals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.notequals'/>","notequals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.greaterthan'/>","greaterthan"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.lessthan'/>","lessthan"));
+        for(nc=0;nc<numCondOptions.length;nc++)
+        {
+                fillElement.options[nc]=numCondOptions[nc];
+        }             
+}
+
+function selected(index,element)
+{
+    
+    var temp = element.split(".");
+    var rowElement = temp[0]+"."+"selectedConditions";
+    var fillElement = document.searchForm.elements[rowElement];
+    var str = temp[0];
+
+    var row = str.charAt(str.length-2);
+       
+
+    if(actions[index] == "NULL")
+    {
+        document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+    }
+    else
+    {
+        document.getElementById('helper['+ row +']').style.visibility = 'visible';
+    }
+   
+    type = types[index];
+   
+
+    if(type == "STRING")
+    {
+        fillStringConditions(fillElement);
+    }
+    else if(type == "NUMBER")
+    {
+        fillNumberConditions(fillElement);
+    }
+    else if(type == "BOOLEAN")
+    {
+        fillBooleanConditions(fillElement);
+    }
+    else if(type == "DATE")
+    {
+        fillDateConditions(fillElement);
+    }
+    
+}
+
+function more()
+{
+	var searchType='';
+	if(document.searchForm.searchType!=null || document.searchForm.searchType != undefined)
+	{
+		searchType = document.searchForm.searchType;
+	}
+	changeNames(searchType);
+                document.searchForm.method.value = "more";
+                document.searchForm.submit();
+}
+function fewer()
+{
+        if(document.searchForm.rows.value != "1")
+        {
+        var searchType='';
+	if(document.searchForm.searchType!=null || document.searchForm.searchType != undefined)
+	{
+		searchType = document.searchForm.searchType;
+	}
+	changeNames(searchType);
+                document.searchForm.method.value = "fewer";
+                document.searchForm.submit();
+        }
+}
+function search()
+{
+    var numrows = parseInt(document.searchForm.rows.value);
+    //This is to validate the empty values and two row should not contain same property.
+    var keys = "";
+    var vals = "";
+    var conditions = "";
+    for(ci=0;ci<numrows;ci++)
+    {
+	var criteriaKeys = document.searchForm.elements["searchForm["+ci+"].selectedKeys"];
+        if(keys == '')
+        {
+		keys = criteriaKeys.value;
+        }
+        else
+        {
+	        if(keys.indexOf(',')==-1)
+                {
+			if(keys == criteriaKeys.value)
+                        {
+                        	alert("<fmt:message key='webclient.common.search.sameCriteriaError'/>"+" "+criteriaKeys.value);
+                                return false;
+                        }
+                        else
+                        {
+                        	keys = keys+','+criteriaKeys.value;
+                        }
+                }
+                else
+                {
+			var keyNames = keys.split(',');
+			for(ki=0;ki<keyNames.length;ki++)
+			{
+	                        if(keyNames[ki] == criteriaKeys.value)
+				{
+	                                alert("<fmt:message key='webclient.common.search.sameCriteriaError'/>"+" "+criteriaKeys.value);
+                                        return false;
+                                }
+                        }
+                        keys = keys+','+criteriaKeys.value;
+                }
+        }
+        criteriaValues = document.searchForm.elements["searchForm["+ci+"].criteriaValues"];
+	criteriaConditions = document.searchForm.elements["searchForm["+ci+"].selectedConditions"];
+        var values = criteriaValues.value;
+        if(vals == '')
+        {
+            vals = values;
+        }
+        else
+        {
+            vals = vals+','+values;
+        }
+
+        var cons = criteriaConditions.value;
+        if(conditions == '')
+        {
+            conditions = cons;
+        }
+        else
+        {
+            conditions = conditions +','+cons;
+        }
+        if(trimAll(values) == "")
+        {
+            alert("<fmt:message key='webclient.common.fields.validation.empty'/>");
+            document.searchForm.elements["searchForm["+ci+"].criteriaValues"].focus();
+            return false;
+        }
+    }
+
+    //This is to validate whether the entered value is integer for the type NUMBER
+    for(i=0;i<numrows;i++)
+    {            
+        var selindex = document.searchForm.elements["searchForm["+i+"].selectedKeys"].options.selectedIndex;
+        var row = i;
+        if(actions[selindex] == "NULL")
+        {
+            document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+        }
+        else
+        {
+            document.getElementById('helper['+ row +']').style.visibility = 'visible';
+        }
+
+        fillElement = document.searchForm.elements["searchForm["+i+"].selectedConditions"];
+        typeElement = document.searchForm.elements["searchForm["+i+"].selectedKeys"];
+                        
+        var type = types[selindex];    
+        if(type == "NUMBER")
+        {
+            criteriaValues = document.searchForm.elements["searchForm["+i+"].criteriaValues"];
+            var values = criteriaValues.value;
+            if(!isPositiveInteger(values))
+            {
+                alert("<fmt:message key='webclient.common.search.validation.integer'/>");
+                document.searchForm.elements["searchForm["+i+"].criteriaValues"].focus();
+                return false;
+            }
+        }
+
+  	  if(type == "DATE")
+        {
+
+          criteriaValues = document.searchForm.elements["searchForm["+i+"].criteriaValues"];
+          var dateValue = criteriaValues.value;
+          if(!verifyDateFormat(dateValue))
+          {
+              return false;
+          }
+        } 
+        if(type == "BOOLEAN")
+	{
+          criteriaValues = document.searchForm.elements["searchForm["+i+"].criteriaValues"];
+            var value = criteriaValues.value;
+		if(!validateBooleanValue(value))
+		{
+			alert('<fmt:message key="webclient.search.type.boolean.invalidentry"/>');
+			return false;
+		}
+	}
+
+    }
+    document.searchForm.method.value = "search";
+
+    var searchType;
+    if(document.searchForm.searchType != undefined)
+    {
+     searchType = document.searchForm.searchType.value;
+    }
+	    changeNames(searchType);
+    if(searchType == 'configSearch' || searchType == 'dlSearch' ||searchType == 'neSearch' || searchType == 'invSearch')
+    {
+        var xmlhttp = GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function(){
+            if (xmlhttp.readyState==4)
+            {
+                top.window.opener.formDeviceList(xmlhttp.responseText,searchType);
+		changeBackNames();
+//                window.close();
+            }
+        };
+        url = "/topo/deviceAdvancedSearch.do?selectedKeys="+keys+"&criteriaValues="+vals+"&conditions="+conditions+"&searchAction=deviceAdvancedSearch.do&ComplexSearchView=Topology&viewId=Network Database.CompleteView&method=search&searchType=configSearch";
+	url=url.replace("#","%23");//sending the escape value instead of #. %23 is the values given by escape() method of js
+        xmlhttp.open("GET",url,true);
+        xmlhttp.send(null);
+        return false;
+    }
+    document.searchForm.submit();
+}
+
+var xmlhttp;
+
+function GetXMLHttpRequest()
+{
+    if (window.XMLHttpRequest)
+    {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+        // code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return xmlhttp;
+}
+
+function initialize()
+{
+        var numrows = document.searchForm.rows.value;
+        for(i=0;i<numrows;i++)
+        {            
+                    var selindex = document.searchForm.elements["searchForm["+i+"].selectedKeys"].options.selectedIndex;
+
+                    var row = i;
+                    if(actions[selindex] == "NULL")
+                    {
+                                document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+                    }
+                    else
+                    {
+                                document.getElementById('helper['+ row +']').style.visibility = 'visible';
+                    }
+
+                    fillElement = document.searchForm.elements["searchForm["+i+"].selectedConditions"];
+                    typeElement = document.searchForm.elements["searchForm["+i+"].selectedKeys"];
+                        
+                    var type = types[selindex];    
+                                                  
+
+                    if(type == "STRING")
+                    {
+                        fillStringConditions(fillElement);
+                    }
+                    else if(type == "NUMBER")
+                    {
+                        fillNumberConditions(fillElement);
+                    }
+                    else if(type == "BOOLEAN")
+                    {
+                        fillBooleanConditions(fillElement);
+                    }
+                    else if(type == "DATE")
+                    {
+                        fillDateConditions(fillElement);
+                    }
+
+                    //fillElement.value = conditionFillers[i];
+                    for(var j = 0; j < fillElement.options.length; j++)
+                    {
+                        var item = fillElement.options[j].value;
+                        if(item == conditionFillers[i])
+                        {
+                            fillElement.options[j].selected = true;
+                            break;
+                        }
+                    }
+        }
+      
+}
+
+function checkMethod()
+{
+        if(document.searchForm.method.value == "")
+        {
+                document.searchForm.method.value = "search";
+     
+        }
+return true;
+}
+
+
+function verifyDateFormat(dateValue)
+{
+
+    //var dateValue = dateVal;
+
+	if(dateValue != "")
+    {
+		var dateObject = new String(dateValue);
+		var monthDivider = dateObject.indexOf(" ");	
+		if(monthDivider != -1)
+		{
+			var month = dateObject.substring(0,monthDivider);
+			if(month=="January" || month=="February" || month=="March" || month=="April" || month=="May" || month=="June" || month=="July" || month=="August" || month=="September" || month=="October" || month=="November" || month=="December" )
+			{
+				var dateObject1 = dateObject.substring(monthDivider+1,dateObject.length); 
+				var dateDivider = dateObject1.indexOf(",");
+				if(dateDivider != -1)
+				{
+					var date = dateObject1.substring(0,dateDivider);
+					if(date > 0 && date <32)
+					{
+						var yearObject = dateObject1.substring(dateDivider+1,dateObject1.length);
+						var yearDivider = yearObject.indexOf(" ");
+						if(yearDivider != -1)
+						{
+							var year = yearObject.substring(0,yearDivider);
+							if(year > 999 && year <10000)
+							{
+								var hourObject = yearObject.substring(yearDivider+1,yearObject.length);
+								var hourDivider = hourObject.indexOf(":");
+								if(hourDivider != -1)
+								{
+									var hour = hourObject.substring(0,hourDivider);	
+									if((hour > 0 && hour <= 12))
+									{
+                                        var minObject = hourObject.substring(hourDivider+1,hourObject.length);
+                                        var minDivider = minObject.indexOf(":");
+                                        if(minDivider != -1)
+                                        {
+                                            var minute = minObject.substring(0,minDivider);
+                                            if(minute >=00 && minute<60)
+                                            {
+                                                var secObject = minObject.substring(minDivider+1,minObject.length);
+                                                var secDivider = secObject.indexOf(" ");
+                                                if(secDivider != -1)
+                                                {
+                                                    var seconds = secObject.substring(0,secDivider);
+                                                    if(seconds >=00 && seconds<60)
+                                                    {
+                                                        var meridiem = secObject.substring(secDivider+1,secObject.length);
+                                                        if(meridiem != null)
+                                                        {
+                                                            if(meridiem == "AM" || meridiem == "PM" )
+                                                            {
+                                                                //var startDate = new Date(dateValue);
+                                                                //var startTime = startDate.getTime();
+                                                                //if(startDate == "Invalid Date" || startTime == "NaN")
+                                                                //{
+                                                                //alert("Date Format is improper. Correct format is September 27,2004 11:22:54 AM");			
+                                                                //return false;
+                                                                //}
+                                                                return true;
+                                                            }
+                                                            else
+                                                            {
+                                                                alert("Kindly correct the AM/PM value. Proper format is September 30,2004 04:51:09 PM");
+                                                                return false;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            alert("Kindly verify AM/PM value. Proper format is September 30,2004 04:51:09 PM");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        alert("Kindly correct the SECONDS value. Proper format is September 30,2004 04:51:09 PM");
+                                                        return false;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    alert("Kindly verify the SECONDS value. Proper format is September 30,2004 04:51:09 PM");
+                                                    return false;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                alert("Kindly correct the MINUTE value. Proper format is September 30,2004 04:51:09 PM");
+                                                return false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            alert("Kindly verify the MINUTE Value. Proper format is September 30,2004 04:51:09 PM");
+                                        }
+									}
+									else
+									{
+										alert("Kindly correct the HOUR value. Proper format is September 30,2004 04:51:09 PM");
+										return false;
+									}
+								}
+								else
+								{
+									alert("Kindly verify the HOUR value. Proper format is September 30,2004 04:51:09 PM");
+									return false;
+								}
+                                }
+							else
+							{
+								alert("Kindly verify for the 4 digit YEAR value. Proper format is September 30,2004 04:51:09 PM");
+								false;
+							}
+						}
+						else
+						{
+							alert("Kindly verify the YEAR value & Format. Proper format is September 30,2004 04:51:09 PM");
+							return false;
+						}
+					}
+					else
+					{
+						alert("Kindly verify the date value. Proper format is September 30,2004 04:51:09 PM");
+						return false;
+					}
+				}	
+				else
+				{
+					alert("Date value format is not proper. Proper format is September 30,2004 04:51:09 PM");
+					return false;
+				}
+			}
+		
+			else
+			{
+				alert("Invalid Month value. Proper format is September 30,2004 04:51:09 PM");
+				return false;
+			}
+		}
+			
+		else
+		{	
+			alert("Invalid Date Format. Kindly use the Calendar to select date");
+			return false;
+		}	
+	}
+
+}
+
+
+
+
+function getSelectedResult(searchType)
+{
+	var results =document.getElementsByName("rowSelectionDevices");
+	var selectedValues='';
+	for(i=0;i<results.length;i++)
+	{
+		if(results[i].checked)
+		{
+			selectedValues = results[i].value+","+selectedValues;
+		}
+	}
+	searchResult(searchType,selectedValues);
+}
+
+function searchResult(type,results)
+{
+	if(type=='dlSearch')
+	{
+		window.opener.addMoreDevices(results);
+		//TODO
+		return;
+	}
+	else if(type=='configSearch')
+	{
+		window.opener.showDevices(results,type);
+		window.close();
+		return;
+
+	}
+	else if(type=='neSearch' || type == 'invSearch')
+	{
+		window.opener.formDeviceListForDS(type,results);
+		window.close();
+		return;
+
+	}
+
+
+}
+
+function selectAllResults(header,contents)
+{
+	var headervar = document.getElementById(header);
+	
+	var elements = document.getElementsByName(contents);
+
+	for(i=0;i<elements.length;i++)
+	{
+			elements[i].checked = headervar.checked;
+	}
+}
+
+
+function toggleResults(header,contents)
+{
+	var headervar = document.getElementById(header);
+
+	var elements = document.getElementsByName(contents);
+	var count =elements.length;
+	var checkCount=0;
+	for(i=0;i<elements.length;i++)
+	{
+		if(elements[i].checked)
+		{
+			checkCount++;
+		}
+	}
+	if(checkCount == count)
+	{
+		headervar.checked = elements[0].checked;
+	}
+	else
+	{
+		headervar.checked =false;
+	}
+
+}
+
+
+</script>

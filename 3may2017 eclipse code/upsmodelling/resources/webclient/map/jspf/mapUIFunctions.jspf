@@ -1,0 +1,325 @@
+<%-- $Id: mapUIFunctions.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<script language="javascript">
+var conditionFillers = new Array();
+var rowindex= 0;
+
+<c:forEach begin="0" end="${searchForm.map.rows-1}" var="rowindex" varStatus="status">
+        conditionFillers[rowindex] = "<c:out value='${searchForm.map.selectedConditions[status.index]}'/>";
+        rowindex++;
+</c:forEach>
+var types = new Array();
+var actions = new Array();
+var itemindex=0;
+
+<c:forEach items="${keys}" var="x">
+     types[itemindex]="<c:out value="${x.type}"/>";
+     actions[itemindex]="<c:out value="${x.action}"/>";
+     itemindex++;
+</c:forEach>
+
+//Constructor Function - representing a POPUP WINDOW
+var popups = [];
+function PopupObject(obj_target,action)
+{
+	// validate input parameters
+	if (!obj_target)alert("Target control not specified !");
+		
+	if (obj_target.value == null)alert("Error calling the input popup: parameter specified is not valid target control");
+        
+	this.target = obj_target;
+        this.action = action;
+        this.popup = winpopup;
+	this.id = popups.length;
+        this.setValue=setValue;
+        this.getValue=getValue;
+	popups[this.id] = this;
+       
+}
+function setValue(value)
+{
+        this.target.value = value;
+}
+function getValue()
+{
+        return (this.target.value);
+}
+
+function winpopup()
+{
+        var obj_window = window.open(this.action+"?id="+this.id,'ValueEntryUI','width=220,height=240,status=no,resizable=no,top=190,left=190,dependent=yes,alwaysRaised=yes'
+	);
+	obj_window.opener = window;
+	obj_window.focus();
+}
+
+
+function popupWin(row,ind)
+{
+        var obj = new PopupObject(document.searchForm.elements["searchForm["+row+"].criteriaValues"],actions[ind]);
+        obj.popup();
+}
+
+function showHelper(textElementIndex)
+{
+        var selindex = document.searchForm.elements["searchForm["+textElementIndex+"].selectedKeys"].options.selectedIndex;
+        if(actions[selindex] != "NULL")
+        {        
+                popupWin(textElementIndex,selindex);
+        }
+        else
+        {
+                alert("Please enter the criteria value directly into the appropriate value field");
+        }
+}
+
+function changeNames()
+{
+        var numrows = parseInt(document.searchForm.rows.value);
+        for(ci=0;ci<numrows;ci++)
+        {
+                selKeys = document.searchForm.elements["searchForm["+ci+"].selectedKeys"];
+                criteriaValues = document.searchForm.elements["searchForm["+ci+"].criteriaValues"];
+                selKeys.name = "selectedKeys";
+                criteriaValues.name = "criteriaValues";
+        }
+}
+function removePrevConditions(fillElement)
+{
+        numprevconditions = fillElement.options.length;
+        for(ri=(numprevconditions-1);ri>=0;ri--)
+        {
+                fillElement.options[ri] = null;
+        }
+}
+function fillStringConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        strCondOptions = new Array(new Option("<fmt:message key='webclient.common.searchcomponent.condition.equals'/>","equals"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.notequals'/>","notequals"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.startswith'/>","startswith"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.endswith'/>","endswith"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.contains'/>","contains"),new Option("<fmt:message key='webclient.common.searchcomponent.condition.dosentcontain'/>","doesntcontain"));
+        for(sc=0;sc<strCondOptions.length;sc++)
+        {
+                fillElement.options[sc]=strCondOptions[sc];
+        }             
+}
+function fillBooleanConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        booleanCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.equals'/>","equals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.notequals'/>","notequals"));
+        for(bc=0;bc<booleanCondOptions.length;bc++)
+        {
+                fillElement.options[bc]=booleanCondOptions[bc];
+        }             
+
+}
+function fillDateConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        dateCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.isafter'/>","isafter"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.isbefore'/>","isbefore"));
+        for(dc=0;dc<dateCondOptions.length;dc++)
+        {
+                fillElement.options[dc]=dateCondOptions[dc];
+        }             
+
+}
+function fillNumberConditions(fillElement)
+{
+        removePrevConditions(fillElement);
+        numCondOptions = new Array(new Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.equals'/>","equals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.notequals'/>","notequals"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.greaterthan'/>","greaterthan"),new
+				Option("<fmt:message
+					key='webclient.common.searchcomponent.condition.lessthan'/>","lessthan"));
+        for(nc=0;nc<numCondOptions.length;nc++)
+        {
+                fillElement.options[nc]=numCondOptions[nc];
+        }             
+}
+
+function selected(index,element)
+{
+    
+    var temp = element.split(".");
+    var rowElement = temp[0]+"."+"selectedConditions";
+    //var fillElement = document.searchForm.elements[rowElement];
+    var str = temp[0];
+
+    var row = str.charAt(str.length-2);
+       
+    /*
+    if(actions[index] == "NULL")
+    {
+        document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+    }
+    else
+    {
+        document.getElementById('helper['+ row +']').style.visibility = 'visible';
+    }
+   
+    type = types[index];
+   
+
+    if(type == "STRING")
+    {
+        fillStringConditions(fillElement);
+    }
+    else if(type == "NUMBER")
+    {
+        fillNumberConditions(fillElement);
+    }
+    else if(type == "BOOLEAN")
+    {
+        fillBooleanConditions(fillElement);
+    }
+    else if(type == "DATE")
+    {
+        fillDateConditions(fillElement);
+    }
+    */
+    
+}
+
+function more()
+{
+        if("<c:out value='${mapType}'/>" != "default") 
+        {
+                changeNames();
+                document.searchForm.method.value = "more";
+                document.searchForm.submit();
+        }   
+}
+function fewer()
+{
+        if(document.searchForm.rows.value != "1")
+        {
+                changeNames();
+                document.searchForm.method.value = "fewer";
+                document.searchForm.submit();
+        }
+}
+function search()
+{
+    var numrows = parseInt(document.searchForm.rows.value);
+    //This is to validate the empty values
+    for(ci=0;ci<numrows;ci++)
+    {
+        criteriaValues = document.searchForm.elements["searchForm["+ci+"].criteriaValues"];
+        var values = criteriaValues.value;
+        if(trimAll(values) == "")
+        {
+            alert("<fmt:message key='webclient.common.fields.validation.empty'/>");
+            document.searchForm.elements["searchForm["+ci+"].criteriaValues"].focus();
+            return false;
+        }
+    }
+
+    //This is to validate whether the entered value is integer for the type NUMBER
+    for(i=0;i<numrows;i++)
+    {            
+        var selindex = document.searchForm.elements["searchForm["+i+"].selectedKeys"].options.selectedIndex;
+        var row = i;
+        if(actions[selindex] == "NULL")
+        {
+            document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+        }
+        else
+        {
+            document.getElementById('helper['+ row +']').style.visibility = 'visible';
+        }
+
+        fillElement = document.searchForm.elements["searchForm["+i+"].selectedConditions"];
+        typeElement = document.searchForm.elements["searchForm["+i+"].selectedKeys"];
+                        
+        var type = types[selindex];    
+        if(type == "NUMBER")
+        {
+            criteriaValues = document.searchForm.elements["searchForm["+i+"].criteriaValues"];
+            var values = criteriaValues.value;
+            if(!isPositiveInteger(values))
+            {
+                alert("<fmt:message key='webclient.common.search.validation.interger'/>");
+                document.searchForm.elements["searchForm["+i+"].criteriaValues"].focus();
+                return false;
+            }
+        }
+    }
+        
+    changeNames();
+    document.searchForm.method.value = "search";
+    document.searchForm.submit();
+}
+
+function initialize()
+{
+        var numrows = document.searchForm.rows.value;
+        for(i=0;i<numrows;i++)
+        {            
+                    var selindex = document.searchForm.elements["searchForm["+i+"].selectedKeys"].options.selectedIndex;
+
+                    var row = i;
+                    /*
+                    if(actions[selindex] == "NULL")
+                    {
+                                document.getElementById('helper['+ row +']').style.visibility = 'hidden';
+                    }
+                    else
+                    {
+                                document.getElementById('helper['+ row +']').style.visibility = 'visible';
+                    }
+                    fillElement = document.searchForm.elements["searchForm["+i+"].selectedConditions"];
+                    */
+
+                    typeElement = document.searchForm.elements["searchForm["+i+"].selectedKeys"];
+
+                    /*
+                    var type = types[selindex];    
+                    if(type == "STRING")
+                    {
+                        fillStringConditions(fillElement);
+                    }
+                    else if(type == "NUMBER")
+                    {
+                        fillNumberConditions(fillElement);
+                    }
+                    else if(type == "BOOLEAN")
+                    {
+                        fillBooleanConditions(fillElement);
+                    }
+                    else if(type == "DATE")
+                    {
+                        fillDateConditions(fillElement);
+                    }
+
+                    fillElement.value = conditionFillers[i];
+                    for(var j = 0; j < fillElement.options.length; j++)
+                    {
+                        var item = fillElement.options[j].value;
+                        if(item == conditionFillers[i])
+                        {
+                            fillElement.options[j].selected = true;
+                            break;
+                        }
+                    }
+                    */
+        }
+      
+}
+
+function checkMethod()
+{
+        if(document.searchForm.method.value == "")
+        {
+                document.searchForm.method.value = "search";
+     
+        }
+return true;
+}
+</script>

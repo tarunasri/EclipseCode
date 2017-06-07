@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id: config-tiles-defn.xml,v 1.2 2010/10/29 13:47:04 swaminathap Exp $ -->
+ <!DOCTYPE tiles-definitions  PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="config" path="/webclient/common/jsp/MainLayout.jsp">
+	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+	 <put name="AccPanel" value=".accPanel.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+    </definition>
+
+    <definition name="AuditViewPage" extends="config">
+      <put name="MainPage" value="AuditListView"/>
+    </definition>
+
+    <definition name="taskFormPage" extends="config">
+	<put name="MainPage" value="/webclient/config/jsp/taskForm.jsp"/>
+    </definition>
+
+    <definition name="dlPage" extends="config">
+	<put name="MainPage" value="/webclient/config/jsp/ManageDeviceList.jsp"/>
+    </definition>
+
+    <definition name="addDeviceListPage" extends="config">
+	<put name="MainPage" value="/webclient/config/jsp/AddDeviceList.jsp"/>
+    </definition>
+
+
+    <definition name="dsPage" extends="config">
+        <put name="MainPage" value="/webclient/config/jsp/configureDataSource.jsp"/>
+    </definition>
+
+    <definition name="createTaskPage" extends="config">
+        <put name="MainPage" value="/webclient/config/jsp/ctForm.jsp"/>
+    </definition>
+
+    <definition name="AuditListView" path="/webclient/common/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/config/jsp/listViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/config/jsp/listHeaderInclude.jsp"/>
+    <put name="Toolbar" value=""/>
+    <put name="PageTraversal" value=".component.pagetraversal"/>
+    <put name="StatusMessage" value="/webclient/config/jsp/listViewStatus.jsp"/>
+    <put name="ListView" value="/webclient/config/jsp/auditList.jsp"/>
+    </definition>
+
+    <definition name="TaskViewPage" extends="config">
+      <put name="MainPage" value="TaskListDef"/>
+    </definition>
+
+    <definition name="TaskListDef" path="/webclient/common/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/config/jsp/listViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value=""/>
+    <put name="Toolbar" value="/webclient/config/jsp/taskListHeader.jsp"/>
+    <put name="PageTraversal" value=".component.pagetraversal"/>
+    <put name="StatusMessage" value="/webclient/config/jsp/listViewStatus.jsp"/>
+    <put name="ListView" value="/webclient/config/jsp/taskList.jsp"/>
+    </definition>
+
+    <definition name=".component.pagetraversal" path="/webclient/common/jsp/PageNavigation.jsp" controllerClass="com.adventnet.nms.webclient.common.PageTraversalController">
+    </definition>
+
+    <definition name="error" extends="config">
+        <put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+    </definition>
+
+    <definition name="message" extends="config">
+        <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/>
+    </definition>
+
+    <definition name="auditSearchPage" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/config/jsp/searchHeader.jsp"/>
+         <put name="Body" value=""/>
+         <put name="Core" value="searchComponentDef"/>
+         <put name="Footer" value="/webclient/config/jsp/searchResults.jsp"/>
+    </definition>
+
+    <definition name="auditSearchDef" extends="config">
+         <put name="MainPage" value="auditSearchPage"/>
+    </definition>
+
+
+    <definition name="auditCVPage" path="/webclient/common/jsp/SearchLayout.jsp">
+         <put name="Header" value="/webclient/config/jsp/searchHeader.jsp"/>
+	 <put name="Body" value="/webclient/config/jsp/searchBody.jsp"/>
+         <put name="Core" value="auditCVComponentDef"/>
+         <put name="Footer" value="/webclient/config/jsp/searchResult.jsp"/>
+    </definition>
+
+    <definition name="auditCVDef" extends="config">
+         <put name="MainPage" value="auditCVPage"/>
+    </definition>
+
+    <definition name="searchComponentDef" path="/webclient/config/jsp/searchComponent.jsp">
+         <put name="Footer" value="/webclient/common/jsp/searchFooter.jsp"/>
+    </definition>
+
+    <definition name="auditCVComponentDef" path="/webclient/config/jsp/searchComponent.jsp">
+         <put name="Footer" value="/webclient/config/jsp/auditCVFooter.jsp"/>
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>
+</tiles-definitions>

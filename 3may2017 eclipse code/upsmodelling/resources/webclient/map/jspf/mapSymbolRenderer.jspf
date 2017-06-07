@@ -1,0 +1,22 @@
+<%-- $Id: mapSymbolRenderer.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+
+<c:choose>
+<c:when test='${! empty param.mapSymbolRenderer}'>
+<c:set var='renderer' value='${param.mapSymbolRenderer}'/>
+</c:when>
+<c:when test='${! empty mapProps.mapSymbolRenderer}'>
+<c:set var='renderer' value='${mapProps.mapSymbolRenderer}'/>
+</c:when>
+<c:otherwise>
+<c:set var='renderer' value="styled"/>
+</c:otherwise>
+</c:choose>
+
+         <c:choose>
+           <c:when test='${renderer =="com.adventnet.nms.mapui.SwitchMapRenderer"}'>
+        <%@include file="/webclient/map/jspf/switchMapSymbolRenderer.jspf" %>
+           </c:when>
+           <c:otherwise>
+             <%@include file="/webclient/map/jspf/styledMapSymbolRenderer.jspf"%>
+           </c:otherwise>
+         </c:choose>

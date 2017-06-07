@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id: admin-struts-config.xml,v 1.13 2011/01/31 14:28:08 prabakaran Exp $ -->
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+<form-beans>
+	
+        <form-bean name="UploadMibBean" type="com.adventnet.nms.webclient.mibbrowser.UploadMibBean" >
+		</form-bean>
+
+	<form-bean name="logViewForm" type="org.apache.struts.validator.DynaValidatorForm">
+                <form-property name="logFile"  type="java.lang.String"/>
+                <form-property name="NumberOfLines" type="java.lang.String"/>
+                <form-property name="logLines" type="java.lang.String"/>
+		<form-property name="logsArea" type="java.lang.String[]"/>
+                <form-property name="emptyLogs" type="java.lang.String" initial=""/>
+       </form-bean>
+	<form-bean name="configureSPYForm" type="org.apache.struts.validator.DynaValidatorForm">
+                <form-property name="reloadInterval" type="java.lang.String"/>
+                <form-property name="inCategories" type="java.lang.String"/>
+                <form-property name="exCategories" type="java.lang.String"/>
+                <form-property name="realDriver" type="java.lang.String"/>
+                <form-property name="deRegDriver" type="boolean" initial="false"/>
+                <form-property name="enableOutage" type="boolean" initial="false"/>
+                <form-property name="outageInterval" type="java.lang.String"/>
+                <form-property name="inFilter" type="java.lang.String"/>
+                <form-property name="exFilter" type="java.lang.String"/>
+                <form-property name="sqlExpression" type="java.lang.String"/>
+                <form-property name="stringMatcher" type="java.lang.String"/>
+                <form-property name="enStackTrace" type="boolean" initial="false"/>
+                <form-property name="logPath" type="java.lang.String" initial=""/>
+                <form-property name="logFile" type="java.lang.String"/>
+                <form-property name="stackTraceClass" type="java.lang.String"/>
+                <form-property name="enableLog" type="boolean" initial="false"/>
+		<form-property name="FileBackUp" type="java.lang.String"/>
+        </form-bean>
+
+        <form-bean name="loadLogsForm" type="org.apache.struts.validator.DynaValidatorForm">
+                <form-property name="wordWrap" type="java.lang.String"/>
+                <form-property name="startTime" type="java.lang.String"/>
+                <form-property name="endTime" type="java.lang.String"/>
+                <form-property name="connectionId" type="java.lang.String"/>
+                <form-property name="spyFile" type="java.lang.String"/>
+                <form-property name="categories" type="java.lang.String"/>
+                <form-property name="logViews" type="java.lang.String"/>
+        </form-bean>
+	<form-bean name="MailServerForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="accountname"  type="java.lang.String"/>
+		<form-property name="servername"  type="java.lang.String"/>
+		<form-property name="smtp"  type="java.lang.String"/>
+		<form-property name="smtpssl" type="java.lang.String"/>
+		<form-property name="requiresauth" type="java.lang.String"/>
+		<form-property name="serverport"  type="java.lang.String"/>
+		<form-property name="username"  type="java.lang.String"/>
+		<form-property name="userpassword"  type="java.lang.String"/>
+		<form-property name="fromaddress"  type="java.lang.String"/>
+		<form-property name="toaddress"  type="java.lang.String"/>
+	</form-bean>
+	<form-bean name="addUserForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="newUserName" type="java.lang.String"/>
+		<form-property name="retypepassword" type="java.lang.String"/>
+		<form-property name="existingGroups" type="java.lang.String[]"/>
+		<form-property name="newGroup" type="java.lang.String"/>
+		<form-property name="passwordExpiryTime" type="java.lang.String"/>
+		<form-property name="accountExpiryTime" type="java.lang.String"/>
+	</form-bean>
+
+    <form-bean name="addMultiUser" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="userNameList" type="java.lang.String[]"/>
+		<form-property name="GroupList" type="java.lang.String[]"/>
+        <form-property name="rowCount" type="java.lang.String"/>
+	</form-bean>
+
+	<form-bean name="modifyUserForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="userName" type="java.lang.String"/>
+        <form-property name="status" type="java.lang.String"/>
+		<form-property name="currentpassword" type="java.lang.String"/> 
+		<form-property name="retypepassword" type="java.lang.String"/>
+		<form-property name="availableItems" type="java.lang.String"/>
+		<form-property name="existingItems" type="java.lang.String"/>
+		<form-property name="newGroup" type="java.lang.String"/>
+		<form-property name="passwordExpiryTime" type="java.lang.String"/>
+		<form-property name="accountExpiryTime" type="java.lang.String"/>
+	</form-bean>
+<!--
+    <form-bean name="updateGroupForm" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="userName" type="java.lang.String"/>
+		<form-property name="availableItems" type="java.lang.String"/>
+		<form-property name="existingItems" type="java.lang.String"/>
+	</form-bean>
+-->
+
+    <form-bean name="TrapParserForm" type="org.apache.struts.validator.DynaValidatorForm"> 
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="nodes" type="java.lang.String"/>
+      <form-property name="groups" type="java.lang.String"/>
+      <form-property name="type" type="java.lang.String" initial="0"/>
+      <form-property name="enable" type="java.lang.String" initial="true"/>
+      <form-property name="enterprise" type="java.lang.String"/>     
+      <form-property name="GT" type="java.lang.String" initial="6"/>
+      <form-property name="ST" type="java.lang.String" initial="0"/>
+      <form-property name="trapOid" type="java.lang.String"/>
+      <form-property name="severity" type="java.lang.String"/>
+      <form-property name="textDefn" type="java.lang.String" initial="$*"/>
+      <form-property name="sourceDefn" type="java.lang.String" initial="$Source"/>
+      <form-property name="entityDefn" type="java.lang.String" initial="$Source"/>
+      <form-property name="categoryDefn" type="java.lang.String" initial="$Community"/>
+      <form-property name="groupDefn" type="java.lang.String"/>
+      <form-property name="nodeDefn" type="java.lang.String"/>
+      <form-property name="userPropsName" type="java.lang.String[]"/>
+      <form-property name="userPropsValue" type="java.lang.String[]"/>
+      <form-property name="rowCount" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="EventParserConfigurationForm" type="org.apache.struts.validator.DynaValidatorForm">
+<form-property name="name" type="java.lang.String"/>
+
+<form-property name="textMatch" type="java.lang.String"/>
+
+<form-property name="categoryMatch" type="java.lang.String"/>
+<form-property name="domainMatch" type="java.lang.String"/>
+<form-property name="enable" type="java.lang.String" initial="true"/>
+<form-property name="networkMatch" type="java.lang.String"/>
+<form-property name="nodeMatch" type="java.lang.String"/>
+<form-property name="entityMatch" type="java.lang.String"/>
+<form-property name="sourceMatch" type="java.lang.String"/>
+<form-property name="severityMatch" type="java.lang.String"/>
+<form-property name="textTok" type="java.lang.String"/>
+<form-property name="categoryTok" type="java.lang.String"/>
+<form-property name="domainTok" type="java.lang.String"/>
+<form-property name="networkTok" type="java.lang.String"/>
+<form-property name="nodeTok" type="java.lang.String"/>
+<form-property name="entityTok" type="java.lang.String"/>
+<form-property name="sourceTok" type="java.lang.String"/>
+<form-property name="textDefn" type="java.lang.String" initial="$Message"/>
+<form-property name="categoryDefn" type="java.lang.String"  initial="$Category"/>
+<form-property name="domainDefn" type="java.lang.String"/>
+<form-property name="networkDefn" type="java.lang.String"/>
+<form-property name="nodeDefn" type="java.lang.String" initial="$Source"/>
+<form-property name="entityDefn" type="java.lang.String" initial="$Entity"/>
+<form-property name="sourceDefn" type="java.lang.String" initial="$Source"/>
+<form-property name="severityDefn" type="java.lang.String"/>
+<form-property name="userPropsName" type="java.lang.String[]"/>
+<form-property name="userPropsMatchString" type="java.lang.String[]"/>
+<form-property name="userPropsTokString" type="java.lang.String[]"/>
+<form-property name="userPropsDefnString" type="java.lang.String[]"/>
+<form-property name="rowCount" type="java.lang.String"/> 
+</form-bean>
+
+    <form-bean name="DiscForm" type="org.apache.struts.validator.DynaValidatorForm"> 
+        <form-property name="autoDiscovery" type="boolean" initial="false"/>
+        <form-property name="discoverLocalNet" type="boolean" initial="false"/>
+        <form-property name="reDiscovery" type="boolean" initial="false"/>
+        <form-property name="enableLog" type="boolean" initial="false"/>
+        <form-property name="discInterval" type="java.lang.String"/>
+        <form-property name="snmpDiscovery" type="boolean" initial="false"/>
+        <form-property name="snmpRetries" type="java.lang.String"/>
+        <form-property name="snmpTimeout" type="java.lang.String"/>
+        <form-property name="readCommunity" type="java.lang.String"/>
+        <form-property name="writeCommunity" type="java.lang.String"/>
+        <form-property name="snmpPort" type="java.lang.String"/>
+        <form-property name="snmpv3Discovery" type="boolean" initial="false"/>
+        <form-property name="v3UserName" type="java.lang.String"/> 
+        <form-property name="v3ContextName" type="java.lang.String"/> 
+        <form-property name="icmpDiscovery" type="boolean" initial="false"/>
+        <form-property name="pingRetries" type="java.lang.String"/>
+        <form-property name="pingTimeout" type="java.lang.String"/>
+	<form-property name="nativePingTimeout" type="java.lang.String"/>
+        <form-property name="nativePingRetries" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="ReDiscForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="reDiscInt" type="java.lang.String"/>
+        <form-property name="daysOfMonth" type="java.lang.String"/>
+        <form-property name="allDaysinMonth" type="java.lang.String"/>
+        <form-property name="daysOfWeek" type="java.lang.String[]"/>
+        <form-property name="allDaysOfWeek" type="java.lang.String"/>
+        <form-property name="selectedHour" type="java.lang.String"/>
+        <form-property name="hour" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="PerfViewForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="period" type="java.lang.String"/>
+      <form-property name="startDate" type="java.lang.String"/>
+      <form-property name="endDate" type="java.lang.String"/>
+      <form-property name="rsubmit" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="LoggingBean" type="com.adventnet.nms.webclient.logging.LoggingBean"/>
+
+    <form-bean name="Log4jBean" type="com.adventnet.nms.webclient.logging.Log4jBean"/>
+
+    <form-bean name="NmsAppenderForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="logger" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>
+      <form-property name="fileName" type="java.lang.String"/>
+      <form-property name="fileCount" type="java.lang.String"/>
+      <form-property name="fileSize" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="MailAppenderForm" type="org.apache.struts.validator.DynaValidatorForm">
+      <form-property name="logger" type="java.lang.String"/>
+      <form-property name="name" type="java.lang.String"/>	    
+      <form-property name="smtpHost" type="java.lang.String"/>
+      <form-property name="toAddress" type="java.lang.String"/>
+      <form-property name="fromAddress" type="java.lang.String"/>
+      <form-property name="subject" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="AddEventFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="name" type="java.lang.String"/> 
+        <form-property name="source" type="java.lang.String"/>
+        <form-property name="stringseverity" type="java.lang.String"/>
+        <form-property name="text" type="java.lang.String"/>
+        <form-property name="category" type="java.lang.String"/>
+        <form-property name="domain" type="java.lang.String"/>
+        <form-property name="network" type="java.lang.String"/>
+        <form-property name="node" type="java.lang.String"/>
+        <form-property name="entity" type="java.lang.String"/>
+        <form-property name="appendToSeverity" type="java.lang.String"/>
+        <form-property name="AvailableActions" type="java.lang.String"/>
+        <form-property name="SelectedActions" type="java.lang.String"/>
+        <form-property name="userPropsName" type="java.lang.String[]"/>
+        <form-property name="userPropsValue" type="java.lang.String[]"/>
+        <form-property name="rowCount" type="java.lang.String"/>
+        <form-property name="NotificationName" type="java.lang.String"/>
+	  <form-property name="AddNotification" type="java.lang.String"/>	
+    </form-bean>
+
+    <form-bean name="AddAlertFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="name" type="java.lang.String"/> 
+        <form-property name="source" type="java.lang.String"/>
+        <form-property name="stringseverity" type="java.lang.String"/>
+        <form-property name="message" type="java.lang.String"/>
+        <form-property name="category" type="java.lang.String"/>
+        <form-property name="entity" type="java.lang.String"/>
+        <form-property name="appendToSeverity" type="java.lang.String"/>
+        <form-property name="AvailableActions" type="java.lang.String"/>
+        <form-property name="SelectedActions" type="java.lang.String"/>
+        <form-property name="userPropsName" type="java.lang.String[]"/>
+        <form-property name="userPropsValue" type="java.lang.String[]"/>
+        <form-property name="rowCount" type="java.lang.String"/>
+        <form-property name="NotificationDetails" type="java.lang.String"/>
+        <form-property name="NotificationName" type="java.lang.String"/>
+	  <form-property name="AddNotification" type="java.lang.String"/>
+    </form-bean>
+
+     <form-bean name="SaveEventFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="FileName" type="java.lang.String" initial="conf/event.filters"/> 
+     </form-bean>
+
+     <form-bean name="LoadEventFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="FileName" type="java.lang.String" initial="conf/event.filters"/> 
+     </form-bean>     
+
+     <form-bean name="SaveAlertFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="FileName" type="java.lang.String" initial="conf/alert.filters"/> 
+     </form-bean>
+
+     <form-bean name="LoadAlertFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="FileName" type="java.lang.String" initial="conf/alert.filters"/> 
+     </form-bean>  
+
+    <form-bean name="SuppressActionForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="NotificationName" type="java.lang.String"/>
+        <form-property name="SuppressAll" type="java.lang.String" initial="true"/>
+        <form-property name="SuppressInterval" type="java.lang.String"/>
+        <form-property name="toPerform" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="RunCmdActionForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="NotificationName" type="java.lang.String"/>
+        <form-property name="SystemCommand" type="java.lang.String"/>
+        <form-property name="AppendOutput" type="java.lang.String"/>
+        <form-property name="AppendError" type="java.lang.String"/>
+        <form-property name="AbortInterval" type="java.lang.String" initial="60"/>
+	<form-property name="toPerform" type="java.lang.String"/>
+	<form-property name="ThreadImplForEvents" type="java.lang.String"/>
+        <form-property name="ThreadImplForAlerts" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="CustomFilterForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="NotificationName" type="java.lang.String"/>
+        <form-property name="ClassName" type="java.lang.String"/>
+	<form-property name="toPerform" type="java.lang.String"/>
+	<form-property name="ThreadImplForEvents" type="java.lang.String"/>
+        <form-property name="ThreadImplForAlerts" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="EMailActionForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="NotificationName" type="java.lang.String"/>
+        <form-property name="SMTPAccount" type="java.lang.String"/>
+        <form-property name="Subject" type="java.lang.String"/>
+        <form-property name="Message" type="java.lang.String"/>
+        <form-property name="appendToSubject" type="java.lang.String"/>
+        <form-property name="appendToMessage" type="java.lang.String"/>
+        <form-property name="Attachment" type="java.lang.String"/>
+	<form-property name="toPerform" type="java.lang.String"/>
+	<form-property name="ThreadImplForEvents" type="java.lang.String"/>
+	<form-property name="ThreadImplForAlerts" type="java.lang.String"/>
+    </form-bean>
+
+    <form-bean name="SendTrapActionForm" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="NotificationName" type="java.lang.String"/>
+        <form-property name="TrapDestination" type="java.lang.String"/>
+        <form-property name="Port" type="java.lang.String"/>
+        <form-property name="Community" type="java.lang.String"/>
+        <form-property name="SysUpTime" type="java.lang.String"/>
+        <form-property name="V1_V2" type="java.lang.String" initial="v1"/>
+        <form-property name="Enterprise" type="java.lang.String"/>
+        <form-property name="GT" type="java.lang.String"/>
+        <form-property name="ST" type="java.lang.String"/>
+        <form-property name="TrapOID" type="java.lang.String"/>
+        <form-property name="VariableBindings" type="java.lang.String"/>
+        <form-property name="OIDValue" type="java.lang.String"/>
+        <form-property name="SNMPType" type="java.lang.String"/>
+        <form-property name="SNMPVal" type="java.lang.String"/>
+        <form-property name="toPerform" type="java.lang.String"/>
+	<form-property name="varbinds" type="java.lang.String"/>
+	<form-property name="ThreadImplForEvents" type="java.lang.String"/>
+        <form-property name="ThreadImplForAlerts" type="java.lang.String"/>
+    </form-bean>
+
+    
+    <form-bean name="CustomViewScopeBean" type="org.apache.struts.validator.DynaValidatorForm">
+        <form-property name="cvsName" type="java.lang.String"/> 
+        <form-property name="cvsPropsName" type="java.lang.String[]"/>
+        <form-property name="cvsPropsValue" type="java.lang.String[]"/>
+        <form-property name="rowCount" type="java.lang.String"/>
+        <form-property name="customViewKeys" type="java.util.Vector"/>
+    </form-bean>
+
+ <form-bean name="searchForm" type="com.adventnet.nms.webclient.components.advancedsearch.SearchForm">
+      <form-property name="selectedKeys" type="java.lang.String[]"/>
+      <form-property name="selectedConditions" type="java.lang.String[]"/>
+      <form-property name="criteriaValues" type="java.lang.String[]"/>
+      <form-property name="logicalCondition" type="java.lang.String" initial="1"/>
+      <form-property name="rows" type="java.lang.String" initial="1"/>
+      <form-property name="actionToPerform" type="java.lang.String" initial="search"/>
+   </form-bean>
+
+<form-bean name="MibBrowserBean" type="com.adventnet.nms.webclient.mibbrowser.MibBrowserBean" >
+	<form-property name="host" type="java.lang.String" initial="localhost"/>
+	<form-property name="community" type="java.lang.String" initial="public"/>
+	<form-property name="oid" type="java.lang.String"/>
+	<form-property name="mib" type="java.lang.String"/>
+	<form-property name="mibList" type="java.util.Vector"/>
+	<form-property name="selectedmib" type="java.lang.String"/>
+	<form-property name="resultstr" type="java.lang.String"/>
+	<form-property name="syntax" type="java.lang.String" />
+	<form-property name="status" type="java.lang.String" />
+	<form-property name="port" type="java.lang.String" initial="161"/>
+	<form-property name="timeout" type="java.lang.String" initial="1"/>
+	<form-property name="retries" type="java.lang.String" initial="0"/>
+	<form-property name="SnmpVersion" type="java.lang.String" initial="Snmp_Version1"/>
+	<form-property name="maxrep" type="java.lang.String" initial="50"/>
+	<form-property name="nonrep" type="java.lang.String" initial="0"/>
+	<form-property name="SnmpVersionList" type="java.util.Vector"/>
+	<form-property name="setvalue" type="java.lang.String"/>
+    </form-bean>
+
+    <!-- MultiThread EA Processing -->
+
+    <form-bean name="MTAPForm" type="org.apache.struts.validator.DynaValidatorForm">
+	<form-property name="selectedCriteria" type="java.lang.String"/>
+	<form-property name="selectedThreadCount" type="java.lang.String"/>
+	<form-property name="ConfigPattern" type="java.lang.String"/>
+	<form-property name="txtCriteriaRow" type="java.lang.String[]"/>
+	<form-property name="DynamicCriteriaRow" type="java.lang.String[]"/>
+	<form-property name="DynamicPattern" type="java.lang.String"/>
+	<form-property name="dynamicCriteria" type="java.lang.String"/>
+	<form-property name="dynamicCount" type="java.lang.String"/>
+    </form-bean>
+
+    <!-- MultiThread EA Processing -->
+
+</form-beans>
+
+<global-exceptions>
+    <exception handler="com.adventnet.nms.webclient.common.DefaultExceptionHandler" 
+		type = "java.lang.Exception" key = "" />
+</global-exceptions>
+
+
+<global-forwards>
+    <forward name="messagePage" path="message" contextRelative="true"/>
+    <forward name="errorPage" path="error" contextRelative="true"/>
+    <forward name="commonRedirect" path="commonredirect" contextRelative="true"/>
+    <forward name="reloadUserAdmin" path="/UserAdmin.do" />
+    <forward name="reloadGroupAdmin" path="/GroupAdmin.do" />
+    <forward name="reloadModifyGroup" path="/GroupProfileForm.do" />
+    <forward name="globalMessage" path="/webclient/common/jsp/MessagePage.jsp" contextRelative="true"/>    
+</global-forwards>
+
+
+<action-mappings>
+
+    	<action path="/UserAdminPanel" 
+        type="com.adventnet.nms.webclient.useradmin.UserAdminAction">
+		<forward name="useradminpanel" path="adminpanel" contextRelative="true"/>
+        </action>
+
+
+<action path="/MibBrowser"
+        type="com.adventnet.nms.webclient.common.AuthorizationAction"
+	parameter="/admin/MibTool.do?method=loadMIB">
+    </action>
+
+<action path="/MibTool" 
+        parameter="method"
+	name="MibBrowserBean"
+	validate="false"
+            scope="session"
+        type="com.adventnet.nms.webclient.mibbrowser.MibBrowserAction">
+	    <forward name="tree" path="MibBrowserDef" contextRelative="true"/>
+	    <forward name="mibForm" path="/webclient/admin/jsp/MibForm.jsp" contextRelative="true"/>
+	    <forward name="queryResult" path="/webclient/admin/jsp/QueryResult.jsp" contextRelative="true"/>
+	    <forward name="queryTableResult" path="/webclient/admin/jsp/QueryTableResult.jsp" contextRelative="true"/>
+	    <forward name="home" path="/admin/MibTool.do?method=loadMIB" contextRelative="true"/>
+	    <forward name="failure" path="/webclient/common/jsp/ErrorPage.jsp" contextRelative="true"/>
+</action>
+
+    <action path="/GetOID" 
+	 name="SNMPOidBean"
+        parameter="method"
+        validate="false"
+        type="com.adventnet.nms.webclient.mibbrowser.GetSnmpOIDACtion">
+	    <forward name="tree" path="/webclient/admin/jsp/GetSnmpOID.jsp" contextRelative="true"/>
+	    <forward name="mibForm" path="/webclient/admin/jsp/MibForm.jsp" contextRelative="true"/>
+	    <forward name="mibbrowser" path="/MibTool.do?method=loadMIB" contextRelative="true"/>
+    </action> 
+
+ <action path="/GetTrapOID" 
+	 name="SNMPOidBean"
+        parameter="method"
+        validate="false"
+        type="com.adventnet.nms.webclient.mibbrowser.GetTrapOIDAction">
+	    <forward name="tree" path="/webclient/admin/jsp/GetTrapOID.jsp" contextRelative="true"/>
+	    <forward name="mibForm" path="/webclient/admin/jsp/MibForm.jsp" contextRelative="true"/>
+	    <forward name="mibbrowser" path="/MibTool.do?method=loadMIB" contextRelative="true"/>
+    </action> 
+
+   <action path="/GetMibs" 
+        parameter="method"
+        validate="false"
+        type="com.adventnet.nms.webclient.mibbrowser.GetSnmpOIDACtion">
+	    <forward name="tree" path="/webclient/admin/jsp/GetSnmpOID.jsp" contextRelative="true"/>
+	    <forward name="mibForm" path="/webclient/admin/jsp/SelectMib.jsp" contextRelative="true"/>
+	    <forward name="mibbrowser" path="/MibTool.do?method=loadMIB" contextRelative="true"/>
+    </action> 
+
+ <action path="/UploadMib" 
+	 name="UploadMibBean"
+	 validate="false"
+         scope="request"
+         type="com.adventnet.nms.webclient.mibbrowser.UploadMibAction">
+	    <forward name="mibForm" path="/webclient/admin/jsp/UploadMibForm.jsp" contextRelative="true"/>
+    </action>
+
+<!--
+    	<action path="/InvokeRemoveUserForm" 
+           type="org.apache.struts.actions.ForwardAction" 
+           parameter="removeuser"/>
+-->
+    	<action path="/RemoveUserAction" 
+            type="com.adventnet.nms.webclient.useradmin.RemoveUserAction"/>
+
+    	<action path="/AddUserAction" 
+            type="com.adventnet.nms.webclient.useradmin.AddUserAction" 
+            name="addUserForm" validate="false" scope="request"/>
+
+    	<action path="/InvokeAddUserForm" 
+            type="com.adventnet.nms.webclient.useradmin.InvokeAddUserAction">
+            <forward name="addUser" path="adduser" contextRelative="true"/>
+        </action>
+
+        <action path="/AddMultiUserForm" 
+            name="addMultiUser" scope="request" validate="false"  parameter="toPerform" 
+            type="com.adventnet.nms.webclient.useradmin.AddMultiUserAction">
+            <forward name="addMultiUser" path="addmultiuser" contextRelative="true"/>
+        </action>
+
+        <action path="/ModifyUserProfileAction" 
+		    type="com.adventnet.nms.webclient.useradmin.ModifyUserProfileAction"
+            name="modifyUserForm" validate="false"  />
+
+        <action path="/InvokeModifyUserProfileForm" 
+		    type="com.adventnet.nms.webclient.useradmin.InvokeModifyUserProfileAction">
+            <forward name="modifyUserProfile" path="modifyprofile" contextRelative="true"/>
+        </action>
+<!--
+        <action path="/InvokeUserToModify" 
+		type="org.apache.struts.actions.ForwardAction" 
+		parameter="usertomodify"/>
+-->
+
+        <action path="/GroupAdmin"
+            type="com.adventnet.nms.webclient.sysadmin.GroupAdminAction" 
+            scope="request" >
+            <forward name="groupAdmin" path="groupAdminPage" contextRelative="true"/>
+    </action>  
+
+
+
+<!--   Added for Group Configuration NMS 4.7SP2 -->
+
+       <action path="/AddGroupForm" 
+            type="org.apache.struts.actions.ForwardAction" 
+            parameter="addgroupDef">
+       </action>
+
+       <action path="/AddGroup" 
+            type="com.adventnet.nms.webclient.useradmin.AddGroupAction" 
+            validate="false" scope="request"/>
+
+       <action path="/GroupProfileForm" 
+		    type="com.adventnet.nms.webclient.useradmin.InvokeGroupProfileAction">
+            <forward name="modifyGroup" path="modifyGroupDef" contextRelative="true"/>
+        </action>
+
+       <action path="/ModifyGroup" 
+		    type="com.adventnet.nms.webclient.useradmin.ModifyGroupProfileAction"
+            validate="false"  />
+
+       <action path="/RemoveGroup" 
+            type="com.adventnet.nms.webclient.useradmin.RemoveGroupAction"/>
+
+
+      <action path="/OperationsView" 
+		    type="com.adventnet.nms.webclient.useradmin.OperationsViewAction"
+            validate="false"  >
+             <forward name="operationTree" path="/webclient/admin/jsp/OperationTree.jsp" contextRelative="true"/>
+      </action>
+      
+    	<action path="/AuthAudit" 
+        type="com.adventnet.nms.webclient.admin.authaudit.AuthAuditViewAction">
+		<forward name="authaudittrails" path="auditTrailsPage" />
+        </action>
+    
+        <action path="/AuthAuditOperations"
+            type="com.adventnet.nms.webclient.admin.authaudit.AuthAuditOperations"
+            parameter="methodCall"
+            scope="request">
+	    <forward name="AuthAudit" path="/AuthAudit.do" />
+        </action>
+
+      <action path="/AuthAuditDetails" 
+            type="com.adventnet.nms.webclient.admin.authaudit.AuditDetailsAction" >
+            <forward name="auditDetails"
+            path="auditDetailsPage"  />
+       </action>
+
+<!-- ################################################# -->
+    <action name="searchForm" path="/authAuditAdvancedSearch" 
+            type="com.adventnet.nms.webclient.admin.authaudit.AuthAuditAdvSearchAction"
+            scope="request" parameter="method">
+            <forward name="searchView" path="authAuditSearchDef" contextRelative="true"/>
+    </action>
+<!-- ################################################# -->
+       <action path="/OperationsAction" 
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.useradmin.OperationsAction">
+         <forward name="success" path="/OperationsView.do" redirect="false"/>
+         <forward name="redirect" path="/webclient/admin/jsp/redirectAssign.jsp" contextRelative="true"/>
+    </action>
+
+       <action path="/CustomViewScope" 
+            name="CustomViewScopeBean"
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.useradmin.CustomViewScopeAction">
+         <forward name="customview" path="customViewScopeDef" contextRelative="true"/>
+    </action>
+
+     <action path="/AssignGroups"
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.useradmin.AssignGroupsAction">
+         <forward name="GroupList" path="/webclient/admin/jsp/assignGroup.jsp" contextRelative="true"/>
+         <forward name="userProfile" path="/webclient/admin/jsp/redirectAssign.jsp" contextRelative="true" />
+    </action>
+
+<!-- /InvokeModifyUserProfileForm.do -->
+
+    <action path="/AssignUsers"
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.useradmin.AssignUsersAction">
+         <forward name="UserList" path="/webclient/admin/jsp/assignUser.jsp" contextRelative="true"/>
+         <forward name="groupProfile" path="/webclient/admin/jsp/redirectAssign.jsp" contextRelative="true"/>
+    </action>
+
+     <action path="/AssignAuthScope"
+            parameter="toPerform" 
+            validate="false"
+            scope="request"
+            type="com.adventnet.nms.webclient.useradmin.AssignAuthScopeAction">
+         <forward name="AuthScopeList" path="/webclient/admin/jsp/assignAuthScope.jsp" contextRelative="true"/>
+         <forward name="AuthScopeProfile" path="/webclient/admin/jsp/redirectAssign.jsp" contextRelative="true"/>
+    </action>
+ <!-- Mail Server Settings-->
+ <action path="/MailServerSettingsadmin"
+	 type="com.adventnet.nms.webclient.mailserver.MailServerSettingsAction"
+	 validate="false"
+	 input="MailServerConfig"
+	 name="MailServerForm"
+	 parameter="method"
+	 scope="request">
+	 <forward name="failure" path="MailServerConfig" contextRelative="true"/>
+	 <forward name="success" path="MailServerConfig" contextRelative="true"/>
+  	 <forward name="deletefailure" path="MailServerConfig" contextRelative="true"/>
+ </action>
+
+
+  <!-- ADDED FOR  NMS 4.7SP2 ENDS HERE -->  
+
+
+
+     <!-- System Admin related Mappings -->  
+
+    <action path="/CompleteAdminPanel"
+            type="com.adventnet.nms.webclient.sysadmin.CompleteAdminAction"
+            scope="request">
+            <forward name="admin" path="adminPage" contextRelative="true"/>
+    </action>
+    
+    <action path="/SysAdmin"
+            type="com.adventnet.nms.webclient.sysadmin.SystemAdminAction"    
+            scope="request">
+            <forward name="sysAdmin" path="sysAdminPage" contextRelative="true"/>
+    </action>
+
+    <action path="/ServerDetails"
+            type="com.adventnet.nms.webclient.sysadmin.ServerDetailsAction"    
+            scope="request">
+            <forward name="serverDetail" path="serverDetailPage" contextRelative="true"/>
+    </action>
+
+   <action path="/ModuleDetails"
+            type="com.adventnet.nms.webclient.sysadmin.ModuleDetailsAction"    
+            scope="request">
+            <forward name="moduleDetail" path="moduleDetailPage" contextRelative="true"/>
+    </action>
+
+   <action path="/AdminServerStatus"
+            type="com.adventnet.nms.webclient.sysadmin.AdminServerStatus"
+            parameter="toPerform"
+			scope="request">
+                        <forward name="webnmsDetails" path="webnmsDetailsPage" contextRelative="true"/>
+            <forward name="backEnd" path="backEndPage" contextRelative="true"/>
+			<forward name="scheduler" path="/webclient/admin/jsp/schedulerStatus.jsp" contextRelative="true"/>
+			<forward name="port" path="/webclient/admin/jsp/portStatus.jsp" contextRelative="true"/>
+			<forward name="frontEnd" path="frontEndPage" contextRelative="true"/>
+			<forward name="client" path="clientPage" contextRelative="true"/>
+    </action>
+
+	<action path="/DiscModuleStatus"
+            type="com.adventnet.nms.webclient.sysadmin.DiscModuleStatus"
+			scope="request">
+            <forward name="discStatus" path="/webclient/admin/jsp/discStatus.jsp" contextRelative="true"/>
+    </action>
+	
+	<action path="/FaultModuleStatus"
+            type="com.adventnet.nms.webclient.sysadmin.FaultModuleStatus"
+			scope="request">
+            <forward name="faultStatus" path="/webclient/admin/jsp/faultStatus.jsp" contextRelative="true"/>
+    </action>
+
+	<action path="/PerformanceModule"
+			type="com.adventnet.nms.webclient.common.AuthorizationAction"
+			parameter="perfmodule"/>
+
+<action path="/WebNMSDetails" type="org.apache.struts.actions.ForwardAction" parameter="webnmsDetailsPage"/>                        
+			
+	<action name="PerfViewForm" path="/PerfModuleStatus"
+            type="com.adventnet.nms.webclient.sysadmin.PerfModuleStatus"
+	    	validate="true" 
+	    	input="success"
+            scope="request">
+         <forward name="perfStatus" path="perfStatsPage" contextRelative="true"/>
+    </action>
+
+    <action path="/ShutDown"
+            type="com.adventnet.nms.webclient.common.AuthorizationAction"    
+            parameter="shutDownPage">
+    </action>
+
+    <action path="/ReSyncNEWithBackup"
+            type="com.adventnet.nms.webclient.common.AuthorizationAction"    
+            parameter="resyncnewithbackup">
+    </action>
+
+    <action path="/ReSyncNE"
+            type="com.adventnet.nms.webclient.common.AuthorizationAction"    
+            parameter="resyncne">
+    </action>
+
+	<action path="/NEresync"
+			type="com.adventnet.nms.webclient.sysadmin.ResyncNEAction"
+			parameter="toPerform"
+			scope="request">
+	</action>
+
+    <action path="/ShutDownServer"
+            type="com.adventnet.nms.webclient.sysadmin.ShutDownServerAction"
+            scope="request">
+            <forward name="shutDown" path="/webclient/admin/jsp/shutDown.jsp" contextRelative="true"/>
+    </action>
+
+	<action path="/ShowServerLogs"
+            type="com.adventnet.nms.webclient.sysadmin.ServerLogsAction"
+            scope="request">
+            <forward name="serverLogs" path="logFiles" contextRelative="true"/>
+    </action>
+
+        <action path="/UserAdmin"
+            type="com.adventnet.nms.webclient.sysadmin.UserAdminAction" 
+            scope="request" >
+            <forward name="userAdmin" path="userAdminPage" contextRelative="true"/>
+    </action>  
+
+    <!-- MultiThread EA Processing -->
+    <action path="/ConfigureMTAPForm"
+	    type="com.adventnet.nms.webclient.mtp.RTAMultiThreadEAAction"
+	    parameter="toPerform"
+	    scope="request" name="MTAPForm">
+	    <forward name="ViewMTAP" path="ViewMTAPPage" contextRelative="true"/>
+    </action>
+
+    <action path="/ViewThreadDetails"
+	    type="com.adventnet.nms.webclient.mtp.RTAMultiThreadEAAction"
+	    parameter="toPerform"
+	    scope="request" >
+    </action>
+    <!-- MultiThread EA Processing -->
+
+    <action path="/TrapParser"
+            type="com.adventnet.nms.webclient.trapparser.TrapParserConfigAction"
+            scope="request">
+            <forward name="parsers" path="trapParsers" contextRelative="true"/>
+    </action>
+
+    <action path="/TrapParserOperations"
+            type="com.adventnet.nms.webclient.trapparser.TrapParserOperationsAction"
+            parameter="toPerform"
+            scope="request">
+            <forward name="parsers" path="trapParsers" contextRelative="true"/>
+            <forward name="loadparsers" path="loadParsers" contextRelative="true"/>
+    </action>
+
+    <action path="/TrapParserForm"
+            type="com.adventnet.nms.webclient.trapparser.TrapParserFormAction"
+            parameter="toPerform"
+            name="TrapParserForm" 
+            validate="false"
+            scope="request">
+            <forward name="trapParserForm" path="trapParsersForm" contextRelative="true"/>
+    </action>
+
+    <action path="/SaveTrapParserForm"
+            type="com.adventnet.nms.webclient.trapparser.SaveTrapParserAction"
+            name="TrapParserForm"
+            parameter="toPerform" 
+            validate="false"
+            input="trapParserForm"
+            scope="request">
+            <forward name="trapParserForm" path="trapParsersForm" contextRelative="true"/>
+            <forward name="parsers" path="trapParsers" contextRelative="true"/>
+    </action>
+
+    <action path="/RuntimeAdmin"
+            type="com.adventnet.nms.webclient.trapparser.RuntimeAdminAction"
+            validate="false"
+            scope="request">
+            <forward name="runtime" path="runtimeAdmin" contextRelative="true"/>
+    </action>
+
+
+	<!--config related to logging-->
+	
+	<action path="/FillSpyForm"
+                type="com.adventnet.nms.webclient.sysadmin.InvokeSPYForm"
+                name="configureSPYForm"
+                scope="request"
+                validate="false">
+                <forward name="loadSpy" path="loggingForm" contextRelative="true"/>
+        </action>
+	
+	<action path="/spyAction"
+                type="com.adventnet.nms.webclient.sysadmin.ConfigureSPYAction"
+                name="configureSPYForm"
+                scope="request"
+                validate="false">
+                <forward name="SPYFileUpdate" path="/FillSpyForm.do"/>
+        </action>
+
+	<action path="/loggingAction"
+        	type="com.adventnet.nms.webclient.logging.LogViewAction"
+        	name="LoggingBean"
+        	scope="request"
+        	validate="false">
+        	<forward name="logging" path="loggingForm" contextRelative="true"/>
+	</action>
+
+	<action path="/logAction"
+        	type="com.adventnet.nms.webclient.logging.LoggingAction"
+        	name="LoggingBean"
+        	parameter="method"
+        	scope="request"
+        	validate="false">
+           <forward name="logging" path="loggingForm" contextRelative="true"/>
+           <forward name="nmslogging" path="loggingConfig" contextRelative="true"/>
+	</action>
+
+	<action path="/LogParametersAction"
+        	type="com.adventnet.nms.webclient.logging.LogParametersAction"
+        	name="LoggingBean"
+        	scope="request"
+        	validate="false">
+           <forward name="nmslogging" path="loggingConfig" contextRelative="true"/>
+        </action>
+
+        <action path="/log4jAction"
+        	type="com.adventnet.nms.webclient.logging.Log4jViewAction"
+        	name="Log4jBean"
+        	scope="request"
+        	validate="false">
+        	<forward name="log4jlogging" path="log4jForm" contextRelative="true"/>
+	</action>
+
+	<action path="/saveLog4jProperties"
+        	type="com.adventnet.nms.webclient.logging.Log4jSaveAction"
+		name="Log4jBean"
+		parameter="method"
+        	scope="request"
+        	validate="false">
+		<forward name="Savelogsettings" path="/log4jAction.do" />
+	</action>
+
+	<action path="/saveNmsAppenderProperties"
+        	type="com.adventnet.nms.webclient.logging.Log4jAppenderSaveAction"
+		name="NmsAppenderForm"
+		parameter="method"
+        	scope="request"
+        	validate="false">
+		<forward name="SaveAppendersettings" path="/log4jAction.do"  />
+	</action>
+
+	<action path="/saveMailAppenderProperties"
+        	type="com.adventnet.nms.webclient.logging.Log4jAppenderSaveAction"
+		name="MailAppenderForm"
+		parameter="method"
+        	scope="request"
+        	validate="false">
+		<forward name="SaveAppendersettings" path="/log4jAction.do"  />
+	</action>
+
+	<!-- Config related to SpyLog-->
+
+	<action path="/viewlogAction"
+                type="com.adventnet.nms.webclient.sysadmin.InvokeLogsView"
+                name="configureSPYForm"
+                scope="request"
+                validate="false">
+                <forward name="LogsView" path="spyLogForm" contextRelative="true"/>
+             <forward name="LogsViewInNewWindow" path="/webclient/admin/jsp/LogsMonitor.jsp" contextRelative="true"/>
+        </action>
+
+        <action path="/getLogFiles"
+                type="com.adventnet.nms.webclient.sysadmin.NmsLogParser"
+                name="logViewForm"
+                scope="request"
+                validate="false">
+                <forward name="logViewResult" path="/viewlogAction.do"/>
+        </action>
+
+        <action path="/getSpyData"
+                type="com.adventnet.nms.webclient.sysadmin.GetSPYLogs"
+                name="loadLogsForm"
+                scope="request"
+                validate="false">
+                <forward name="ViewSPYLogs" path="/viewlogAction.do"/>
+        </action>
+
+	<action path="/spyLogInNewWindow"
+                type="com.adventnet.nms.webclient.sysadmin.InvokeSPYForm"
+                name="configureSPYForm"
+                scope="request"
+                validate="false">
+        <forward name="SPYView" path="/webclient/admin/jsp/LogsMonitor.jsp" contextRelative="true"/>
+        </action>
+
+        <action path="/logsViewInNewWindow"
+                type="com.adventnet.nms.webclient.sysadmin.InvokeSPYForm"
+                name="configureSPYForm"
+                scope="request"
+                validate="false">
+        <forward name="SPYView" path="/webclient/admin/jsp/LogsMonitor.jsp" contextRelative="true"/>
+        </action>
+
+     <!-- Discovery related Mappings -->
+
+    <action path="/ConfigDiscParam"
+            type="com.adventnet.nms.webclient.discovery.ConfigureDiscParamsAction"
+            validate="false"
+            name="DiscForm"
+            scope="request">
+            <forward name="discParams" path="configParams" contextRelative="true"/>
+    </action>
+
+    <action path="/ReDiscoverySchedular"
+            type="com.adventnet.nms.webclient.discovery.ReDiscoverySchedularAction"
+            validate="false"
+            name="ReDiscForm"
+            scope="request">
+            <forward name="rediscParams" path="rediscconfig" contextRelative="true"/>
+    </action>
+
+    <action path="/ReDiscSchedular"
+            type="com.adventnet.nms.webclient.discovery.SaveReDiscSchedularAction"
+            validate="false"
+            name="ReDiscForm"
+            scope="request">
+            <forward name="loadredisc" path="/ReDiscoverySchedular.do"/>
+    </action>
+
+
+    <action path="/DiscConfiguration"
+            type="com.adventnet.nms.webclient.discovery.SaveDiscoveryParamsAction"
+            validate="false"
+            name="DiscForm"
+            parameter="toPerform" 
+            scope="request">
+           <forward name="discParams" path="configParams" contextRelative="true"/>
+	   <forward name="loadParams" path="/ConfigDiscParam.do"/>
+    </action>
+
+    <action path="/CriteriaBasedDiscovery"
+            type="com.adventnet.nms.webclient.discovery.CriteriaBasedDiscoveryAction"
+            scope="request">
+           <forward name="criteriaBased" path="criteriaBasedDiscovery" contextRelative="true"/>
+    </action>
+
+    <action path="/SaveCriteriaBasedDiscovery"
+            type="com.adventnet.nms.webclient.discovery.SaveCriteriaBasedDiscoveryAction"
+            parameter="actionToPerform"
+            scope="request">
+           <forward name="criteriaBased" path="criteriaBasedDiscovery" contextRelative="true"/>
+    </action>
+
+    <action path="/Backup"
+            type="com.adventnet.nms.webclient.common.AuthorizationAction"    
+            parameter="backup">
+    </action>
+
+    <action path="/BackupProcess"
+            type="com.adventnet.nms.webclient.sysadmin.BackupProcessAction"
+            parameter="toPerform" 
+            scope="request">
+    </action>
+
+<!-- Event Parser related mappings Start -->
+    <action path="/EventParser"
+            type="com.adventnet.nms.webclient.eventparser.EventParserLister"
+            scope="request">
+            <forward name="eventParserList" path="eventParserList" contextRelative="true"/>
+    </action>
+
+    <action path="/EventParserConfiguration"
+            type="com.adventnet.nms.webclient.eventparser.EventParserConfigurator"
+            parameter="toPerform"
+            scope="request"
+            name="EventParserConfigurationForm">
+            <forward name="eventParserList" path="eventParserList" contextRelative="true"/>
+            <forward name="eventParserConfiguration" path="eventParserConfiguration" contextRelative="true"/>
+    </action>
+
+      <action path="/EventParserFromFile"
+            type="com.adventnet.nms.webclient.eventparser.EventParserFileHandler"
+            parameter="toPerform"
+            scope="request" >
+            <forward name="eventParserFromFile" path="eventParserFromFile" contextRelative="true"/>
+            <forward name="eventParserList" path="eventParserList" contextRelative="true"/>
+    </action>
+    
+<!-- Event Parser related mappngs End -->
+
+<!-- Start of Event Filter Related Operations -->
+
+        <action path="/EventFilters" 
+             type="com.adventnet.nms.webclient.filters.FetchEventFilters" scope="request">
+             <forward name="DisplayPage" path="DisplayEventFiltersList" contextRelative="true"/>
+        </action>
+
+        <action path="/InvokeEventFilterForm" 
+            type="org.apache.struts.actions.ForwardAction" parameter="EventFilterForm"/>
+
+        <action  path="/EventFilterAction" 
+             type="com.adventnet.nms.webclient.filters.EventFilterAction" 
+             name="AddEventFilterForm" scope="request" validate="false" parameter="toPerform">
+        <forward name="resultPage" path="/EventFilters.do"/>
+        <forward name="loadPage" path="EventFilterForm" contextRelative="true"/>
+        </action>
+
+        <action path="/InvokeSaveEventFilterForm" 
+             type="org.apache.struts.actions.ForwardAction" 
+             parameter="/webclient/admin/jsp/SaveEventFilterForm.jsp"/>
+
+        <action path="/SaveEventFilterAction" 
+             type="com.adventnet.nms.webclient.filters.SaveEventFilterAction" 
+             name="SaveEventFilterForm" scope="request" validate="false">
+        <forward name="resultPage" path="/EventFilters.do"/>
+        </action>
+
+        <action path="/InvokeLoadEventFilterForm" 
+            type="org.apache.struts.actions.ForwardAction" 
+            parameter="/webclient/admin/jsp/LoadEventFilterForm.jsp"/>
+
+        <action path="/LoadEventFilterAction" 
+             type="com.adventnet.nms.webclient.filters.LoadEventFilterAction" 
+             name="LoadEventFilterForm" scope="request" validate="false">
+        <forward name="resultPage" path="/EventFilters.do"/>
+        </action>
+
+<!-- End of Event Filter Related Operations -->
+
+<!-- Start of Alert Filter Related Operations -->
+
+        <action path="/AlertFilters" 
+              type="com.adventnet.nms.webclient.filters.FetchAlertFilters" scope="request">
+              <forward name="DisplayPage" path="DisplayAlertFiltersList" contextRelative="true"/>
+        </action>
+
+        <action path="/InvokeAlertFilterForm" 
+             type="org.apache.struts.actions.ForwardAction" parameter="AlertFilterForm"/>
+
+        <action path="/updateNotifications" 
+            type="com.adventnet.nms.webclient.filters.NotificationDetails" scope="request">
+            <forward name="Redirect" path="/webclient/admin/jsp/redirect.jsp" contextRelative="true"/>
+        </action>
+
+        <action path="/AlertFilterAction" 
+              type="com.adventnet.nms.webclient.filters.AlertFilterAction" 
+              name="AddAlertFilterForm" scope="request" validate="false" parameter="toPerform"> 
+        <forward name="loadPage" path="AlertFilterForm" contextRelative="true"/>
+        <forward name="resultPage" path="/AlertFilters.do"/>
+        </action>
+
+        <action path="/InvokeSaveAlertFilterForm" 
+            type="org.apache.struts.actions.ForwardAction" 
+            parameter="/webclient/admin/jsp/SaveAlertFilterForm.jsp"/>
+
+        <action path="/SaveAlertFilterAction" 
+             type="com.adventnet.nms.webclient.filters.SaveAlertFilterAction" 
+             name="SaveAlertFilterForm" scope="request" validate="false">
+        <forward name="resultPage" path="/AlertFilters.do"/>
+        </action>
+
+        <action path="/InvokeLoadAlertFilterForm" 
+             type="org.apache.struts.actions.ForwardAction" 
+             parameter="/webclient/admin/jsp/LoadAlertFilterForm.jsp"/>
+
+        <action path="/LoadAlertFilterAction" 
+             type="com.adventnet.nms.webclient.filters.LoadAlertFilterAction" 
+             name="LoadAlertFilterForm" scope="request" validate="false">
+		<forward name="resultPage" path="/AlertFilters.do"/>
+        </action>
+
+<!-- End of Alert Filter Related Operations -->
+
+        <action path="/NotificationProfiles" 
+            type="com.adventnet.nms.webclient.filters.FetchNotificationProfiles" scope="request">
+            <forward name="DisplayPage" path="DisplayNotificationsList" contextRelative="true"/>
+        </action>
+
+        <action path="/ConfigureSuppressAction" 
+             type="com.adventnet.nms.webclient.filters.SuppressAction" 
+             name="SuppressActionForm" scope="request" validate="false" parameter="toPerform">
+             <forward name="loadPage" path="/webclient/admin/jsp/suppressActionForm.jsp" contextRelative="true"/>
+		     <forward name="loadPageWithTiles" path="SuppressActionDef" contextRelative="true"/>
+             <forward name="resultPage" path="/webclient/admin/jsp/ResultPage.jsp" contextRelative="true"/>
+             <forward name="mainPage" path="/NotificationProfiles.do" redirect="true"/>
+        </action>
+
+        <action path="/ConfigureRunCommandAction"  
+                type="com.adventnet.nms.webclient.filters.RunCommandAction" 
+                name="RunCmdActionForm" scope="request" validate="false" parameter="toPerform">
+                <forward name="loadPage" path="/webclient/admin/jsp/runCommandActionForm.jsp" contextRelative="true"/>
+                <forward name="loadPageWithTiles" path="RunCmdActionDef" contextRelative="true"/>
+                <forward name="resultPage" path="/webclient/admin/jsp/ResultPage.jsp" contextRelative="true"/>
+                <forward name="mainPage" path="/NotificationProfiles.do" redirect="true"/>
+        </action>
+
+        <action path="/ConfigureCustomFilterAction"  
+                type="com.adventnet.nms.webclient.filters.CustomFilterAction" 
+                name="CustomFilterForm" scope="request" parameter="toPerform" validate="false">
+                <forward name="loadPage" path="/webclient/admin/jsp/customFilterActionForm.jsp" contextRelative="true"/>
+                <forward name="loadPageWithTiles" path="CustomFilterActionDef" contextRelative="true"/>
+                <forward name="resultPage" path="/webclient/admin/jsp/ResultPage.jsp" contextRelative="true"/>
+                <forward name="mainPage" path="/NotificationProfiles.do" redirect="true"/>
+        </action>
+
+        <action path="/ConfigureSendEMailAction"  
+                type="com.adventnet.nms.webclient.filters.SendEmailAction" 
+                name="EMailActionForm" scope="request" parameter="toPerform" validate="false">
+                <forward name="loadPage" path="/webclient/admin/jsp/sendEmailActionForm.jsp" contextRelative="true"/>
+                <forward name="loadPageWithTiles" path="SendEMailActionDef" contextRelative="true"/>
+                <forward name="resultPage" path="/webclient/admin/jsp/ResultPage.jsp" contextRelative="true"/>
+                <forward name="mainPage" path="/NotificationProfiles.do" redirect="true"/>
+        </action>
+
+        <action path="/ConfigureSendTrapAction" 
+                type="com.adventnet.nms.webclient.filters.SendTrapAction" 
+                name="SendTrapActionForm"  scope="request" parameter="toPerform" validate="false">
+                <forward name="loadPage" path="/webclient/admin/jsp/sendTrapActionForm.jsp" contextRelative="true"/>
+                <forward name="loadPageWithTiles" path="SendTrapActionDef" contextRelative="true"/>
+                <forward name="resultPage" path="/webclient/admin/jsp/ResultPage.jsp" contextRelative="true"/>
+                <forward name="mainPage" path="/NotificationProfiles.do" redirect="true"/>
+        </action>
+
+
+       <action path="/MonitorDCR"
+        type="com.adventnet.nms.webclient.management.RateAction">
+                <forward name="displayGraph" path="/webclient/admin/jsp/JVMGraph.jsp" contextRelative="true"/>
+        </action>
+
+        <action path="/MonitorSPR"
+        type="com.adventnet.nms.webclient.management.RateAction">
+                <forward name="displayGraph" path="/webclient/admin/jsp/JVMGraph.jsp" contextRelative="true"/>
+       </action>
+
+       <action path="/SavePreferences"
+       type="com.adventnet.nms.webclient.management.JVMGraphPreferences">
+                <forward name="TaskMgr" path="/TaskManager.do" redirect="true"/>
+       </action>       
+
+       <action path="/TaskManager"
+              type="com.adventnet.nms.webclient.management.FetchJVMDetails">
+              <forward name="showDetails" path="DisplayTaskManager" contextRelative="true"/>
+       </action>
+
+       <action path="/TerminateClient"
+              type="com.adventnet.nms.webclient.management.TerminateClientAction">
+              <forward name="TaskMgr" path="/TaskManager.do" redirect="true"/>
+       </action>
+
+       <action path="/ExportJVMDetails"
+               type="com.adventnet.nms.webclient.management.ExportJVMDetails">
+               <forward name="TaskMgr" path="/TaskManager.do" redirect="true"/>
+       </action>
+
+       <action path="/StatusMessage" 
+	       type="org.apache.struts.actions.ForwardAction" parameter="/webclient/admin/jsp/StatusMessage.jsp">
+       </action>
+
+       <action path="/ReportToAdventNet"
+               type="com.adventnet.nms.webclient.management.ReportToAdventNet">
+               <forward name="uploadFile" path="/instantFeedback.do" contextRelative="true" redirect="true"/>
+       </action>
+
+       <action path="/ShowStandbyDetails"
+    	       type="org.apache.struts.actions.ForwardAction" parameter="/webclient/admin/jsp/StandbyServerDetails.jsp">
+       </action>
+
+</action-mappings>
+
+<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+  <set-property property="pathnames" value="/webclient/admin/conf/admin-validator-rules.xml,/webclient/admin/conf/admin-validation.xml"/>
+ </plug-in>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/webclient/admin/conf/admin-tiles-defns.xml" />
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: report-tiles-defns.xml,v 1.2 2010/10/29 13:47:13 swaminathap Exp $ -->
+
+<!DOCTYPE tiles-definitions  PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="report" path="/webclient/common/jsp/MainLayout.jsp">
+		<!--<put name="Tree" value=".tree.controller"/>-->
+		<put name="Tree" value=""/>
+		<put name="Tab" value=".tab.controller"/>
+		<put name="AccPanel" value=".accPanel.controller"/> 
+	<!-- 	<put name="Right" value=""/> -->
+		<put name="MainPage" value=""/>
+		 <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+	</definition>
+
+	<definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    		controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+	</definition>
+
+	<definition name=".tree.controller" path="/webclient/report/jsp/NavigationComponent.jsp" 
+		controllerClass ="com.adventnet.nms.webclient.report.ReportsNavigator">
+	</definition>
+
+	<definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    		controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+	</definition>
+
+	<definition name=".right.controller" path="/webclient/common/jsp/rightPanelList.jsp" 
+     controllerClass ="com.adventnet.nms.webclient.home.RightPanelController" > 
+	</definition>
+	
+	<definition name="reportsIndex" extends="report">
+		<put name="MainPage" value="/webclient/report/jsp/ReportsMainPage.jsp"/>
+	</definition>
+	<definition name="CPUTiles" extends="report">
+		<put name="MainPage" value="/webclient/report/jsp/Reports.jsp"/>
+	</definition>	
+	
+	<definition name="invokeAddPage" extends="report">
+		<put name="MainPage" value="/webclient/report/jsp/AddReports.jsp"/>
+	</definition>
+
+
+	<definition name="Customize" extends="report">
+		<put name="MainPage" value="/webclient/report/jsp/CustomizeReports.jsp"/>
+	</definition>	
+	<definition name="addPoll" extends="report">
+		<put name="MainPage" value="/webclient/perf/jsp/AddPollingObjectsForm.jsp"/>
+	</definition>
+	<definition name="modifyPoll" extends="report">
+		<put name="MainPage" value="/webclient/perf/jsp/ModifyPollingObjectsForm.jsp"/>
+	</definition>
+	<definition name="success" extends="report">
+		<put name="MainPage" value="/webclient/perf/jsp/result.jsp"/>
+	</definition>
+	<definition name="failure" extends="report">
+		<put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+	</definition>
+</tiles-definitions>
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: perf-tiles-defn.xml,v 1.4 2010/10/29 13:47:12 swaminathap Exp $ -->
+
+ <!DOCTYPE tiles-definitions  PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+    <definition name="perf" path="/webclient/common/jsp/MainLayout.jsp">
+	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+	 <put name="AccPanel" value=".accPanel.controller"/>
+     <put name="Right" value=".right.controller"/>
+         <put name="MainPage" value=""/>
+	  <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+    </definition>
+
+<definition name="message" extends="perf"> 
+        <put name="MainPage" value="/webclient/common/jsp/MessagePage.jsp"/> 
+     </definition> 
+
+<!-- newly added for polling objects STARTS HERE -->
+
+<definition name="addPoll" extends="perf">
+		<put name="MainPage" value="/webclient/perf/jsp/AddPollingObjectsForm.jsp"/>
+	</definition>
+	<definition name="modifyPoll" extends="perf">
+		<put name="MainPage" value="/webclient/perf/jsp/ModifyPollingObjectsForm.jsp"/>
+	</definition>
+	<definition name="success" extends="perf">
+		<put name="MainPage" value="/webclient/perf/jsp/result.jsp"/>
+	</definition>
+	<definition name="failure" extends="perf">
+		<put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+	</definition>
+
+<!-- newly added for polling objects ENDS HERE -->
+
+<definition name="StatDetailsDef" extends="perf">
+      <put name="MainPage" value="/webclient/perf/jsp/StatsProperties.jsp"/>
+    </definition>
+
+<definition name="ThresholdDef" extends="perf">
+      <put name="MainPage" value="/webclient/perf/jsp/Threshold.jsp"/>
+    </definition>
+
+
+
+    <definition name="PerfViewPageDef" extends="perf">
+      <put name="MainPage" value="PerfPageDef"/>
+    </definition>
+
+    <definition name="PerfPageDef" path="/webclient/perf/jsp/listViewLayout.jsp">
+    <put name="PageIncludes" value="/webclient/perf/jsp/perfViewIncludes.jsp"/>
+    <put name="HeaderIncludes" value="/webclient/perf/jsp/perfHeaderInclude.jsp"/>
+    <put name="StatusMessage" value="/webclient/perf/jsp/perfViewStatus.jsp"/>
+    <put name="ListView" value="/webclient/perf/jsp/perfList.jsp"/>
+    </definition>
+
+    <definition name=".component.pagetraversal" path="/webclient/common/jsp/PageNavigation.jsp" 
+           controllerClass="com.adventnet.nms.webclient.common.PageTraversalController">
+    </definition>
+    
+    <definition name="PerfReportsPage" extends="perf">
+      <put name="MainPage" value="/webclient/perf/jsp/viewPerfReports.jsp"/>
+    </definition>
+
+    <definition name="StatsErrorPage" extends="perf">
+      <put name="MainPage" value="/webclient/common/jsp/ErrorPage.jsp"/>
+    </definition>
+
+    <definition name="ReportsMainPage" extends="perf">
+      <put name="MainPage" value="/webclient/perf/jsp/reportsIndex.jsp"/>
+    </definition>
+
+    <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>
+
+    <definition name=".right.controller" path="/webclient/common/jsp/rightPanelList.jsp"
+    controllerClass ="com.adventnet.nms.webclient.home.RightPanelController" >
+    </definition>
+
+</tiles-definitions>

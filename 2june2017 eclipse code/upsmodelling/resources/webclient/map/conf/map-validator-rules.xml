@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: map-validator-rules.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <global>
+
+      <validator name="required"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateRequired"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="webclient.topo.errors.required">
+
+         <javascript><![CDATA[
+            function validateRequired(form) {
+                var isValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oRequired = new required();
+                for (x in oRequired) {
+                	var field = form[oRequired[x][0]];
+                	
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'file' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio' ||
+                        field.type == 'password') {
+                        
+                        var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+							if (si >= 0) {
+								value = field.options[si].value;
+							}
+						} else {
+							value = field.value;
+						}
+                        
+                        if (trim(value).length == 0) {
+                        
+	                        if (i == 0) {
+	                            focusField = field;
+	                        }
+	                        fields[i++] = oRequired[x][1];
+	                        isValid = false;
+                        }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return isValid;
+            }
+            
+            // Trim whitespace from left and right sides of s.
+            function trim(s) {
+                return s.replace( /^\s*/, "" ).replace( /\s*$/, "" );
+            }
+            
+            ]]>
+         </javascript>
+
+      </validator>
+
+
+      <validator name="integer"
+            classname="org.apache.struts.validator.FieldChecks"
+               method="validateInteger"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionErrors,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="webclient.topo.errors.integer"
+       jsFunctionName="IntegerValidations">
+
+         <javascript><![CDATA[
+            function validateInteger(form) {
+                var bValid = true;
+                var focusField = null;
+                var i = 0;
+                var fields = new Array();
+                oInteger = new IntegerValidations();
+                for (x in oInteger) {
+                	var field = form[oInteger[x][0]];
+
+                    if (field.type == 'text' ||
+                        field.type == 'textarea' ||
+                        field.type == 'select-one' ||
+                        field.type == 'radio') {
+                        
+                        var value = '';
+						// get field's value
+						if (field.type == "select-one") {
+							var si = field.selectedIndex;
+						    if (si >= 0) {
+							    value = field.options[si].value;
+						    }
+						} else {
+							value = field.value;
+						}
+                        
+                        if (value.length > 0) {
+                        
+                            if (!isAllDigits(value)) {
+                                bValid = false;
+                                if (i == 0) {
+	                                focusField = field;
+	                            }
+						        fields[i++] = oInteger[x][1];
+						        
+                            } else {
+	                            var iValue = parseInt(value);
+	                            if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
+	                                if (i == 0) {
+	                                    focusField = field;
+	                                }
+	                                fields[i++] = oInteger[x][1];
+	                                bValid = false;
+	                           }
+                           }
+                       }
+                    }
+                }
+                if (fields.length > 0) {
+                   focusField.focus();
+                   alert(fields.join('\n'));
+                }
+                return bValid;
+            }
+
+            function isAllDigits(argvalue) {
+                argvalue = argvalue.toString();
+                var validChars = "0123456789";
+                var startFrom = 0;
+                if (argvalue.substring(0, 2) == "0x") {
+                   validChars = "0123456789abcdefABCDEF";
+                   startFrom = 2;
+                } else if (argvalue.charAt(0) == "0") {
+                   validChars = "01234567";
+                   startFrom = 1;
+                } else if (argvalue.charAt(0) == "-") {
+                    startFrom = 1;
+                }
+                
+                for (var n = startFrom; n < argvalue.length; n++) {
+                    if (validChars.indexOf(argvalue.substring(n, n+1)) == -1) return false;
+                }
+                return true;
+            }]]>
+         </javascript>
+
+      </validator>
+
+
+
+   </global>
+
+</form-validation>

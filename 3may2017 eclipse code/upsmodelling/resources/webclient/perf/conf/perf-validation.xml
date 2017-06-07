@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+<!-- $Id: perf-validation.xml,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+   <formset>
+
+        <form name="StatsPropsForm">
+            <field property="name"
+                 depends="required">
+         	     <arg0 key="webclient.perf.statistics.prop.name"/>
+            </field>
+            <field property="snmpVersion"
+                 depends="required">
+         	     <arg0 key="webclient.perf.statistics.prop.snmpversion"/>
+            </field>
+            <field property="oid"
+                 depends="required">
+         	     <arg0 key="webclient.perf.statistics.prop.oid"/>
+            </field>
+            <field property="agent"
+                 depends="required">
+         	     <arg0 key="webclient.perf.statistics.prop.agent"/>
+            </field>
+            <field property="port"
+                 depends="required,integer">
+         	     <arg0 key="webclient.perf.statistics.prop.port"/>
+            </field>
+            <field property="period"
+                 depends="required,integer">
+         	     <arg0 key="webclient.perf.statistics.prop.period"/>
+            </field>
+            <field property="failureThreshold"
+                 depends="required,integer">
+         	     <arg0 key="webclient.perf.statistics.prop.failurethreshold"/>
+            </field>
+            <field property="savePollCount"
+                 depends="required,integer">
+         	     <arg0 key="webclient.perf.statistics.prop.savepollcount"/>
+            </field>
+            <field property="currentSaveCount"
+                 depends="required,integer">
+         	     <arg0 key="webclient.perf.statistics.prop.currsavect"/>
+            </field>
+          
+
+        </form>
+
+
+        <form name="ReportViewForm">
+             <field property="name" depends="requiredif">
+                 <arg0 key="webclient.performance.reports.managedobject.required" />
+                 <var>
+                 <var-name>field[0]</var-name>
+                 <var-value>rsubmit</var-value>
+                 </var>
+                  <var>
+                <var-name>fieldTest[0]</var-name>
+                  <var-value>NOTNULL</var-value>
+               </var>
+            </field>
+              <field property="period"
+                  depends="dateRequiredIf">
+                               <arg0 key="webclient.performance.reports.period.startdate.required"/>
+                                <var>
+                                <var-name>secondProperty</var-name>
+                                <var-value>startDate</var-value>
+                                </var>
+                                <var>
+                                <var-name>thirdProperty</var-name>
+                                <var-value>endDate</var-value>
+                                </var>
+              </field>
+              <field property="startDate"
+                  depends="validateDateOrder">
+                               <arg0 key="webclient.performance.reports.period.invaliddates.message"/>
+                                <var>
+                                <var-name>secondProperty</var-name>
+                                <var-value>endDate</var-value>
+                                </var>
+                                <var>
+                                <var-name>thirdProperty</var-name>
+                                <var-value>period</var-value>
+                                </var>
+                   </field>
+          </form>
+   </formset>
+</form-validation>

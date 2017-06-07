@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!-- $Id: fault-struts-config.xml,v 1.2 2007/09/14 10:35:05 gnanasekar Exp $ -->
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+
+
+<form-beans>
+
+    <form-bean name="EventCVForm" type="org.apache.struts.validator.DynaValidatorForm"> 
+      <form-property name="cvName" type="java.lang.String"/>
+      <form-property name="severity" type="java.lang.String[]"/>
+      <form-property name="entity" type="java.lang.String"/>
+      <form-property name="source" type="java.lang.String"/>
+      <form-property name="node" type="java.lang.String"/>
+      <form-property name="text" type="java.lang.String"/>
+      <form-property name="domain" type="java.lang.String"/>
+      <form-property name="network" type="java.lang.String"/>
+      <form-property name="category" type="java.lang.String"/>
+      <form-property name="fromTime" type="java.lang.String"/>
+      <form-property name="toTime" type="java.lang.String"/>
+      <form-property name="eventAgeCategory" type="java.lang.String"/>
+      <form-property name="operator" type="java.lang.String"/>
+      <form-property name="ageValue" type="java.lang.String" initial="1"/>
+      <form-property name="refreshPeriod" type="java.lang.String" initial="1"/>
+    </form-bean>
+
+    <form-bean name="AlarmCVForm" type="org.apache.struts.validator.DynaValidatorForm"> 
+      <form-property name="cvName" type="java.lang.String"/>
+      <form-property name="severity" type="java.lang.String[]"/>
+      <form-property name="previousseverity" type="java.lang.String[]"/>
+      <form-property name="source" type="java.lang.String"/>
+      <form-property name="entity" type="java.lang.String"/>
+      <form-property name="who" type="java.lang.String"/>
+      <form-property name="groupName" type="java.lang.String"/>
+      <form-property name="category" type="java.lang.String"/>
+      <form-property name="message" type="java.lang.String"/>
+      <form-property name="createdfrom" type="java.lang.String"/>
+      <form-property name="createdto" type="java.lang.String"/>
+      <form-property name="modifiedfrom" type="java.lang.String"/>
+      <form-property name="modifiedto" type="java.lang.String"/>
+      <form-property name="groupViewMode" type="java.lang.String"/>
+      <form-property name="alarmAgeCategory" type="java.lang.String"/>
+      <form-property name="operator" type="java.lang.String"/>
+      <form-property name="ageValue" type="java.lang.String" initial="1"/>
+      <form-property name="refreshPeriod" type="java.lang.String" initial="1"/>
+    </form-bean>
+
+    <form-bean name="searchForm" type="com.adventnet.nms.webclient.components.advancedsearch.SearchForm">
+      <form-property name="selectedKeys" type="java.lang.String[]"/>
+      <form-property name="selectedConditions" type="java.lang.String[]"/>
+      <form-property name="criteriaValues" type="java.lang.String[]"/>
+      <form-property name="logicalCondition" type="java.lang.String" initial="1"/>
+      <form-property name="rows" type="java.lang.String" initial="1"/>
+      <form-property name="actionToPerform" type="java.lang.String" initial="search"/>
+   </form-bean>
+
+</form-beans>
+
+<global-exceptions>
+
+    <exception handler="com.adventnet.nms.webclient.common.DefaultExceptionHandler" type = "java.lang.Exception" key = "" />
+
+</global-exceptions>
+
+
+<global-forwards>
+
+    <forward name="viewAlarm" path="/fault/AlarmView.do" contextRelative="true"/> 
+
+    <forward name="updated" path = "/webclient/common/jsp/updated.jsp" contextRelative = "true"/>
+
+    <forward name="messagePage" path="message" contextRelative="true"/>
+
+    <forward name="errorPage" path="error" contextRelative="true"/>
+
+    <forward name="cvResult" path="/webclient/fault/jsp/cvStatus.jsp"  contextRelative="true"/>
+
+    <forward name="responsePage"  path="responsePageDef" contextRelative = "true"/>
+
+</global-forwards>
+
+<action-mappings>
+
+    <!-- Event List View  -->
+    <action path="/NetworkEvent"
+            type="com.adventnet.nms.webclient.fault.event.EventViewAction" 
+            scope="request">
+         <forward name="eventView" path="NetworkEventPage" contextRelative="true"/>
+    </action>
+
+    <!-- To Print the Events -->
+    <action path="/PrintNetworkEvent"
+            type="com.adventnet.nms.webclient.fault.event.EventViewAction" 
+            scope="request">
+            <forward name="eventView" path="/webclient/fault/jsp/printableEventList.jsp" contextRelative="true"/>
+    </action>
+
+   <!-- EventDetails Action -->
+   <action path="/EventDetails"
+            type="com.adventnet.nms.webclient.fault.event.EventDetailsAction" 
+            scope="request">
+           <forward name="eventDetails" path="eventdetailsPage" contextRelative="true"/>
+   </action>
+
+
+    <!-- To customize the event columns to view   -->
+    <action path="/EventColumnCustomizer"
+            type="com.adventnet.nms.webclient.fault.event.EventColumnCustomizer"
+            scope="request">
+           <forward name="ShowColumns" path="/webclient/common/jsp/ShowColumns.jsp" contextRelative = "true"/>
+    </action>
+
+    <action path="/ModifyEventCV"
+            type="com.adventnet.nms.webclient.fault.event.ModifyEventViewColumns"
+            scope="request">
+    </action>
+
+    <!-- Alarm List View  -->
+    <action path="/AlarmView"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmViewAction" 
+            scope="request">
+        	 <forward name="alarmView" path="NetworkAlarmPage" contextRelative="true"/>
+    </action>
+
+    <!-- To Print the Alarms -->
+    <action path="/PrintAlarmView"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmViewAction" 
+            scope="request">
+           <forward name="alarmView" path="/webclient/fault/jsp/printableAlarmList.jsp" contextRelative="true"/>
+    </action>
+
+    <!-- To customize the alarm columns to view   -->
+    <action path="/AlarmColumnCustomizer"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmColumnCustomizer"
+            scope="request">
+           <forward name="ShowColumns" path="/webclient/common/jsp/ShowColumns.jsp" contextRelative = "true"/>
+    </action>
+
+    <action path="/ModifyAlarmCV"
+            type="com.adventnet.nms.webclient.fault.alarm.ModifyAlarmViewColumns"
+            scope="request">
+    </action>
+
+   <!-- Alarm Details Action -->	
+    <action path="/AlarmDetails"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmOperationsDispatchAction" 
+            parameter="method"
+            scope="request">
+           <forward name="alarmDetails" path="alarmdetailsPage" contextRelative="true" />
+           <forward name="alarmProperties" path="/webclient/fault/jsp/alarmProperties.jsp" contextRelative="true" />
+           <forward name="assignAlarm" path="/webclient/fault/jsp/assignAlarm.jsp" contextRelative="true" />
+           <forward name="assignStatus" path="/webclient/fault/jsp/assignResponse.jsp" contextRelative="true" />
+           <forward name="setAnnotation" path="/webclient/fault/jsp/annotateAlarm.jsp" contextRelative="true" />
+           <forward name="annotationStatus" path="/webclient/fault/jsp/annotationResponse.jsp" contextRelative="true" />   
+           <forward name="annAndHistory" path="/webclient/fault/jsp/annotationAndHistory.jsp" contextRelative="true" />
+           <forward name="viewMergedNotes" path="/webclient/fault/jsp/mergeAnnotationAndHistory.jsp" contextRelative="true" />
+           <forward name="otherFailures" path="/webclient/fault/jsp/otherFailures.jsp" contextRelative="true" />
+     </action>
+
+    <!-- Alarm Related Operations present in the Alarm List View  -->
+    <action path="/AlarmOperations"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmViewDispatchAction"
+            parameter="methodCall"
+            scope="request">
+	    <forward name="operationSuccess" path="fwdoperation" contextRelative="true"/>
+    </action>
+
+    <!-- Add Event Custom View -->
+    <action path="/invokeEventCV"    
+            type="com.adventnet.nms.webclient.fault.event.InvokeEventCVAction"
+            name="EventCVForm"
+            validate="false"
+            scope="request">
+           <forward name="eventCV" path="eventCVForm" contextRelative="true"/>
+    </action>
+
+    <action path="/eventCVAction"
+            type="com.adventnet.nms.webclient.fault.event.EventCvAction"
+            name="EventCVForm"
+            scope="request"
+            input="eventCV"
+            validate="true">
+           <forward name="eventCV" path="eventCVForm" contextRelative="true"/>
+           <forward name="eventView" path="/NetworkEvent.do"/>
+    </action>
+
+    <!-- Remove Event Custom View -->
+    <action path="/removeEventCV"
+            type="com.adventnet.nms.webclient.fault.event.RemoveEventCV"
+            scope="request">
+           <forward name="eventView" path="/NetworkEvent.do"/>
+    </action>
+
+    <!-- Add Alarm Custom View -->
+    <action path="/invokeAlarmCV"    
+            type="com.adventnet.nms.webclient.fault.alarm.InvokeAlarmCVAction"
+            name="AlarmCVForm"
+            validate="false"
+            scope="request">
+           <forward name="alarmCV" path="alarmCVForm" contextRelative="true"/>
+    </action>
+
+    <action path="/alarmCVAction"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmCvAction"
+            name="AlarmCVForm"
+            scope="request"
+            input="alarmCV"
+            validate="true">
+           <forward name="alarmCV" path="alarmCVForm" contextRelative="true"/>
+        	 <forward name="alarmView" path="/AlarmView.do"/>
+    </action>
+
+    <!-- Remove Alarm Custom View -->
+    <action path="/removeAlarmCV"
+            type="com.adventnet.nms.webclient.fault.alarm.RemoveAlarmCV"
+            scope="request">
+        	 <forward name="alarmView" path="/AlarmView.do"/>
+    </action>
+
+    <!-- ACC Panel  -->
+    <action path="/accPanel"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmSummary"
+            scope="request" >
+            <forward name="accClient" path="/webclient/fault/jsp/alarmSummary.jsp" contextRelative="true"/>
+    </action>
+
+    <action path="/AlarmSummaryPanel"
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmSummary"
+            scope="request" >
+            <forward name="accClient" path="/webclient/fault/jsp/alarmSnapshot.jsp" contextRelative="true"/>
+    </action>
+
+    <action name="searchForm" path="/eventAdvancedSearch" 
+            type="com.adventnet.nms.webclient.fault.event.EventAdvSearchAction"
+            scope="request" parameter="method">
+            <forward name="searchView" path="faultSearchDef" contextRelative="true"/>
+    </action>
+
+    <action name="searchForm" path="/alarmAdvancedSearch" 
+            type="com.adventnet.nms.webclient.fault.alarm.AlarmAdvSearchAction"
+            scope="request" parameter="method">
+            <forward name="searchView" path="faultSearchDef" contextRelative="true"/>
+    </action>
+
+
+
+</action-mappings>
+
+<controller inputForward="true" />
+
+<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+  <set-property property="pathnames" value="/webclient/fault/conf/fault-validator-rules.xml,/webclient/fault/conf/fault-validation.xml"/>
+ </plug-in>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+    <set-property property="definitions-config" value="/webclient/fault/conf/fault-tiles-defn.xml" />
+    <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_0.dtd">
+
+<form-validation>
+ <!-- $Id: topo-validation.xml,v 1.2 2010/10/29 13:47:15 swaminathap Exp $ -->
+   <global>
+      <constant>
+        <constant-name>ipaddress</constant-name>
+        <constant-value>^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$</constant-value>
+      </constant>
+
+   </global>
+
+   <formset>
+
+        <form name="AddNodeForm">
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.addnode.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="snmpport"
+                 depends="required,integer">
+         	     <arg0 key="webclient.topo.addnode.snmpport"/>
+            </field>
+           
+            <field property="community"
+                 depends="required">
+         	     <arg0 key="webclient.topo.addnode.community"/>
+            </field>
+
+             <field property="userName" depends="requiredif">
+                 <arg0 key="webclient.topo.addnode.username" />
+         	     <arg1 key="webclient.topo.addnode.snmpv3"/>
+                 <var>
+                 <var-name>field[0]</var-name>
+                 <var-value>version</var-value>
+                 </var>
+                  <var>
+                <var-name>fieldTest[0]</var-name>
+                  <var-value>NOTNULL</var-value>
+               </var>
+            </field>
+
+             <field property="contextName" depends="requiredif">
+                 <arg0 key="webclient.topo.addnode.contextname" />
+         	     <arg1 key="webclient.topo.addnode.snmpv3"/>
+                 <var>
+                 <var-name>field[0]</var-name>
+                 <var-value>version</var-value>
+                 </var>
+                  <var>
+                <var-name>fieldTest[0]</var-name>
+                  <var-value>NOTNULL</var-value>
+               </var>
+            </field>
+
+<!-- 
+Note :
+=====
+As requiredif is depricated and we whave to use validwhen after Struts 1.2 Realase.
+
+            <field property="userName" depends="validwhen">
+           <arg0 key="AddNodeForm.userName.displayName"/>
+           <var>
+              <var-name>test</var-name>
+             <var-value>((version == null) or (version == "") or (*this* != null))</var-value>
+           </var>
+          </field>
+
+           <field property="contextName" depends="validwhen">
+           <arg0 key="AddNodeForm.contextName.displayName" />
+           <var>
+              <var-name>test</var-name>
+             <var-value>((version == null) or (version == "") or (*this* != null))</var-value>
+           </var>
+          </field>
+         
+-->
+        </form>
+
+        <form name="AddNetworkForm">
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.addnetwork.netaddress" />
+                     <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+        </form>
+
+        <form name="refreshNodeForm">
+            <field property="name"
+                depends="required">
+                <arg0 key="webclient.topo.refreshnode.name"/>
+            </field>
+            <field property="snmpport"
+                 depends="required,integer">
+         	     <arg0 key="webclient.topo.refreshnode.snmpport"/>
+            </field>
+        </form>
+
+        <form name="ManagedObjectBean">
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.ipaddress.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+        </form>
+
+        <form name="PortObjectBean">
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+        </form>
+
+        <form name="TopoObjectBean">
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+
+        <form name="NodeBean">
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+        <form name="SnmpNodeBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	     <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+
+        <form name="IpAddressBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+        <form name="SnmpInterfaceBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+        <form name="SwitchObjectBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+        <form name="PrinterBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+
+            <field property="snmpport"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.snmpport"/>
+            </field>
+        </form>
+
+        <form name="NetworkBean">
+
+            <field property="ipAddress"
+                 depends="required,mask">
+         	     <arg0 key="webclient.topo.objectdetails.ipaddress"/>
+                      <var>
+                       <var-name>mask</var-name>
+                       <var-value>${ipaddress}</var-value>
+                     </var>
+            </field>
+
+            <field property="failureThreshold"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.failurethreshold"/>
+            </field>
+	    
+	    <field property="displayName"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.displayname"/>
+            </field>
+            
+            <field property="uClass"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.userclass"/>
+            </field>
+
+            <field property="tester"
+                depends="required">
+                <arg0 key="webclient.topo.objectdetails.tester"/>
+            </field>
+
+           <field property="pollInterval"
+                depends="required,integer">
+                <arg0 key="webclient.topo.objectdetails.pollinterval"/>
+            </field>
+       </form>
+   </formset>
+</form-validation>

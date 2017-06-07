@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id: struts-config.xml,v 1.3 2010/10/29 13:46:57 swaminathap Exp $ -->
+<!DOCTYPE struts-config PUBLIC
+       "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+<form-beans>
+	<form-bean name="PasswordExpiryFormBean" type="org.apache.struts.validator.DynaValidatorForm">
+		<form-property name="newpassword" type="java.lang.String"/>
+		<form-property name="confirmpassword" type="java.lang.String"/>
+		<form-property name="pwdExpiryStatus" type="java.lang.String"/>
+		<form-property name="days" type="java.lang.String"/>
+	</form-bean>
+	<form-bean name="V3ParameterForm" type="org.apache.struts.validator.DynaValidatorForm">
+                <form-property name="targetHost" type="java.lang.String"/>
+                <form-property name="targetPort" type="java.lang.String"/>
+                <form-property name="v3userName" type="java.lang.String"/>
+                <form-property name="securityLevel" type="java.lang.String"/>
+                <form-property name="authprotocol" type="java.lang.String"/>
+                <form-property name="authpwd" type="java.lang.String"/>
+                <form-property name="privprotocol" type="java.lang.String"/>
+                <form-property name="privpwd" type="java.lang.String"/>
+                <form-property name="contextName" type="java.lang.String"/>
+                <form-property name="engineid" type="java.lang.String"/>
+        </form-bean>
+
+</form-beans>
+
+<global-forwards>
+	<forward name="messagePage" path="/webclient/common/jsp/MessagePage.jsp" contextRelative="true"/>
+	<forward name="redirect" path="/webclient/common/jsp/redirectPage.jsp"/>
+</global-forwards>
+
+<action-mappings>
+
+  <action path="/404Error" forward = "/webclient/common/jsp/404error.jsp" />
+  <action path="/modifyWidget" forward = "/webclient/home/jsp/AddModifyDashboard.jsp"/>
+  <action path="/associateWidget" input="/webclient/home/jsp/AssociateWidgetForm.jsp" type="com.adventnet.nms.webclient.home.AssociateWidgetAction" parameter="method">
+	  <forward name="addWidget" path="addingWidget"/>
+	  <forward name="addCctv" path="addCctvDialog"/>
+	  <forward name="addCctvDialog" path="addCctvDialog"/>
+	  <forward name="addCctvViews" path="modifyingCctv"/>
+	  <forward name="modifyCctvViews" path="/webclient/home/jsp/ModifyCctv.jsp"/>
+	  <forward name="success" path="/mainLayout.do"/>
+		<forward name="error" path="/404Error.do"/>
+  </action>
+
+  <action path="/modifyDashboard" type="com.adventnet.nms.webclient.home.EditDashboardAction" parameter="method" scope="request">
+	  <forward name="showModifyForm" path="dashboardList"/>
+	  <forward name="showModifyFormDialog" path="modifyDashboardDialog"/>
+	  <forward name="success" path="/mainLayout.do"/>
+	  <forward name="addDashboard" path="addDashDialog"/>
+	  <forward name="addDashboardDialog" path="addDashDialog"/>
+		<forward name="error" path="/404Error.do"/>
+  </action>
+
+  <action path="/DateInput" type="com.adventnet.nms.webclient.common.DateInputAction">
+		<forward name="datecomponent" path="/webclient/common/jsp/DateInput.jsp"/>
+  </action>
+
+  <action path="/Exception" type="com.adventnet.nms.webclient.common.ExceptionAction">
+		<forward name="errorPage" path="/webclient/common/jsp/ErrorPage.jsp"/>
+  </action>
+
+  <action path="/jsp/Login"
+	  name="LoginFormBean"
+          type="com.adventnet.nms.webclient.login.LoginAction" 
+  	  input="/webclient/common/jsp/Login.jsp">
+	  <forward name="login" path="/mainLayout.do" redirect="true"/>
+	  <forward name="passwordexpirypage" path="/webclient/common/jsp/passwordExpiry.jsp"/>
+	  <forward name="appletclient" path="/jsp/index.jsp"/>
+  </action>
+
+  <action path="/mainLayout"
+          type="com.adventnet.nms.webclient.common.MainLayoutAction">
+          <forward name="mainPage" path="mainlayout" />
+          <forward name="errorPage" path="/Exception.do" />
+  </action>
+
+  <action path="/jsp/PasswordExpiry" 
+          name="PasswordExpiryFormBean"
+	  scope="request"
+	  validate="true"
+	  input="/webclient/common/jsp/passwordExpiry.jsp" 
+          type="com.adventnet.nms.webclient.login.PasswordAction">
+ 	  <forward name="success" path="/mainLayout.do"/>
+          <forward name="appletclient" path="/jsp/index.jsp"/>
+  </action>
+
+  <action path="/Logout" 
+          type="com.adventnet.nms.webclient.login.LogoutAction">
+	  <forward name="success" path="/webclient/common/jsp/Login.jsp"/>
+  </action>
+<!--
+ <action path="/Homepage" 
+          type="com.adventnet.nms.webclient.home.HomepageAction">
+	  <forward name="homepage" path="homepage"/>
+  </action>
+-->
+  <action path="/MibBrowser"
+          type="org.apache.struts.actions.ForwardAction"
+          parameter="mibbrowserdef">
+  </action>
+
+  <action path="/LoginPage" 
+          type="com.adventnet.nms.webclient.common.BrowserSupportAction">
+          <forward name="supported" path="/webclient/common/jsp/Login.jsp"/>
+          <forward name="notsupported" path="/webclient/common/jsp/supportedBrowser.jsp"/>
+          <forward name="loginerrorpage" path="/mainLayout.do"/>
+  </action>
+
+  <action path="/preLogin" forward="/webclient/common/jsp/preLogin.jsp"/>
+  <action path="/jsp/WebStart" forward="/jsp/WebStart.jsp"/>
+  <action path="/skinSelection" forward="/webclient/common/jsp/skinSelection.jsp"/>
+ <!--  <action path="/instantFeedback" forward="/webclient/common/jsp/instantFeedback.jsp"/> -->
+  <action path="/sendFeedback" forward="/webclient/common/jsp/mailer.jsp"/>
+  <action path="/feedbackThanks" forward="/webclient/common/jsp/feedbackThanks.jsp"/>
+
+  <action path="/preferencesSavedResponse"
+          type="com.adventnet.nms.webclient.util.SavePreferencesAction">
+	  <forward name="success" path="/webclient/common/jsp/setSelectedSkin.jsp"/>
+  </action>
+
+  <action path="/ChangePassword" forward="/webclient/admin/jsp/ChangePassword.jsp"/>
+    <action path="/PasswordUpdate"
+      type="com.adventnet.nms.webclient.useradmin.ChangePasswordAction">
+      <forward name="changePassword" path="/webclient/admin/jsp/ChangePassword.jsp"/>
+      <forward name="messagePage" path="/webclient/common/jsp/MessagePage.jsp"/>
+  </action>
+
+  <action path="/Support"
+	    type="org.apache.struts.actions.ForwardAction"
+	    parameter = "supportDef" />
+   <action path="/setV3Parameters" name="V3ParameterForm" type="com.adventnet.nms.webclient.common.SettingV3Parameters" parameter="actionToPerform">
+            <forward name="addV3Form" path="/webclient/common/jsp/v3SettingForm.jsp"/>
+   </action>
+<action path="/instantFeedback" type="com.adventnet.nms.webclient.util.FeedbackAction"  scope="request">
+		<forward name="feedBack" path="/webclient/common/jsp/instantFeedback.jsp" contextRelative="true"/>
+        <forward name="uploadFile" path="/webclient/common/jsp/uploadFile.jsp" contextRelative="true"/>
+ </action>
+
+<action path="/CreateSupportFile" type="com.adventnet.nms.webclient.util.SupportFileAction"  scope="request">
+		<forward name="success" path="supportDef" contextRelative="true"/>
+ </action>
+
+<action path="/SupportFile"
+	    type="org.apache.struts.actions.ForwardAction"
+	    parameter = "supportFileDef" />
+
+
+<action path="/UploadFile" type="com.adventnet.nms.webclient.util.UploadFileAction"  scope="request">
+         <forward name="feedBack" path="/webclient/common/jsp/uploadFeedback.jsp" contextRelative="true"/>
+ </action>
+
+  <action path="/Recite" type="com.adventnet.nms.webclient.home.ReciteAction">
+	  <forward name="recite" path="/webclient/home/jsp/Recite.jsp"/>
+  </action>
+
+ 
+  <action path="/generateWidgets"
+	  type="com.adventnet.nms.webclient.home.GenerateWidgetAction">
+	  <forward name="tree" path="/webclient/home/jsp/MapTreeViewWidget.jsp"/>
+	  <forward name="invPage" path="/webclient/home/jsp/ListViewWidget.jsp"/>
+	  <forward name="listView" path="/webclient/home/jsp/AlarmsViewWidget.jsp"/>
+	  <forward name="cpureports" path="/webclient/home/jsp/CpuReportWidget.jsp"/>
+	  <forward name="traffic" path="/webclient/home/jsp/TrafficReportWidget.jsp"/>
+	  <forward name="barchart" path="/webclient/home/jsp/ChartsWidget.jsp"/>
+	  <forward name="piechart" path="/webclient/home/jsp/ChartsWidget.jsp"/>
+	  <forward name="graphView" path="/webclient/home/jsp/GraphsWidget.jsp"/>
+	  <forward name="error" path="/404Error.do"/>
+  </action>
+
+  <action path="/editWidget" type="com.adventnet.nms.webclient.home.EditWidgetAction" parameter="method">
+	  <forward name="editAction" path= "/webclient/home/jsp/EditWidget.jsp"/>
+	  <forward name="update" path= "/mainLayout.do"/>
+  </action>
+	   
+	    <action path="/setTreeStatus" 
+		    type="com.adventnet.nms.webclient.common.SetTreeNavigationMenu"
+		    scope="request">
+	    </action>
+
+</action-mappings>
+
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+           <set-property property="pathnames" value="/webclient/common/conf/validator-rules.xml,/webclient/common/conf/validation.xml"/>
+  </plug-in>
+
+  <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+           <set-property property="definitions-config" value="/webclient/common/conf/tiles-defns.xml" />
+           <set-property property="moduleAware" value="true" />
+  </plug-in>
+
+</struts-config>

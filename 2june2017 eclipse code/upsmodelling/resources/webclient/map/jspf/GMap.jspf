@@ -1,0 +1,549 @@
+<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+		<title>Google Maps JavaScript API Example</title>
+
+		<script type="text/javascript" src="/webclient/common/js/importxml.js"></script>
+		<SCRIPT LANGUAGE="javascript" SRC="/webclient/common/js/common.js"></SCRIPT>
+		<SCRIPT LANGUAGE="javascript" SRC="/webclient/common/js/validation.js"></SCRIPT>
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<c:out value='${GMapAPIKey}'/>"
+			type="text/javascript">
+			var map;			
+			var hide=false;
+			var displayId='';
+			
+		</script>
+		
+		<style type="text/css">
+			.Gname{
+			font-family: Verdana, Arial, Helvetica, sans-serif;
+			font-size: 0.8em;
+			font-style: normal;
+			font-weight: bold;
+			font-variant: normal;
+			color: #000000;
+			text-decoration: none;
+			}
+			.Gaddress{
+			font-family: Verdana, Arial, Helvetica, sans-serif;
+			font-size: 0.8em;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			color: #000000;
+			text-decoration: none;
+			}
+
+			.menuHoverBg{border-bottom:1px solid #e9eff3;background:#d3eefc;cursor:default;}
+menuDivider{border-bottom:1px solid #e9eff3;}
+			.suggesDiv{padding:3px;background:#fff;z-index:100;position:absolute;border-left:1px solid #3872C4;border-top:1px solid #3872C4;border-right:2px solid #000;border-bottom:2px solid #000;}
+
+
+			.suggesDiv{padding:3px;background:#fff;z-index:100;position:absolute;border-left:1px solid #3872C4;border-top:1px solid #3872C4;border-right:2px solid #000;border-bottom:2px solid #000;}
+			.classTest{text-align:left !important;}
+		</style>
+
+		<script type="text/javascript">
+			var n=null;
+function suggestionDiv(sourceId)
+{	
+	displayId = document.getElementById("sugg");
+	hide = false;
+	//This class will handle the KeyNavigation
+	new KeyAction(document.getElementById('input').textfield,document.getElementById('input').textfield2,document.getElementById('input').textfield3,document.getElementById('sugg'));
+}
+
+function hideAll()
+{
+	hide = true;
+	setTimeout('hided()', 1500);
+}
+function hideImmediate()
+{
+	hide = true;
+	hided();
+}
+function hided()
+{
+	if(hide)
+	{
+		displayId.style.display = 'none';
+		hide = false;
+	}
+}
+
+function callClass(objectEle, hClass)
+{
+	objectEle.className=hClass;
+}
+
+function deleteClass(objectEle, nClass)
+{
+	objectEle.className=nClass;
+}
+
+function delayhide()
+{
+	hide=false;
+}
+
+var selectedMarker="";
+
+/*
+ * This method will place the mapicon passed in the given location.
+ */
+
+function createMarkers(location,name,status,objname,mapName,mapicon,stringstatus,type,label)
+{
+	var micon = new GIcon();
+	
+	 if(mapicon==null ||mapicon=='undefined')
+	{
+	markeroptions={title:label};		
+	var marker=new GMarker(location,markeroptions);
+	}
+	 else
+	 {
+	micon.image="/webclient/topo/images/"+mapicon;
+	micon.iconAnchor = new GPoint(50, 50);
+	micon.infoWindowAnchor = new GPoint(50, 50);
+	micon.infoShadowAnchor = new GPoint(50, 50);
+	micon.iconSize = new GSize(50, 50);
+	micon.shadowSize = new GSize(50, 50);
+	micon.iconAnchor = new GPoint(50, 50);
+	micon.infoWindowAnchor = new GPoint(50, 50);
+	micon.infoShadowAnchor = new GPoint(50, 50);
+	markerOptions = {title:label,icon:micon};
+
+	var marker=new GMarker(location,markerOptions);
+	 }
+	
+	
+	
+	map.addOverlay(marker);
+	
+	//This will show the Symbol properties on clicking the GMapSymbol.
+	GEvent.addListener(marker, "click", function()
+			{
+			var newhtml="<div style='width:300px;overflow:hidden'><table style='margin-top:10px;clear:both' width='100%' cellspacing='0' cellpadding='3' border='0' align='left'><tbody><tr><td width='10%' height='24' nowrap='nowrap' class='boldTxt'><fmt:message key='webclient.gmap.form.addsymbol.symbolname'/></td><td valign='top' nowrap='nowrap'>: <a class='blueLink' title='"+name+"' href='/topo/objectdetails.do?requestid=SNAPSHOT&type=Node&menuName=objectmenu,nodemenu,nodemonitormenu&name="+objname+"'>"+name+" </a></td></tr><tr><td height='24' nowrap='nowrap' class='boldTxt'><fmt:message key='webclient.gmap.form.symboldetail.type'/></td><td valign='top'>: "+type+" </td></tr><tr><td height='24' nowrap='nowrap' class='boldTxt'><fmt:message key='webclient.gmap.form.symboldetail.status'/></td><td valign='top'>: <img align='absmiddle' border='0' src='/webclient/common/images/severity_"+stringstatus.toLowerCase()+".gif'/> "+stringstatus+"</td></tr></tbody></table><table style='clear:both;margin-top:7px;margin-bottom:7px;' class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td><img align='absmiddle' height='1' src='/webclient/common/images/spacer.gif'/></td></tr></table><table style='clear:both;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='right'><img align='absmiddle' class='deleteIcon' border='0' src='/webclient/common/images/spacer.gif'/> <a style='text-decoration:underline;' class='boldTxt blueLink' href='javascript:deletethisdevice(\""+name+"\",\""+mapName+"\" );'><fmt:message key='webclient.gmap.form.symboldetail.delete'/></a></td></tr></table></div>";			
+			marker.openInfoWindowHtml(newhtml);			
+			selectedMarker = marker;
+			});
+
+}
+
+function deletethisdevice(symbolName,mapName)
+{
+	if(confirm("<fmt:message key='webclient.gmapsymbol.delete.confirmation'/>")) 
+	{
+		//var url="/map/RemoveMapSymbol.do?mapName="+mapName+"&requestType=deleteSymbol&symbolName="+ symbolName + "&sid="+Math.random();
+		var url="/map/GMapAction.do?parameter=deleteSymbol&mapName="+mapName+"&symbolName="+ symbolName + "&sid="+Math.random();
+		importxml(url,"callbackDeleteSymbol");			
+	}
+}
+
+function callbackDeleteSymbol(response)
+{
+	
+	
+	var xmlDoc=response.documentElement;
+	var result=xmlDoc.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+	if(result=="true")
+	{
+		map.closeInfoWindow();
+		map.removeOverlay(selectedMarker);
+		alert("<fmt:message key='webclient.gmapsymbol.delete.success'/>");
+	}
+	else
+       	{
+		alert("<fmt:message key='webclient.gmapsymbol.delete.failure'/>");
+	}
+}
+
+/*
+ * This method is used to show the GMapSymbols present in the GMap.
+ */
+ function addSymbols()
+ {	
+ <c:forEach var="props" items="${mapdetails}">
+ var name='<c:out value="${props.name}"/>';
+ var lat='<c:out value="${props.latitude}"/>';
+ var long='<c:out value="${props.longitude}"/>';
+ var status='<c:out value="${props.status}"/>';
+ var objname='<c:out value="${props.objName}"/>';
+ var mapname='<c:out value="${props.mapName}"/>';
+ var stringstatus='<c:out value="${props.stringstatus}"/>';
+ var type='<c:out value="${props.type}"/>';	
+ var mapIcon='<c:out value="${props.mapIcon}"/>';
+ var label='<c:out value="${props.label}"/>';
+ var gppoint=new GLatLng(parseFloat(lat),parseFloat(long));    
+ createMarkers(gppoint,name,status,objname,mapname,mapIcon,stringstatus,type,label);
+ </c:forEach>
+ }
+
+function getNames(value,hat)
+{ 	
+	var length=value.length;	
+	if(length>2)
+	{
+		//var url="/map/GMapAction.do?&name="+value+"&requestType=fetchNames";
+		var url="/map/GMapAction.do?parameter=getDeviceNames&name="+value;
+		getHtml(url,"getObjNames");
+	}
+
+}
+
+function mouseSelect(objectEle){
+
+	objectEle.className="menuHoverBg";
+}
+function removeSelect(objectEle){
+	objectEle.className="menuDivider";
+}
+
+function getObjNames(response)
+{
+	var ss = document.getElementById("sugg");	
+	ss.innerHTML='';
+	ss.style.display = '';	
+	var str = response.split(",");
+	var output="";
+	var mouseselect="menuHoverBg";
+	if(str.length-1 == 0 || trimAll(document.input.textfield.value) == '')
+	{
+		hideImmediate();
+	}
+	else
+	{
+	for(i=0; i < str.length - 1; i++) 
+	{
+		var suggest ="<p style='clear:both;height:19px;margin:0px;padding:0px;' class='menuDivider' onmouseover='mouseSelect(this)';  onmouseout='removeSelect(this)'; onclick='javascript:setResult(this.innerHTML);'>"+str[i]+"</p>"     
+			ss.innerHTML += suggest;
+	}
+	}
+}	
+
+function setResult(value)
+{
+	document.getElementById('input').textfield.value = value;
+	document.getElementById('input').textfield2.value = value;
+	document.getElementById('input').textfield3.value = value;
+	document.getElementById('sugg').innerHTML = '';
+	document.getElementById("sugg").style.display='none';
+
+}
+
+function addSymbolInLocation(lat,lang)
+{
+	document.input.textfield.value = trimAll(document.input.textfield.value);
+	document.input.textfield2.value = trimAll(document.input.textfield2.value);
+	document.input.textfield3.value = trimAll(document.input.textfield3.value);
+	var name=document.input.textfield2.value;
+	if(name=='')
+	{
+		alert("<fmt:message key='webclient.gmap.form.addsymbol.error.name'/>");
+		document.input.textfield2.focus();
+		return;
+	}
+	if(isSpecialSymbol(name) || isSpecialSymbol(document.input.textfield.value) || isSpecialSymbol(document.input.textfield3.value) )
+	{
+		alert("<fmt:message key='webclient.gmap.alert.specialsymbol'/>");
+		return;
+	}
+	var label=document.input.textfield3.value;
+	var objname=document.input.textfield.value;
+	addMapSymbol(name,label,objname,lat,lang);
+	map.closeInfoWindow();
+}
+
+function addMapSymbol(name,label,objname,lat,lang)
+{	
+	var mapname="<c:out value='${viewId}'/>"
+		//var url="/map/AddGMapSymbol.do?mapName="+mapname+"&requestType=AJAX&name="+name+"&label="+label+"&objname="+objname+"&lat="+lat+"&lang="+lang;
+		var url="/map/GMapAction.do?parameter=addGMapSymbol&mapName="+mapname+"&name="+name+"&label="+label+"&objname="+objname+"&lat="+lat+"&lang="+lang;
+	importxml(url,"addGMapResult");
+}
+
+function addGMapResult(response)
+{
+	
+	var xmlDoc=response.documentElement;
+	var result=response.getElementsByTagName("result")[0].childNodes[0].nodeValue;
+	if(result=="true")
+	{
+		var name=xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+		var lat=xmlDoc.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;		
+		var lng=xmlDoc.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;		
+		var pt = new GLatLng(parseFloat(lat),parseFloat(lng));		
+		var status=xmlDoc.getElementsByTagName("status")[0].childNodes[0].nodeValue;
+		try
+		{
+			var objname=xmlDoc.getElementsByTagName("objName")[0].childNodes[0].nodeValue;
+		}
+		catch(err)
+		{
+			objname='';
+		}
+		var mapname=xmlDoc.getElementsByTagName("mapName")[0].childNodes[0].nodeValue;
+		var mapicon=xmlDoc.getElementsByTagName("mapicon")[0].childNodes[0].nodeValue;
+		if(mapicon == "undefined")
+		{
+			mapicon = "node_clear_icon.gif" ;
+		}
+		var stringstatus=xmlDoc.getElementsByTagName("stringstatus")[0].childNodes[0].nodeValue;
+		var type=xmlDoc.getElementsByTagName("type")[0].childNodes[0].nodeValue;
+		if(type == 'null')
+		{
+			type = '';
+		}
+		try
+		{
+			var label=xmlDoc.getElementsByTagName("label")[0].childNodes[0].nodeValue;		
+		}
+		catch(err)
+		{
+			label='';
+		}
+		createMarkers(pt,name,status,objname,mapname,mapicon,stringstatus,type,label);
+	}
+	else
+	{
+		var name=xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;		
+		var msg="<fmt:message key='webclient.gmap.view.addsymbol.failuremsg'/>";
+		alert(msg);
+		
+	}
+}
+
+/*
+ * This method will intialize the google map.When a double click action
+ * is performed on the google map, a form will be shown to add the GMapSymbol.
+ */
+function unload()
+{
+	try
+	{
+		GUnload();
+
+	}
+	catch(err)
+	{
+	}
+}
+function initialize() {
+	try
+	{
+	if (GBrowserIsCompatible()) {
+		
+		//<![CDATA[
+		map = new GMap2(document.getElementById("map_canvas"));		
+		var lat='<c:out value="${latitude}"/>';
+		var lng='<c:out value="${longitude}"/>';		
+		var pt=new GLatLng(parseFloat(lat),parseFloat(lng));		      
+		var zoom='<c:out value="${zoomRatio}"/>';
+		var maptype='<c:out value="${mapType}"/>';
+		if(maptype=='Normal')
+		{
+			map.setMapType(G_NORMAL_MAP);
+		}
+		if(maptype=='Satellite')
+		{
+			map.setMapType(G_SATELLITE_MAP);
+		}
+		if(maptype=='Hybrid')
+		{
+			map.setMapType(G_HYBRID_MAP);
+		}
+		map.setCenter(pt,parseInt(zoom));
+		map.disableDoubleClickZoom(); 	
+		GEvent.addListener(map,"dblclick",function(overlay,latlng){
+				if (overlay) 
+				{
+				// ignore if we click on the info window
+				return;
+				}
+				var tileCoordinate = new GPoint();
+				var tilePoint = new GPoint();
+				var currentProjection = G_NORMAL_MAP.getProjection();
+				tilePoint = currentProjection.fromLatLngToPixel(latlng, map.getZoom());
+				tileCoordinate.x = Math.floor(tilePoint.x / 256);
+				tileCoordinate.y = Math.floor(tilePoint.y / 256);
+				var lat=latlng.lat();
+				var lng=latlng.lng();
+				var addButton="<fmt:message key='webclient.gmap.form.addsymbol.addbutton'/>";				
+				//String to construct the html form to add GMapSymbol
+				var hatml="<body><div id='sugg' onMouseOut ='hideAll();' onMouseOver='delayhide();' class='suggesDiv' style='display:none;height:100px;overflow:auto;position:absolute;z-index:3000;padding:3px 10px 3px 10px;width:225px;right:10px;top:20px;_width:248px;_top:25px;'></div><form name='input' id='input' ><table style='left:0;top0;position:;z-index:0;' width='300' border='0' cellpadding='3' cellspacing='0'> <tr>   <td align='left' nowrap style='padding-right:8px;'><fmt:message key='webclient.gmap.form.addsymbol.devicename'/></td><td align='left' nowrap><input class='bInputBox' onFocus='suggestionDiv(this);' autocomplete='off' style='width:248px;' type='text' name='textfield'>    </td>  </tr>  <tr>    <td align='left' nowrap style='padding-right:8px;'><fmt:message key='webclient.gmap.form.addsymbol.symbolname'/></td>    <td align='left' nowrap><input class='bInputBox' id='box2'  style='width:248px;' type='text' name='textfield2' onFocus='hideImmediate();'><span class='mandatory'>&nbsp;*</span></td>  </tr>  <tr>    <td align='left' nowrap style='padding-right:8px;'><fmt:message key='webclient.gmap.form.addsymbol.label'/></td>    <td align='left' nowrap><input class='bInputBox' id='box5'   style='width:248px;' type='text' name='textfield3'>   </td>  </tr><tr ><td colspan='2' align='center'><input type='button' value='"+addButton+"' class='button' name='Submit' onclick='addSymbolInLocation("+lat+","+lng+")'/></td></tr></table></form></body>";	
+				//This method is invoked to show the addSymbol form in an Info Window provided by GoogleAPI.				
+				map.openInfoWindowHtml(latlng,hatml);
+				});	
+		map.addControl(new GLargeMapControl());
+		map.addControl(new GMapTypeControl());
+		addSymbols();	
+	}
+	else
+	{
+		//alert("<fmt:message key='webclient.gmap.key.unspecified'/>");
+		var url= "/map/ShowGMapKeyForm.do?selectedTab=Maps&viewId=<c:out value='${param.viewId}'/>&firstChild=<c:out value='${param.firstChild}'/>&swipe=<c:out value='${param.swipe}'/>&nodeClicked=<c:out value='${param.nodeClicked}'/>&selectedNode=<c:out value='${selectedNode}'/>&displayName=<c:out value='${param.displayName}'/>"
+		document.location.href =url;
+
+	}
+	}
+	catch(err)
+	{
+			//alert('Please Check the connection');
+		document.getElementById("map_canvas").innerHTML="<table border='0' style='width:100%;height:450px;'><tr><td align='center' class='boldText'><fmt:message key='webclient.gmap.connnection.notavailable'/></td></tr></table>";
+	}
+}
+function KeyAction(device,symbol,label,divElement)
+{
+	this.deviceText=device;
+	this.symbolText=symbol;
+	this.labelText=label;
+	this.divElement=divElement;
+	this.position=-1;
+	this.deviceText.KeyAction=this;
+	this.deviceText.onkeydown=this.keyDownAction;
+	this.deviceText.onkeyup=this.keyUpAction;
+}
+
+KeyAction.prototype.keyUpAction=function(keyevent)
+{
+	keyevent=window.event||keyevent;
+	var keyValue=keyevent.keyCode;
+	var value=this.KeyAction.deviceText.value;
+	if(keyValue!=38 && keyValue!=40 && keyValue!=49 && keyValue!=32)
+	{		
+		var url="/map/GMapAction.do?parameter=getDeviceNames&name="+value;
+		if(!isSpecialSymbol(document.input.textfield.value))
+		{
+			getHtml(url,"getObjNames");
+		}
+		this.KeyAction.resetPosition();
+	}
+
+}
+
+KeyAction.prototype.keyDownAction=function(keyevent)
+{
+	keyevent=window.event || keyevent;
+	var keyValue=keyevent.keyCode;		
+	switch(keyValue)
+	{
+		//To handle UpArrow Key Action
+		case 38:
+			this.KeyAction.upArrow();
+			break;
+			//To handle DownArrow Key Action
+		case 40:
+			this.KeyAction.downArrow();	
+			break;
+			//To populate the textfield when the Enter button is selected;	
+		case 13:
+			this.KeyAction.populateFields();				        	
+			break;
+	}
+}
+KeyAction.prototype.resetPosition=function()
+{
+	var paragraphs=this.divElement.getElementsByTagName('p');
+	document.getElementById('sugg').scrollTop=0;
+	this.position=-1;
+}
+
+KeyAction.prototype.populateFields=function()
+{
+	
+	var paragraphs=this.divElement.getElementsByTagName('p');
+	var value=paragraphs[this.position].innerHTML;
+	setResult(value);			
+	this.deviceText.blur();
+}
+
+KeyAction.prototype.upArrow=function()
+{
+	var paragraphs=this.divElement.getElementsByTagName('p');
+	var paraCount=paragraphs.length;
+	var ht=document.getElementById('sugg').scrollHeight;
+	var mov=ht/paraCount;
+	if(paraCount>0 && this.position>0)
+	{
+		--this.position;
+		for(var i=0;i<paraCount;i++)
+		{
+			if(i==this.position)
+			{
+				callClass(paragraphs[i],'menuHoverBg');
+				document.getElementById('sugg').scrollTop=mov*i;
+			}
+			else
+			{
+				deleteClass(paragraphs[i],"menuDivider");
+			}
+		}
+	}
+
+}
+
+KeyAction.prototype.downArrow=function()
+{
+	var paragraphs=this.divElement.getElementsByTagName('p');
+	var paraCount=paragraphs.length;
+	var ht=document.getElementById('sugg').scrollHeight;
+	var mov=ht/paraCount;
+	if(paraCount>0 && this.position<(paraCount-1))
+	{
+		++this.position;
+		for(var i=0;i<paraCount;i++)
+		{			
+			if(i==this.position)
+			{			
+				callClass(paragraphs[i],'menuHoverBg');
+				document.getElementById('sugg').scrollTop=mov*i;
+			}
+			else
+			{
+				deleteClass(paragraphs[i],"menuDivider");
+			}
+		}
+	}	
+}
+//]]>
+</script>
+  </head>
+  <body onload="initialize()" onunload="unload()">
+	  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+		  <tr>
+			  <td class="classTest">
+				  <%--<span id="plainarea"  style="position:relative;z-index:2000;left:100px;top:30px;background:#8ca2bc;color:#fff;padding:3px 10px 3px 10px;"><b><fmt:message key='webclient.gmap.view.messagebar'/></b></span>--%>
+				  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+					  <tbody>
+						  <tr>
+							  <td width="5"><img height="5" width="5" src="/webclient/common/images/corner2-1.gif"/></td>
+							  <td nowrap="nowrap" valign="top" align="left" class="alarmLeftBdrTop"><img height="1" width="1" src="/webclient/common/images/spacer.gif"/></td>
+							  <td height="5" width="5"><img height="5" width="5" src="/webclient/common/images/corner2-2.gif"/></td>
+						  </tr>
+						  <tr>
+							  <td class="alarmLeftBdrLeft"><img height="1" width="1" src="/webclient/common/images/spacer.gif"/></td>
+							  <td style="padding:1px;" valign="top" class="whiteBg">				  
+								  <div id="map_canvas" style="width:100%; height: 450px"></div>
+							  </td>
+							  <td class="alarmLeftBdrRight"><img height="1" width="1" src="/webclient/common/images/spacer.gif"/></td>
+						  </tr>
+						  <tr>
+							  <td class="generalCurveLeftBot"><img height="1" width="1" src="/webclient/common/images/corner2-4.gif"/></td>
+							  <td class="alarmLeftBdrBottom"><img height="1" width="1" src="/webclient/common/images/spacer.gif"/></td>
+							  <td class="generalCurveRightBot"><img height="5" width="5" src="/webclient/common/images/corner2-3.gif"/></td>
+						  </tr>
+					  </tbody>
+				  </table>
+			  </td>
+		  </tr>
+	  </table>
+  </body>
+</html>
+<%--$Id: GMap.jspf,v 1.2 2010/10/29 13:47:11 swaminathap Exp $--%>
+
+

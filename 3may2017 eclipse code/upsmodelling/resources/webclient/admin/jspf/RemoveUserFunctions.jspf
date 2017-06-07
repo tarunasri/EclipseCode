@@ -1,0 +1,39 @@
+<%--  $Id: RemoveUserFunctions.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<script language="javascript">
+
+//Function to validate user name
+function ValidateUserName()
+{
+    if(trimAll(document.RemoveUserForm.userName.value) == "")
+    {
+        alert("<fmt:message key='webclient.admin.removeuser.validation.username.empty'/>");
+        document.RemoveUserForm.userName.focus();
+        return false;
+    }
+    var username = document.RemoveUserForm.userName.value;
+    for(var i=0;i<username.length;i++)
+    {
+        var charcode = username.charCodeAt(i);
+        if(charcode <33 || charcode>126)
+        {
+            alert("<fmt:message key='webclient.admin.removeuser.validation.username.invalid'/>");
+            document.RemoveUserForm.userName.focus();
+            return false;
+        }
+    }
+    return true;
+
+}
+
+//Function to validate the form before submit
+function Validate()
+{
+    if(!ValidateUserName())
+    {
+        return false;
+    }
+    return true;
+}
+
+</script>

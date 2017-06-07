@@ -1,0 +1,341 @@
+<!-- $Id: modifyPollingObjects.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ -->
+
+<script language="javascript"  type="text/javascript">
+
+    var globalOID = '';
+    var globalType = '';
+    var globalName = '';
+
+function getPollingObjectDetails(poName,list_oid)
+{
+    document.ModifyPO.toPerform.value="fillUpDetails";
+    var url = document.ModifyPO.action + "?poName="+poName+"&list_oid="+list_oid+"&actionToPerform=fillUpDetails";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+
+function getOIDDetails(list_oid)
+{
+    document.ModifyPO.toPerform.value="fillUpDetails";
+    var poName = document.ModifyPO.POName.value;
+    document.ModifyPO.hiddenFlag.value="true";
+    var url = document.ModifyPO.action + "?poName="+poName+"&list_oid="+list_oid+"&actionToPerform=changeOID";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+
+function setValues(oidvalue,type,name)
+{
+    document.ModifyPO.oid.value=oidvalue;
+    globalOID = oidvalue;
+    globalType = type;
+    globalName = name;
+}
+
+function formSubmit()
+{
+    document.ModifyPO.toPerform.value="modifyPO";
+    var url = document.ModifyPO.action + "?actionToPerform=modifyPO";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+
+function deleteOID()
+{
+    document.ModifyPO.toPerform.value="deleteOID";
+    var poName = document.ModifyPO.POName.value;
+    var oid = document.ModifyPO.oid.value;
+    var url = document.ModifyPO.action + "?pollingObject="+poName+"&oid="+oid+"&actionToPerform=deleteOID";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+function closeForm()
+{
+    document.ModifyPO.toPerform.value="closeForm";
+    var url = document.ModifyPO.action + "?actionToPerform=closeForm";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+function modifyOID()
+{
+    if(document.ModifyPO.oid.value != globalOID)
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.oid.modificationnotallowed'/>");
+        document.ModifyPO.oid.focus();
+        return;
+    }
+    if(document.ModifyPO.POType.value != globalType)
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.type.modificationnotallowed'/>");
+        document.ModifyPO.oid.focus();
+        return;
+    }
+    if(document.ModifyPO.Name.value != globalName)
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.name.modificationnotallowed'/>");
+        document.ModifyPO.oid.focus();
+        return;
+    }
+    if(document.ModifyPO.oid.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.oid.empty'/>");
+        document.ModifyPO.oid.focus();
+        return;
+    }
+    if(document.ModifyPO.POType.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.type.empty'/>");
+        document.ModifyPO.POType.focus();
+        return;
+    }
+    if(document.ModifyPO.Name.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.name.empty'/>");
+        document.ModifyPO.Name.focus();
+        return;
+    }
+    if(document.ModifyPO.Interval.value == ""  && document.ModifyPO.PollingPeriod.value == "" )
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.pollinterval.empty'/>");
+        document.ModifyPO.Interval.focus();
+        return;
+    }
+    if(document.ModifyPO.POType.value != "none" && document.ModifyPO.POType.value !="node" && document.ModifyPO.POType.value !="interface" && document.ModifyPO.POType.value !="multiple")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.type.impropervalue'/>");
+        document.ModifyPO.POType.focus();
+        return;
+    }
+
+     if(document.ModifyPO.Prefix.value != "")
+     {
+         var str = document.ModifyPO.Prefix.value;
+         if(str == ".")
+         {
+             alert("<fmt:message key='webclient.perf.modifypo.validation.poname.nonumbers'/>");
+             document.ModifyPO.Prefix.focus();
+             return;
+         }
+         for(var i=0;i<str.length;i++)
+         {
+             var charcode = str.charCodeAt(i);
+             if(charcode != 46 && !(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.poname.invalidprefix'/>");
+                 document.ModifyPO.Prefix.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.oid.value != "")
+     {
+         var str1 = document.ModifyPO.oid.value;
+         if(str1 == ".")
+         {
+             alert("<fmt:message key='webclient.perf.modifypo.validation.oid.nonumbers'/>");
+             document.ModifyPO.oid.focus();
+             return;
+         }
+     }
+
+     if(document.ModifyPO.PollingPeriod.value != "")
+     {
+         var str = document.ModifyPO.PollingPeriod.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.PollingPeriod.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Interval.value != "")
+     {
+         var str = document.ModifyPO.Interval.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Interval.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Save.value != "")
+     {
+         var str = document.ModifyPO.Save.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Save.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Failure.value != "")
+     {
+         var str = document.ModifyPO.Failure.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Failure.focus();
+                 return;
+             }
+         }
+     }
+
+    document.ModifyPO.toPerform.value="modifyOID";
+    var poName = document.ModifyPO.POName.value;
+    var oid = document.ModifyPO.oid.value;
+    var url = document.ModifyPO.action + "?pollingObject="+poName+"&oid="+oid+"&actionToPerform=modifyOID";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+
+function addOID()
+{
+    if(document.ModifyPO.oid.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.oid.empty'/>");
+        document.ModifyPO.oid.focus();
+        return;
+    }
+    if(document.ModifyPO.POType.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.type.empty'/>");
+        document.ModifyPO.POType.focus();
+        return;
+    }
+    if(document.ModifyPO.Name.value == "")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.name.empty'/>");
+        document.ModifyPO.Name.focus();
+        return;
+    }
+    if(document.ModifyPO.Interval.value == ""  && document.ModifyPO.PollingPeriod.value == "" )
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.pollinterval.empty'/>");
+        document.ModifyPO.Interval.focus();
+        return;
+    }
+    if(document.ModifyPO.POType.value != "none" && document.ModifyPO.POType.value !="node" && document.ModifyPO.POType.value !="interface" && document.ModifyPO.POType.value !="multiple")
+    {
+        alert("<fmt:message key='webclient.perf.modifypo.validation.type.impropervalue'/>");
+        document.ModifyPO.POType.focus();
+        return;
+    }
+
+     if(document.ModifyPO.Prefix.value != "")
+     {
+         var str = document.ModifyPO.Prefix.value;
+         if(str == ".")
+         {
+             alert("<fmt:message key='webclient.perf.modifypo.validation.poname.nonumbers'/>");
+             document.ModifyPO.Prefix.focus();
+             return;
+         }
+         for(var i=0;i<str.length;i++)
+         {
+             var charcode = str.charCodeAt(i);
+             if(charcode != 46 && !(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.poname.invalidprefix'/>");
+                 document.ModifyPO.Prefix.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.oid.value != "")
+     {
+         var str1 = document.ModifyPO.oid.value;
+         if(str1 == ".")
+         {
+             alert("<fmt:message key='webclient.perf.modifypo.validation.oid.nonumbers'/>");
+             document.ModifyPO.oid.focus();
+             return;
+         }
+     }
+
+     if(document.ModifyPO.PollingPeriod.value != "")
+     {
+         var str = document.ModifyPO.PollingPeriod.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.PollingPeriod.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Interval.value != "")
+     {
+         var str = document.ModifyPO.Interval.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Interval.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Save.value != "")
+     {
+         var str = document.ModifyPO.Save.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Save.focus();
+                 return;
+             }
+         }
+     }
+
+     if(document.ModifyPO.Failure.value != "")
+     {
+         var str = document.ModifyPO.Failure.value;
+         for(var j=0;j<str.length;j++)
+         {
+             var charcode = str.charCodeAt(j);
+             if(!(charcode>47 && charcode<=57))
+             {
+                 alert("<fmt:message key='webclient.perf.modifypo.validation.period.numericvaluesonly'/>");
+                 document.ModifyPO.Failure.focus();
+                 return;
+             }
+         }
+     }
+
+    document.ModifyPO.toPerform.value="addOID";
+    var poName = document.ModifyPO.POName.value;
+    var url = document.ModifyPO.action + "?pollingObject="+poName+"&actionToPerform=addOID";
+    document.ModifyPO.action = url;
+    document.ModifyPO.submit();
+}
+</script>

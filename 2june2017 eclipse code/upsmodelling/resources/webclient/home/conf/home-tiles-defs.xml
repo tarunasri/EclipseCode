@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- $Id: home-tiles-defs.xml,v 1.2 2010/10/29 13:47:08 swaminathap Exp $ -->
+
+<!DOCTYPE tiles-definitions  PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="home" path="/webclient/common/jsp/MainLayout.jsp">
+	 <put name="Tree" value=".tree.controller"/>
+	 <put name="Tab" value=".tab.controller"/>
+     <put name="MainPage" value=""/>
+      <put name="Footer" value="/webclient/common/jsp/MainFooter.jsp"/>
+    </definition>
+
+     <definition name=".tab.controller" path="/webclient/common/jsp/TabComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TabAction">
+    </definition>
+
+    <definition name=".tree.controller" path="/webclient/common/jsp/NavigationComponent.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.common.TreeAction">
+    </definition>
+
+    <!--<definition name=".accPanel.controller" path="/webclient/fault/jsp/alarmSummary.jsp" 
+    	controllerClass ="com.adventnet.nms.webclient.fault.alarm.AlarmSummary">
+    </definition>-->
+
+    <definition name="recitepage" path="/webclient/common/jsp/MainLayout.jsp"> 
+	 <put name="Tree" value=""/>
+	 <put name="Tab" value=""/>
+	 <put name="MainPage" value="/webclient/home/jsp/HomeLayout.jsp"/>
+      <put name="Footer" value=""/>
+    </definition>
+
+    <definition name="homepage" extends="home">
+         <put name="MainPage" value="homepagedef"/>
+    </definition>
+
+
+<definition name="homepagedef" path="/webclient/home/jsp/HomeLayout.jsp">
+		<!-- <put name="frontpanel" value="/webclient/fault/jsp/accPieChart.jsp"/> -->
+		<put name="accPanel" value="/webclient/fault/jsp/accPanelMain.jsp"/>
+		<put name="ListView" value="/webclient/fault/jsp/alarms.jsp"/>
+        </definition>
+
+</tiles-definitions>
+

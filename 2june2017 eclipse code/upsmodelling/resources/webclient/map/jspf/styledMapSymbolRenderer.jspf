@@ -1,0 +1,57 @@
+<%-- $Id: styledMapSymbolRenderer.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $--%>
+
+<TD width=102>
+
+            <TABLE cellSpacing=2 cellPadding=0 border=0>
+              <TBODY>
+                <TD><IMG height=1 
+                  src="/webclient/topo/images/spacer.gif" width=1></TD>
+                <TD vAlign=top align=left>
+                  <TABLE cellSpacing=0 cellPadding=2 width="100%" border=0>
+                    <TBODY>
+                    <TR vAlign=bottom align=left>
+                      <TD vAlign="top" align="right" width=16>
+                      <c:choose> 
+                       <c:when test="${props.link != null && props.objType != 2}">
+                            <IMG border="0" height=16 hspace=2 src="<c:out value='${props.statusImage}'/>" width=16 vspace=2>
+                       </c:when>
+                       <c:otherwise>
+                      <a href="<c:out value='/mainLayout.do?selectedNode=Alerts&selectedTab=Fault&displayName=Alarm&action=/fault/AlarmView.do&entity=${props.name}'/>"><IMG border="0" height=16 hspace=2 src="<c:out value='${props.statusImage}'/>" width=16 vspace=2></a>
+                       </c:otherwise>
+                       </c:choose>
+                       
+                     </TD>
+                      
+                      <TD>
+
+ <c:choose> 
+  <c:when test="${props.link != null && props.objType != 2}"> <A HREF='<c:out value="${props.link}"/>&displayName='<c:out value="${props.label}"/>'><IMG SRC="<c:out value='${props.iconName}'/>" BORDER="NO"></A> 
+ </c:when>
+ <c:otherwise>
+<A HREF="/topo/objectdetails.do?requestid=SNAPSHOT&mapName=<c:out value='${props["mapName"]}'/>&type=<c:out value='${props["type"]}'/>&menuName=<c:out value='${props["menuName"]}'/>&discover=<c:out value='${props["discover"]}'/>&managed=<c:out value='${props["managed"]}'/>&symbol=<c:out value='${props["name"]}'/>&name=<c:out value='${props["objName"]}'/>"> <IMG SRC="<c:out value='${props.iconName}'/>" BORDER="0"></a> 
+ </c:otherwise> 
+</c:choose>
+
+   <TD vAlign="top" align="left">
+           <c:choose>
+            <c:when test="${props.link != null && props.objType == 2}"> <A HREF="/map/MapView.do?selectedTab=Maps&selectedNode=<c:out value='${props["name"]}'/>.netmap&viewId=<c:out value='${props["name"]}'/>.netmap&displayName=<c:out value='${props["name"]}'/>"> <IMG SRC="/webclient/map/images/drilldown.gif" BORDER="0"> </A> 
+ </c:when>  
+             <c:otherwise> </c:otherwise></c:choose>
+ </TD>
+
+<%--
+  <TD vAlign="bottom" align="left">
+           <%@include file="/webclient/map/jspf/mapSymbolMenu.jspf"%>
+ </TD> --%>
+</TR>
+<TR vAlign=bottom align=left>
+                      <TD colSpan=3>
+                        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                          <TBODY>
+                          <TR>
+                            <TD vAlign=center align=middle class="text"><c:out value='${props["smartLabel"]}'/></TD></TR></TBODY></TABLE></TD></TR>
+</TBODY></TABLE></TD>
+                <TD><IMG height=1 
+                  src="/webclient/topo/images/spacer.gif" width=1></TD></TR>
+
+</TBODY></TABLE></TD>

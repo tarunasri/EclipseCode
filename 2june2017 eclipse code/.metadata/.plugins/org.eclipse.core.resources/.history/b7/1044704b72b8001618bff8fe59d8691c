@@ -1,0 +1,74 @@
+package com.polling.listener;
+
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+
+public class Listener implements ServletContextListener {
+
+	@Override
+	public void contextInitialized(ServletContextEvent arg0) {
+
+		ServletContext sc = arg0.getServletContext();
+
+		Properties prop = new Properties();
+		try {
+			prop.load(sc.getResourceAsStream("/WEB-INF/properties/config.properties"));
+
+			// PollingService pollingService = new
+			// PollingService(prop.getProperty("INVENTORY_URL"), sc);
+			// PollingService pollingService1 = new
+			// PollingService(prop.getProperty("DEVICE_URL"), sc);
+			//PollingService pollingService2 = new PollingService(prop.getProperty("ALARM_URL"), sc);
+			// PollingService pollingService3 = new
+			// PollingService(prop.getProperty("EVENTS_URL"), sc);
+			 PollingService pollingService4 = new
+			 PollingService(prop.getProperty("ALARM_SUMMARY_URL"), sc);
+			// PollingService pollingService5 = new
+			// PollingService(prop.getProperty("UPTIME_URL"), sc);
+			//pollingService2.execute();
+			//System.out.println("Polling Context Initialized.....");
+
+			/*
+			 * Thread runnable = new Thread(pollingService); System.out.println(
+			 * "Inventory Thread Name : " + runnable.getName());
+			 * runnable.start();
+			 * 
+			 * /*Thread runnable1 = new Thread(pollingService1);
+			 * System.out.println("Device Thread Name : " +
+			 * runnable1.getName()); runnable1.start();
+			 */
+			 /*Thread runnable2 = new Thread(pollingService2);
+			  System.out.println("Alarm Thread Name : " + runnable2.getName());
+			 runnable2.start();
+			 /*
+			 * Thread runnable3 = new Thread(pollingService3);
+			 * System.out.println("Events Thread Name : " +
+			 * runnable3.getName()); runnable3.start();
+			 */
+			  Thread runnable4 = new Thread(pollingService4);
+			  System.out.println("Alarm Summary Thread Name : " +
+			  runnable4.getName()); 
+			  runnable4.start();
+			 /*
+			 * Thread runnable5 = new Thread(pollingService5);
+			 * System.out.println("Uptime Thread Name : " +
+			 * runnable5.getName()); runnable5.start();
+			 */
+		} catch (Exception e) {
+
+			System.err.println("Errror : Configuration Properties File Not Found");
+		}
+
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,475 @@
+<%-- $Id: deviceList.jspf,v 1.2 2010/10/29 13:47:05 swaminathap Exp $ --%>
+<script language='javascript'>
+
+function addMoreDevices(devices)
+{
+	if(isEmpty(devices))
+	{
+		return;
+	}
+	addDeviceName(devices);
+}
+
+function addDeviceName(name)
+{
+
+	dlForm.newDevice.value=trimAll(dlForm.newDevice.value);
+	var devName = document.dlForm.newDevice.value;
+	if(isSpecialSymbol(devName))
+	{
+		alert('<fmt:message key='webclient.config.ds.empty.device'/>');
+		document.dlForm.newDevice.focus();
+		return;
+	}
+	if(name!=undefined && !isEmpty(name))
+	{
+		devName = name;
+	}
+	if(isEmpty(devName))
+	{
+	    alert('<fmt:message key='webclient.config.dl.newdev.empty'/>');
+	    document.dlForm.newDevice.focus();
+	    return;
+	}
+	document.getElementById("noaddedDevices").style.display='none';
+	var deviceArray = null;
+	var devicesValues= "";
+	if(document.getElementsByName('devices').length>0)
+	{
+		deviceArray = document.getElementsByName('devices');
+		for(i=0;i<deviceArray.length;i++)
+		{
+			if(deviceArray[i].value == devName)
+			{
+				alert('<fmt:message key="webclient.config.dl.newdev.duplicate"/>');
+				return;
+			}
+			devicesValues=devicesValues+deviceArray[i].value;
+			devicesValues=devicesValues+",";
+		}
+	}
+	var deviceattr = document.dlForm.deviceattr.value;
+	if(!isEmpty(deviceattr))
+	{
+		deviceattr += ";"
+	}
+	var values=devName.split(",");
+	for(z=0;z<values.length;z++)
+	{
+		if(!isEmpty(values[z]))
+		{
+			deviceattr += "host="+values[z]+",;";
+		}
+	}
+
+	window.location ="/config/DeviceListAction.do?actionToPerform=addDevice&protocol="+document.dlForm.protocol.value+"&deviceattr="+deviceattr+"&dlName="+document.dlForm.deviceList.value;
+
+	document.dlForm.newDevice.value="";
+	document.dlForm.deviceattr.value = deviceattr;
+}
+
+function checkDevices()
+{
+	if(!validateDeviceList())
+	{
+		return false;
+	}
+
+	var devices = document.dlForm.deviceattr.value;
+	
+	if(devices == null || isEmpty(devices))	
+	{
+		alert('<fmt:message key="webclient.config.deviceList.addmodify.error.nodevice"/>');
+		return false;
+	}
+	return true;
+}
+
+
+function validateDeviceList()
+{
+	document.dlForm.deviceList.value = trimAll(document.dlForm.deviceList.value);
+	var deviceName = document.dlForm.deviceList.value;
+	
+	if(isEmpty(deviceName) || isSpecialSymbol(deviceName))
+	{
+		alert('<fmt:message key='webclient.config.dl.deviceList.empty'/>')
+		document.dlForm.deviceList.focus();
+		return false;
+	}
+	return true;
+}
+
+
+function deleteDL(dlName)
+{
+	if(confirm('<fmt:message key='webclient.config.task.delete.dl'/>') == false) return;
+        var url = "/config/DeviceListAction.do?actionToPerform=deleteDeviceList&dlName="+dlName;
+        var xmlhttp=GetXMLHttpRequest();
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4)
+            {
+                var result = xmlhttp.responseText;
+		window.location ="/config/DeviceListAction.do?actionToPerform=getDeviceLists"
+            }
+        }
+        xmlhttp.open("POST",url,true);
+        xmlhttp.send(null);
+
+}
+
+function loadDevices(deviceListName,protocol)
+{
+	if(deviceListName == undefined || isEmpty(deviceListName))
+	{
+		document.getElementById('noaddedDevices').style.display='';
+		document.dlForm.deviceattr.value='';
+		return;
+	}
+	else
+	{
+		if(protocol != undefined && !isEmpty(protocol))
+		{
+			document.dlForm.protocol.value=protocol;
+		}
+		document.getElementById('noaddedDevices').style.display='none';
+		var replaceDiv=document.getElementById("addedDevices");
+		replaceDiv.style.display ='';
+		replaceDiv.innerHTML="<div style='text-align:center;padding:10px;height:180px'><img src='/webclient/common/images/LoadingTC.gif' style='margin-top:74px'/></div>";
+
+		var url = "/config/DeviceListAction.do?actionToPerform=getDevices&deviceListName="+deviceListName+"&protocol="+document.dlForm.protocol.value;
+		var xmlhttp=GetXMLHttpRequest();
+		xmlhttp.onreadystatechange=function(){
+
+			if (xmlhttp.readyState==4)
+			{
+				var result = xmlhttp.responseText;
+				replaceDiv.innerHTML=result;
+				var deviceattr="";
+				if(document.getElementsByName('devices').length>0)
+				{
+					deviceArray = document.getElementsByName('devices');
+					for(i=0;i<deviceArray.length;i++)
+					{
+						if(!isEmpty(deviceattr))
+						{
+							deviceattr += ";";
+						}
+						deviceattr += "host="+deviceArray[i].value+",";
+					}
+					document.dlForm.deviceattr.value=document.dlForm.attribs.value;
+				}
+				
+			}
+		}
+		xmlhttp.open("POST",url,true);
+		xmlhttp.send(null);
+
+	}
+}
+
+function constructDeviceAttribs(protocol,device,replaceDiv,positionDiv,centerPoint)
+{
+    var table = "<table class='popBdr1 popupGBg1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr> <td valign='top' style='padding:3px;'><table class='hRule1' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td height='27' >&nbsp;&nbsp;<span class='boldTxt'><fmt:message key='webclient.config.task.executeform.deviceconfig'/></span>&nbsp;:&nbsp;"+device+"</td><td align='right' valign='top'><a href=\"javascript:closeDiv(document.getElementById('"+replaceDiv+"'))\"><img align='absmiddle' class='popClose1' border='0' src='/webclient/common/images/spacer.gif' title='<fmt:message key="webclient.config.task.deviceconfig.title.close"/>' /></a></td></tr></table><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td valign='top' style='padding:10px;'><table width='100%' cellspacing='0' cellpadding='0' border='0'><tbody><tr><td width='5'><img height='5' width='5' src='/webclient/common/images/corner2-1.gif'/></td><td nowrap='nowrap' valign='top' align='left' class='alarmLeftBdrTop'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td height='5' width='5'><img height='5' width='5' src='/webclient/common/images/corner2-2.gif'/></td></tr><tr><td class='alarmLeftBdrLeft'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td style='padding:1px;' valign='top' class='whiteBg'><table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody><tr class='generalTBHeader'><td nowrap='nowrap' width='30%'><fmt:message key='webclient.config.task.dev.attr'/></td></td><td nowrap='nowrap' width='30%'><fmt:message key='webclient.config.task.dev.value'/></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.retires'/></td><td><input type='text' name='retries' value='3'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.timeout'/></td><td><input type='text' name='timeout' value='5000'></td></tr>";
+	if(protocol == 'ftp' || protocol == 'tftp')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='21'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.userName'/></td><td><input type='text' name='username' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.ftppassword'/></td><td><input type='text' name='password' value=''></td></tr>";
+	}
+	else if(protocol == 'tl1')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='9099'></td></tr>";
+	}
+	else if(protocol == 'telnet')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='23'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.loginName'/></td><td><input type='text' name='loginName' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.telnetpassword'/></td><td><input type='text' name='password' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.loginprompt'/></td><td><input type='text' name='loginprompt' value='login'></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.passwordprompt'/></td><td><input type='text' name='passwordprompt' value='Password'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.shellprompt'/></td><td><input type='text' name='shellprompt' value='$'></td></tr>";
+	}
+	else if(protocol == 'snmp')
+	{
+		table += "<tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.port'/></td><td><input type='text' name='port' value='161'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.community'/></td><td><input type='text' name='community' value='public'></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.version'/></td><td><input type='text' name='version' value='v1'></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.userName'/></td><td><input type='text' name='userName' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextName'/></td><td><input type='text' name='contextName' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.contextID'/></td><td><input type='text' name='contextID' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.maxRepetitions'/></td><td><input type='text' name='maxRepetitions' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.nonRepeaters'/></td><td><input type='text' name='nonRepeaters' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authProtocol'/></td><td><input type='text' name='authProtocol' value=''></td></tr><tr heigth='20px' class='generalOddRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.authPassword'/></td><td><input type='text' name='authPassword' value=''></td></tr><tr heigth='20px' class='generalEvenRow'><td><fmt:message key='webclient.config.task.executeform.deviceconfig.privPassword'/></td><td><input type='text' name='privPassword' value=''></td></tr>";
+	}
+	table += "</tbody></table></td><td class='alarmLeftBdrRight'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td></tr><tr><td class='generalCurveLeftBot'><img height='1' width='1' src='/webclient/common/images/corner2-4.gif'/></td><td class='alarmLeftBdrBottom'><img height='1' width='1' src='/webclient/common/images/spacer.gif'/></td><td class='generalCurveRightBot'><img height='5' width='5' src='/webclient/common/images/corner2-3.gif'/></td></tr></tbody></table><table style='margin-top:15px;' width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='center'><input type='button'  value=\"<fmt:message key='webclient.config.task.executeform.devconf.submit'/>\" class='button' onClick='submitDevice(this.form,\""+device+"\",\""+replaceDiv+"\")'/>&nbsp;<input type='button'  value=\"<fmt:message key='webclient.config.task.executeform.devconf.cancel'/>\" class='button' onClick=\"javascript:closeDiv(document.getElementById('"+replaceDiv+"'))\"/></td></tr></table></td></tr></table></td></tr>";
+
+document.getElementById(replaceDiv).innerHTML = table;
+	setPosToDiv(positionDiv,replaceDiv,centerPoint);
+document.getElementById(replaceDiv).style.display = '';
+
+}
+
+
+function submitDevice(form,device,replaceDiv)
+{
+    var deviceattr = form.deviceattr.value;
+    var protocol = form.protocol.value;
+    var attr='';
+    var temp = '';
+    if((temp = trimAll(device))!='')
+    {
+        attr = "host="+temp+",";
+    }
+    if(deviceattr.indexOf(attr) != -1)
+    {
+    	var token = deviceattr.split(";");
+        var newdevattr = "";
+        for(var i=0;i<token.length;i++)
+        {
+            var devattr = trimAll(token[i]);
+            if(devattr != '' && devattr.indexOf(attr)==-1)
+            {
+            	newdevattr = newdevattr+";"+devattr;
+            }
+        }
+	deviceattr = newdevattr;
+    }
+    if((temp = trimAll(form.port.value))!='')
+    {
+	document.getElementById(device+"Port").innerHTML=temp;
+        attr = attr+"port="+temp+",";
+    }
+    if((temp = trimAll(form.retries.value))!='')
+    {
+	document.getElementById(device+"Retries").innerHTML=temp;
+        attr = attr+"retries="+temp+",";
+    }
+    if((temp = trimAll(form.timeout.value))!='')
+    {
+	document.getElementById(device+"Timeout").innerHTML=temp;
+        attr = attr+"timeout="+temp+",";
+    }
+    if(protocol == 'ftp')
+    {	
+        if((temp = trimAll(form.username.value))!='')
+        {
+            attr = attr+"username="+temp+",";
+        }
+        if((temp = trimAll(form.password.value))!='')
+        {
+            attr = attr+"password="+temp+",";
+        }
+    }
+    else if(protocol == 'telnet')
+    {
+        if((temp = trimAll(form.loginName.value))!='')
+        {
+            attr = attr+"loginName="+temp+",";
+        }
+        if((temp = trimAll(form.password.value))!='')
+        {
+            attr = attr+"password="+temp+",";
+        }
+        if((temp = trimAll(form.loginprompt.value))!='')
+        {
+            attr = attr+"loginprompt="+temp+",";
+        }
+        if((temp = trimAll(form.passwordprompt.value))!='')
+        {
+            attr = attr+"passwordprompt="+temp+",";
+        }
+        if((temp = trimAll(form.shellprompt.value))!='')
+        {
+            attr = attr+"shellprompt="+temp+",";
+        }
+    }
+    else if(protocol == 'snmp')
+    {
+        if((temp = trimAll(form.community.value))!='')
+        {
+            attr = attr+"community="+temp+",";
+        }
+        if((temp = trimAll(form.version.value))!='')
+        {
+            attr = attr+"version="+temp+",";
+        }
+        if((temp = trimAll(form.userName.value))!='')
+        {
+            attr = attr+"userName="+temp+",";
+        }
+        if((temp = trimAll(form.contextName.value))!='')
+        {
+            attr = attr+"contextName="+temp+",";
+        }
+        if((temp = trimAll(form.contextID.value))!='')
+        {
+            attr = attr+"contextID="+temp+",";
+        }
+        if((temp = trimAll(form.maxRepetitions.value))!='')
+        {
+            attr = attr+"maxRepetitions="+temp+",";
+        }
+        if((temp = trimAll(form.nonRepeaters.value))!='')
+        {
+            attr = attr+"nonRepeaters="+temp+",";
+        }
+        if((temp = trimAll(form.authProtocol.value))!='')
+        {
+            attr = attr+"authProtocol="+temp+",";
+        }
+        if((temp = trimAll(form.authPassword.value))!='')
+        {
+            attr = attr+"authPassword="+temp+",";
+        }
+        if((temp = trimAll(form.privPassword.value))!='')
+        {
+            attr = attr+"privPassword="+temp+",";
+        }
+    }
+    attr = attr.substring(0,attr.length-1);
+    form.deviceattr.value = deviceattr +";"+ attr;
+    document.getElementById(replaceDiv).style.display="none";
+}
+
+
+
+function showDeviceAttribs(formName,device,replaceDiv,positionDiv,centerPoint)
+{
+	var form = document.forms[formName];
+	var deviceattr = form.deviceattr.value;
+	var token = deviceattr.split(";");
+	var host = "host="+device+",";
+	constructDeviceAttribs(form.protocol.value,device,replaceDiv,positionDiv,centerPoint);
+	for(var j=0;j<token.length;j++)
+	{
+		if(token[j].indexOf(host)!=-1)
+		{
+			var attr = token[j].split(",");
+			for(k=0;k<attr.length;k++)
+			{
+				var param = attr[k];
+				var key = trimAll(param.substring(0,param.indexOf("=")));
+				var value = trimAll(param.substring(param.indexOf("=")+1));
+				if(key!='host')
+				{
+					if(form.elements[key]!=null && form.elements[key]!=undefined)
+					{
+						form.elements[key].value = value;
+					}
+				}
+			}
+		}
+	}
+}
+
+function deleteDevice(name)
+{
+	
+	if(confirm('<fmt:message key='webclient.config.task.delete.device.confirm'/>') == false) return;
+	var replaceDiv=document.getElementById(name);
+	replaceDiv.style.display ='none';
+	var deviceattr = document.dlForm.deviceattr.value;
+	var token = deviceattr.split(";");
+	var newDeviceattr="";
+	for(var i=0;i<token.length;i++)
+	{
+		var attr = token[i].split(",");
+		for(k=0;k<attr.length;k++)
+		{
+			if(isEmpty(attr[k]))
+			{
+				continue;
+			}
+			var param = attr[k];
+			var key = trimAll(param.substring(0,param.indexOf("=")));
+			var value = trimAll(param.substring(param.indexOf("=")+1));
+			if(key=='host' && value == name)
+			{
+				break;
+			}
+			if(key=='host')
+			{
+				newDeviceattr=newDeviceattr+";"+param;
+			}
+			else
+			{
+				newDeviceattr=newDeviceattr+","+param;
+			}
+		}
+
+	}
+	document.dlForm.deviceattr.value=newDeviceattr;
+	token = newDeviceattr.split(";");
+	if(token.length ==1)
+	{
+		document.getElementById('noaddedDevices').style.display='';
+		document.getElementById('addedDevices').style.display='none';
+	}
+	else
+	{
+		document.getElementById('addedDevices').style.display='';
+		document.getElementById('noaddedDevices').style.display='none';
+	}
+	
+}
+
+
+function newSearchResult(textValue,searchType)
+{
+if(anotherwindow==null)
+{
+	return;
+}
+	if(textValue.indexOf("webclient.config.audit.executetask.search.nomatching")!=-1)
+	{
+		var div = anotherwindow.document.getElementById('searchRes');
+		div.style.display="";
+		div.innerHTML="<table width='100%'> <tr><td align='center'><fmt:message key='webclient.config.audit.executetask.search.nomatching'/></td></tr></table>";
+		return;
+	}
+var devices = textValue.split(",");
+
+var table="<table width='100%' cellspacing='0' cellpadding='2' border='0' align='left'><tbody>";
+for(var i = 0;i<devices.length;i++)
+{
+	if(i%2==0)
+	{
+		table = table+"<tr class='generalEvenRow' onmouseout=\"this.className='generalEvenRow'\" onmouseover=\"this.className='generalHover'\">";
+	}
+	else
+	{
+		table = table+"<tr class='generalOddRow' onmouseout=\"this.className='generalOddRow'\" onmouseover=\"this.className='generalHover'\">";
+	}
+	if(searchType == 'invSearch' || searchType == 'neSearch')
+	{
+		table = table + "<td style='padding-left:5px;'><input name='rowSelectionDevices'  type='radio' style='vertical-align:middle;margin:0px;padding:0px;' value="+devices[i]+"></td><td><label>"+devices[i]+"</label></td> </tr>";
+	}
+	else
+	{
+	table = table + "<td style='padding-left:5px;'><input name='rowSelectionDevices'  type='checkbox' style='vertical-align:middle;margin:0px;padding:0px;' value="+devices[i]+" onclick='toggleResults(\"title_check\",\"rowSelectionDevices\");'></td><td><label>"+devices[i]+"</label></td> </tr>";
+	}
+}
+table = table+"</table>";
+
+	anotherwindow.document.getElementById('searchRes').innerHTML=table;
+	
+}
+
+var anotherwindow=null;
+
+function openSearch(type)
+{
+	if(type == 'dlSearch')
+	{
+		anotherwindow= open('/topo/deviceAdvancedSearch.do?ComplexSearchView=Topology&searchType=dlSearch&viewId=Network Database.CompleteView&ORNotSupported=true&searchAction=deviceAdvancedSearch.do','','scrollbars=yes,width=700,height=450,left=300,top=200');
+	}
+	else if(type == 'configSearch')
+	{
+		var url="/topo/deviceAdvancedSearch.do?ComplexSearchView=Topology&searchType="+type+"&viewId=Network Database.CompleteView&ORNotSupported=true&searchAction=deviceAdvancedSearch.do";
+
+		anotherwindow= open(url,'','scrollbars=yes,width=700,height=400,left=300,top=200');
+	}
+	else if(type == 'invSearch')
+	{
+		var searchUrl = "/topo/deviceAdvancedSearch.do?ComplexSearchView=Topology&searchType=invSearch&viewId=Network Database.CompleteView&ORNotSupported=true&searchAction=deviceAdvancedSearch.do";
+		anotherwindow =open(searchUrl,'<fmt:message key="webclient.config.ds.searchtitle"/>','scrollbars=yes,width=700,height=400,left=300,top=200')
+	}
+	else if(type == 'neSearch')
+	{
+		var neSearchUrl = "/topo/deviceAdvancedSearch.do?ComplexSearchView=Topology&searchType=neSearch&viewId=Network Database.CompleteView&ORNotSupported=true&searchAction=deviceAdvancedSearch.do";
+		anotherwindow =open(neSearchUrl,'<fmt:message key="webclient.config.ds.searchtitle"/>','scrollbars=yes,width=700,height=400,left=300,top=200')
+	}
+
+}
+
+
+
+
+</script>

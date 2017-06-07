@@ -1,0 +1,39 @@
+<%--  $Id: PerfInputFunction.jspf,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $ --%>
+
+<script language="javascript">
+
+//Function to validate user name
+function ValidateUserName()
+{
+    if(trimAll(document.perfInputForm.name.value) == "")
+    {
+        alert("<fmt:message key='webclient.admin.systemadmin.modulestatus.perf.empty'/>");
+        document.perfInputForm.name.focus();
+        return false;
+    }
+    var nodename = document.perfInputForm.name.value;
+    for(var i=0;i<nodename.length;i++)
+    {
+        var charcode = nodename.charCodeAt(i);
+        if(charcode <33 || charcode>126)
+        {
+            alert("<fmt:message key='webclient.admin.systemadmin.modulestatus.perf.invalid'/>");
+            document.perfInputForm.name.focus();
+            return false;
+        }
+    }
+    return true;
+
+}
+
+//Function to validate the form before submit
+function Validate()
+{
+    if(!ValidateUserName())
+    {
+        return false;
+    }
+    return true;
+}
+
+</script>

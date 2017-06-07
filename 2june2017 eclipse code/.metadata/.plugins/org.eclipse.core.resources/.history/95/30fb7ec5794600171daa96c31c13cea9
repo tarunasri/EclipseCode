@@ -1,0 +1,48 @@
+package com.dgca;
+
+public class DisplayNameMaker {
+	
+	
+	 static String displayName=null;
+public static void main(String[] args) {
+
+	String input1="reportingEntityAddress=172.18.32.2, causingAlarmId=0, notificationState=0, srcObjectClassId=0, displayName=34:db:fd:e0:61:70:0, authEntityClass=-1906840627, description=Air Quality Index on Channel '11' is '97' (Threshold:'35'). Unclassified Severity Index is '21' (Threshold:'20').Reported by AP:'AP KCMCTX2-KLMGMTAP01, Interface 802.11b/g/n'., eventCount=1, source=LradIf!34:db:fd:e0:61:70!0, apDot11IfSlotId=0, instanceId=329979554, instanceVersion=0, mayBeAutoCleared=false, alarmCreationTime=31 May 2017 20:00:51 UTC, siAqIndex=98, sourceMacAddress=34:db:fd:e0:61:70, srcObjectId=0, applicationCategoryData=SI_AQ_LOW_UNCLASSIFIED, generatedBy=Controller, authEntityId=581858, notificationDeliveryMechanism=SNMP_TRAP, apSysMacAddress=34:db:fd:e0:61:70, severity=5, isDeviceMaster=false, siD11AqiTrapThreshold=35, eventType=SI_AQ_LOW_UNCLASSIFIED, ownerID=, previousSeverity=CLEARED, lastModifiedTimestamp=31 May 2017 20:00:51 UTC, siAqChannelNumber=11, alarmDisplayable=true, applicationSpecificAlarmID=SI_AQ_ALERT_172.18.32.2_34:db:fd:e0:61:70_0_11, rawSiAqIndex=0, instanceUuid=cfa19440-46fc-41de-8602-90b359e7b042, isAcknowledged=false, subclassName=SiAqAlert, category=Performance(12), transientNameValue={}";
+
+
+test(input1);
+}
+	
+	public static void test(String input1) {
+
+		if ((input1.contains("isArchived=false, authEntityClass")) == true) {
+			displayName = input1.substring(input1.indexOf("displayName=") + "displayName=".length(),
+					input1.lastIndexOf(", isArchived=false"));
+			System.out.println("DisplayName at 12.0:" + displayName);
+
+		} else if ((input1.contains("isArchived=false, rrmGroupEventReceiveTimeRrm")) == true) {
+			displayName = input1.substring(input1.indexOf("displayName=") + "displayName=".length(),
+					input1.lastIndexOf(", Interface 802.11"));
+
+			System.out.println("DisplayName at 12.0:" + displayName);
+
+		} else if (input1.contains("Interface 802.11") == true) {
+			displayName = input1.substring(input1.indexOf("displayName=") + "displayName=".length(),
+					input1.lastIndexOf(", Interface 802.11"));
+
+			System.out.println("DisplayName at 12.0:" + displayName);
+
+		} else {
+			displayName = input1.substring(input1.indexOf("displayName=") + "displayName=".length(),
+					input1.lastIndexOf(", authEntityClass"));
+
+			System.out.println("DisplayName at 12.0:" + displayName);
+
+		}
+	}
+	
+	
+
+	
+	
+
+}

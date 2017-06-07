@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--$Id: GraphInfo.dtd,v 1.1.1.1 2006/12/14 11:38:09 gramkumar Exp $-->
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE Graphs SYSTEM "GraphInfo.dtd">
+
+    <Graphs>
+    ...
+    </Graphs>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT ticker-color (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT grid-color (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT foreground-color (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT background-color (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT height (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT width (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT legend-required (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT yaxis-label (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT xaxis-label (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT title (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Graph (ticker-color|grid-color|title|xaxis-label|yaxis-label|legend-required|width|height|background-color|foreground-color)*>
+<!ATTLIST Graph
+    name CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Graphs (Graph)*>

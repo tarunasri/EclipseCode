@@ -1,0 +1,47 @@
+<%-- $Id: HelpDialog.jspf,v 1.2 2010/10/29 13:47:02 swaminathap Exp $ --%>
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+  <tbody><tr>
+    <td style="padding: 3px;">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="hRule1">
+        <tbody><tr>
+ <td width="5" height="5"><img  src="/webclient/common/images/helpicon2.gif"/></td>
+          <td height="27" class="boldTxt">
+
+	  <fmt:message key='webclient.config.task.form.helpCard'/> 
+	</td>
+          <td align="right" valign="top">
+    <img align="absmiddle" onclick="javascript:closeThisDiv('helpDiv')" title="<fmt:message key='webclient.common.helpcard.title.close'/>" src="/webclient/common/images/spacer.gif" class="popClose1"/></td>
+        </tr>
+      </tbody>
+</table>
+      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody><tr>
+          <td valign="top" style="padding: 10px;">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody>
+          <tr>
+            <td width="5"><img width="5" height="5" src="/webclient/common/images/corner2-1.gif"/></td>
+            <td align="left" valign="top" nowrap="nowrap" class="alarmLeftBdrTop"><img width="1" height="1" src="/webclient/common/images/spacer.gif"/></td>
+            <td width="5" height="5"><img width="5" height="5" src="/webclient/common/images/corner2-2.gif"/></td>
+          </tr>
+          <tr>
+            <td class="alarmLeftBdrLeft"><img width="1" height="1" src="/webclient/common/images/spacer.gif"/></td>
+            <td valign="top" style="padding: 4px 8px;" class="whiteBg">
+<div  id="xContent">&nbsp;</div>
+</td>
+            <td class="alarmLeftBdrRight"><img width="1" height="1" src="/webclient/common/images/spacer.gif"/></td>
+          </tr>
+
+          <tr>
+            <td class="generalCurveLeftBot"><img width="1" height="1" src="/webclient/common/images/corner2-4.gif"/></td>
+            <td class="alarmLeftBdrBottom"><img width="1" height="1" src="/webclient/common/images/spacer.gif"/></td>
+            <td class="generalCurveRightBot"><img width="5" height="5" src="/webclient/common/images/corner2-3.gif"/></td>
+          </tr>
+        </tbody>
+      </table>
+
+</td>
+        </tr>
+      </tbody></table></td>
+  </tr>
+</tbody></table>
